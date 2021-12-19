@@ -101,7 +101,7 @@ class PagesController extends Controller
             $page->Pagetitle = ['en'=> $request->pagetitle_en , 'ar'=> $request->pagetitle_ar],
             $page->Metatitle = ['en'=> $request->Metatitle_en , 'ar'=> $request->Metatitle_ar],
             $page->Metadescription = ['en'=> $request->Metadescription_en , 'ar'=> $request->Metadescription_ar],
-            $page->Metakeywords = $request->Metakeywords,
+            $page->Metakeywords = ['en'=> $request->Metakeywords_en , 'ar'=> $request->Metakeywords_ar],
             $page->staticpages = $request->wysiwygeditor,
 
         ]);

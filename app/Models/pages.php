@@ -12,7 +12,7 @@ class pages extends Model
 {
 
     use HasTranslations;
-    public $translatable = ['Pagetitle','Metatitle','Metadescription'];
+    public $translatable = ['Pagetitle','Metatitle','Metadescription','Metakeywords'];
     use HasFactory;
     protected $fillable = [
         'Pagetitle'

@@ -150,9 +150,16 @@
                             >
 
                         </div>-->
+
+                        <!--   Page Meta Metakeywords         -->
+
                         <div class="form-group col-lg-6">
-                            <label for="s_title" class="form-control-label">{{trans('HomeEdits.Metakeywords')}}</label>
-                            <input type="text"  name="Metakeywords" class="form-control" value="{{$editpages->Metakeywords}}">
+                            <label for="s_name" class="form-control-label">{{trans('HomeEdits.PageMetakeywords(EN)')}}</label>
+                            <input type="text"  name="Metakeywords_en"  class="form-control" value="{{$editpages->getTranslation('Metakeywords', 'en')}}">
+                        </div>
+                        <div class="form-group col-lg-6">
+                            <label for="s_title" class="form-control-label">{{trans('HomeEdits.PageMetakeywords(AR)')}}</label>
+                            <input type="text"  name="Metakeywords_ar" class="form-control" value="{{$editpages->getTranslation('Metakeywords', 'ar')}}">
                         </div>
 
 

@@ -65,6 +65,7 @@ function updateitem(id = 0) {
     var label = $('#idlabelmenu_' + id).val();
     var clases = $('#clases_menu_' + id).val();
     var url = $('#url_menu_' + id).val();
+    var status = $('status_'+id).val();
     var role_id = 0;
     if ($('#role_menu_' + id).length) {
       role_id = $('#role_menu_' + id).val();
@@ -74,6 +75,7 @@ function updateitem(id = 0) {
       label: label,
       clases: clases,
       url: url,
+      status:status,
       role_id: role_id,
       id: id
     };
@@ -92,6 +94,8 @@ function updateitem(id = 0) {
       var url = $(this)
         .find('.edit-menu-item-url')
         .val();
+      var status = $(this).find('.edit-menu-item-status').val();
+
       var role = $(this)
         .find('.edit-menu-item-role')
         .val();
@@ -100,6 +104,7 @@ function updateitem(id = 0) {
         label: label,
         class: clases,
         link: url,
+        status:status,
         role_id: role
       });
     });

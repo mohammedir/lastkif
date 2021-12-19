@@ -8,7 +8,8 @@ return [
     'PageMetatitle(AR)' => 'عنوان الميتا للصفحة (AR)',
     'PageMetadescription(EN)' => 'الوصف (EN)',
     'PageMetadescription(AR)' => 'الوصف (AR)',
-    'Metakeywords' => 'الكلمات الدلالية',
+    'PageMetakeywords(EN)' => 'الكلمات الدلالية (EN)',
+    'PageMetakeywords(AR)' => 'الكلمات الدلالية (AR)',
 
     'Search' => 'بحث'
 

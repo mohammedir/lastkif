@@ -49,6 +49,7 @@ $currentUrl = url()->current();
 																<p id="menu-item-name-wrap">
 																	<label class="howto" for="custom-menu-item-name"> <span>Label</span>&nbsp;
 																		<input id="custom-menu-item-name" name="label" type="text" class="regular-text menu-item-textbox input-with-default-title" title="Label menu">
+
 																	</label>
 																</p>
 
@@ -150,7 +151,9 @@ $currentUrl = url()->current();
 																		</label>
 																	</p>
 
+
 																	<p class="field-css-classes description description-thin">
+                                                                        <br>
 																		<label for="edit-menu-item-classes-{{$m->id}}"> Class CSS (optional)
 																			<br>
 																			<input type="text" id="clases_menu_{{$m->id}}" class="widefat code edit-menu-item-classes" name="clases_menu_{{$m->id}}" value="{{$m->class}}">
@@ -158,11 +161,26 @@ $currentUrl = url()->current();
 																	</p>
 
 																	<p class="field-css-url description description-wide">
+                                                                        <br>
 																		<label for="edit-menu-item-url-{{$m->id}}"> Url
 																			<br>
 																			<input type="text" id="url_menu_{{$m->id}}" class="widefat code edit-menu-item-url" id="url_menu_{{$m->id}}" value="{{$m->link}}">
 																		</label>
 																	</p>
+
+                                                                        <!--       status    -->
+
+                                                                    <p class="field-css-url description description-wide">
+                                                                        <br>
+                                                                        <label for="edit-menu-item-status-{{$m->id}}"> status
+                                                                            <select name="Status" id="status_{{$m->id}}" class="widefat code edit-menu-item-status" size="1">
+                                                                                <option value="مفعل">{{trans('Users.Enabled')}}</option>
+                                                                                <option value="غير مفعل">{{trans('Users.NotEnabled')}}</option>
+                                                                            </select>                                                                  </label>
+                                                                    </p>
+
+
+
 
 																	@if(!empty($roles))
 																	<p class="field-css-role description description-wide">
