@@ -1,5 +1,5 @@
 $(function () {
-    let status = $('.toggle-class').prop('checked') === true ? 1 : 0;
+   // let status = $('.toggle-class').prop('checked') === true ? 1 : 0;
     var hall_id = $('#hall_id').val();
     var hall_type = $('#hall_type_hidden').val();
     let data_external_type = $('#data-external-type');
@@ -17,9 +17,9 @@ $(function () {
                 break;
         }
 
-        $('.toggle-class').change(function () {
+        /*$('.toggle-class').change(function () {
             status = $(this).prop('checked') === true ? 1 : 0;
-        })
+        })*/
 
         $('#remove-halls').click(function () {
             delete_hall()
@@ -97,7 +97,6 @@ $(function () {
                     widget_name_en: widget_name_en,
                     widget_name_ar: widget_name_ar,
                     widget_value: widget_value,
-                    status: status,
                     type: hall_type,
                 },
                 success: function (response) {

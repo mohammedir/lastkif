@@ -1,6 +1,6 @@
 /*start Project Setting and edit*/
 $(function () {
-    let status = $('.toggle-class').prop('checked') === true ? 1 : 0;
+    //let status = $('.toggle-class').prop('checked') === true ? 1 : 0;
     const user_id = document.getElementById('user-id').value;
     let banner = $('#old_banner').val();
     console.log(banner);
@@ -10,9 +10,9 @@ $(function () {
             edit_user();
         });
 
-        $('.toggle-class').change(function () {
+        /*$('.toggle-class').change(function () {
             status = $(this).prop('checked') === true ? 1 : 0;
-        })
+        })*/
 
         $('#remove-provider').click(function () {
             delete_user()
@@ -111,7 +111,6 @@ $(function () {
                 website_name: website_name,
                 website_url: website_url,
                 location: location,
-                status: status,
             },
             success: function (response) {
                 if ($.isEmptyObject(response.error)) {

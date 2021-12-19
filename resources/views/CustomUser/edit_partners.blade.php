@@ -70,7 +70,7 @@
                                                     <h6><strong class="text-danger">*</strong> Name Arabic</h6>
                                                 </div>
                                                 <input class="form-control" id="name_ar" type="text"
-                                                       value="{{$customuser->name}}">
+                                                       value="{{@$customuser->getTranslation('name', 'ar')}}">
                                                 <p id="name_ar_error" class="text-danger"
                                                    style="display: none"></p>
                                             </div>
@@ -79,7 +79,7 @@
                                                     <h6><strong class="text-danger">*</strong> Name English</h6>
                                                 </div>
                                                 <input class="form-control" id="name_en" type="text"
-                                                       value="{{$customuser->name}}">
+                                                       value="{{@$customuser->getTranslation('name', 'en')}}">
                                                 <p id="name_en_error" class="text-danger"
                                                    style="display: none"></p>
                                             </div>
@@ -93,7 +93,7 @@
                                                     <h6><strong class="text-danger">*</strong> Country Arabic</h6>
                                                 </div>
                                                 <input class="form-control" id="country_ar" type="text"
-                                                       value="{{$customuser->country}}">
+                                                       value="{{@$customuser->getTranslation('country', 'ar')}}">
                                                 <p id="country_ar_error" class="text-danger"
                                                    style="display: none"></p>
                                             </div>
@@ -102,7 +102,7 @@
                                                     <h6><strong class="text-danger">*</strong> Country English</h6>
                                                 </div>
                                                 <input class="form-control" id="country_en" type="text"
-                                                       value="{{$customuser->country}}">
+                                                       value="{{@$customuser->getTranslation('country', 'en')}}">
                                                 <p id="country_en_error" class="text-danger"
                                                    style="display: none"></p>
                                             </div>
@@ -159,7 +159,7 @@
                                         </div>
                                     </li>
                                     <br>
-                                    <li>
+<!--                                    <li>
                                         <div>
                                             <h4>
                                                 <i class="las la-toggle-off text-primary"></i>&nbsp;Status
@@ -172,7 +172,7 @@
                                                    data-off="Inactive" data-size="xs"
                                                 {{$customuser->status ? 'checked' : ''}}>
                                         </div>
-                                    </li>
+                                    </li>-->
                                     <br>
                                     <br>
                                     <li>

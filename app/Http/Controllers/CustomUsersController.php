@@ -263,8 +263,7 @@ class CustomUsersController extends Controller
         return response()->json(['error' => $validator->errors()->toArray()]);
     }
 
-    public
-    function edit(Request $request, $id)
+    public function edit(Request $request, $id)
     {
         $customuser = CustomUser::query()->find($id);
         $user_type = $customuser->type;
@@ -280,7 +279,7 @@ class CustomUsersController extends Controller
         }
     }
 
-    function update_agents(Request $request, $id)
+    public function update_agents(Request $request, $id)
     {
         if ($request->ajax()) {
             if ($request->action == "update") {
@@ -328,7 +327,7 @@ class CustomUsersController extends Controller
         }
     }
 
-    function update_partners(Request $request, $id)
+    public function update_partners(Request $request, $id)
     {
         if ($request->ajax()) {
             if ($request->action == "update") {
@@ -376,7 +375,7 @@ class CustomUsersController extends Controller
         }
     }
 
-    function update_managers(Request $request, $id)
+    public function update_managers(Request $request, $id)
     {
         if ($request->ajax()) {
             if ($request->action == "update") {
@@ -424,7 +423,7 @@ class CustomUsersController extends Controller
         }
     }
 
-    function update_providers(Request $request, $id)
+    public function update_providers(Request $request, $id)
     {
         if ($request->ajax()) {
             if ($request->action == "update") {
@@ -472,8 +471,7 @@ class CustomUsersController extends Controller
         }
     }
 
-    public
-    function destroy(Request $request, $id)
+    public function destroy(Request $request, $id)
     {
         if ($request->ajax()) {
             $customuser = CustomUser::query()->find($id);
@@ -484,23 +482,5 @@ class CustomUsersController extends Controller
         }
     }
 
-
-    public
-    function store(Request $request)
-    {
-
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public
-    function show($id)
-    {
-        //
-    }
 
 }
