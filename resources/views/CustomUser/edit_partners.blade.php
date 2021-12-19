@@ -14,8 +14,8 @@
             </div>
             <div class="col-sm-6">
                 <ol class="breadcrumb pt-0 pr-0 float-left float-sm-right ">
-                    <li class="breadcrumb-item"><a href="#" class="default-color">Halls</a></li>
-                    <li class="breadcrumb-item active">Hall</li>
+                    <li class="breadcrumb-item"><a href="#" class="default-color">Partner</a></li>
+                    <li class="breadcrumb-item active">Edit Partner</li>
                 </ol>
             </div>
         </div>
@@ -175,8 +175,8 @@
                                     </li>-->
                                     <br>
                                     <br>
-                                    <li>
-                                        <button id="update-partner" class="btn btn-primary float-right"><i
+                                    <li class="text-center">
+                                        <button id="update-partner" class="btn btn-primary "><i
                                                 class="lar la-save"></i> Save
                                         </button>
                                     </li>
@@ -210,13 +210,15 @@
                     </div>
                 </div>
 
-                @include('moom.modal_alert')
+
             </div>
         </div>
     </div>
     <!-- row closed -->
 @endsection
+
 @section('js')
+    @include('moom.modal_alert')
     <script src="{{asset('js/edit_partners.js')}}" defer></script> {{--Must add defer to active js file--}}
 @endsection
 {{--{{--//TODO:: M*OOMEN S*. ALDAHDO*UH 12/15/2021--}}

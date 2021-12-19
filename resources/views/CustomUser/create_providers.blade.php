@@ -149,8 +149,8 @@
                                     </li>
                                     <br>
                                     <br>
-                                    <li>
-                                        <button id="create-providers" class="btn btn-primary float-right"><i
+                                    <li class="text-center">
+                                        <button id="create-providers" class="btn btn-primary "><i
                                                 class="lar la-save"></i> Create
                                         </button>
                                     </li>
@@ -161,10 +161,12 @@
                 </div>
             </div>
         </div>
-        @include('moom.modal_alert')
+
     </div>
     <!-- row closed -->
 @endsection
+
 @section('js')
+    @include('moom.modal_alert')
     <script src="{{ asset('js/create_providers.js') }}" defer></script>
 @endsection

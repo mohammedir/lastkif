@@ -28,23 +28,12 @@ class CustomUsersController extends Controller
                 ->addColumn('name', function ($custom_users) {
                     return '<p>' . $custom_users->name . '</p>';
                 })
-                ->addColumn('created_at', function ($custom_users) {
-                    return '<p>' . \Carbon\Carbon::parse($custom_users->created_at)->diffForHumans() . '</p>';
-                })
-                ->addColumn('status', function ($custom_users) {
-                    $status = '';
-                    if ($custom_users->status == 0)
-                        $status .= '<p class="text-danger">Pended</p>';
-                    else
-                        $status .= '<p class="text-primary">Active</p>';
-                    return $status;
-                })
                 ->addColumn('action', function ($custom_users) {
                     $button = '<button data-id="' . $custom_users->id . '" id="delete" class="btn btn-danger btn-sm" title="delete"><i class="fa fa-trash"></i></button>&nbsp;
                            <button data-id="' . $custom_users->id . '" data-type="' . $custom_users->type . '" id="edit" class="btn btn-info btn-sm" title="settings"><i class="fa fa-edit"></i></button>';
                     return $button;
                 })
-                ->rawColumns(['banner'], ['name'], ['created_at'], ['status'])
+                ->rawColumns(['banner'], ['name'])
                 ->escapeColumns(['action' => 'action'])
                 ->make(true);
         }
@@ -309,7 +298,6 @@ class CustomUsersController extends Controller
                     $data->website_name = $request->website_name;
                     $data->website_url = $request->website_url;
                     $data->location = $request->location;
-                    $data->status = $request->status;
                     $data->updated_at = Carbon::now();
                     $data->save();
                     /* $update = Activity::query()->find($id)->update([
@@ -357,7 +345,6 @@ class CustomUsersController extends Controller
                     $data->website_name = $request->website_name;
                     $data->website_url = $request->website_url;
                     $data->location = $request->location;
-                    $data->status = $request->status;
                     $data->updated_at = Carbon::now();
                     $data->save();
                     /* $update = Activity::query()->find($id)->update([
@@ -405,7 +392,6 @@ class CustomUsersController extends Controller
                     $data->website_name = $request->website_name;
                     $data->website_url = $request->website_url;
                     $data->location = $request->location;
-                    $data->status = $request->status;
                     $data->updated_at = Carbon::now();
                     $data->save();
                     /* $update = Activity::query()->find($id)->update([
@@ -453,7 +439,6 @@ class CustomUsersController extends Controller
                     $data->website_name = $request->website_name;
                     $data->website_url = $request->website_url;
                     $data->location = $request->location;
-                    $data->status = $request->status;
                     $data->updated_at = Carbon::now();
                     $data->save();
                     /* $update = Activity::query()->find($id)->update([

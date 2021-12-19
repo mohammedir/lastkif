@@ -175,8 +175,8 @@
                                     </li>-->
                                     <br>
                                     <br>
-                                    <li>
-                                        <button id="update-agents" class="btn btn-primary float-right"><i
+                                    <li class="text-center">
+                                        <button id="update-agents" class="btn btn-primary"><i
                                                 class="lar la-save"></i> Save
                                         </button>
                                     </li>
@@ -210,13 +210,15 @@
                     </div>
                 </div>
 
-                @include('moom.modal_alert')
+
             </div>
         </div>
     </div>
     <!-- row closed -->
 @endsection
+
 @section('js')
+    @include('moom.modal_alert')
     <script src="{{asset('js/edit_agents.js')}}" defer></script> {{--Must add defer to active js file--}}
 @endsection
 {{--{{--//TODO:: M*OOMEN S*. ALDAHDO*UH 12/15/2021--}}

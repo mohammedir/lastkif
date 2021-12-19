@@ -83,13 +83,7 @@ $(function () {
                 }, {
                     data: 'phone',
                     name: 'phone',
-                }, {
-                    data: 'created_at',
-                    name: 'created_at',
-                }, {
-                    data: 'status',
-                    name: 'status',
-                }, {
+                },  {
                     data: 'action',
                     name: 'action',
                     orderable: false,

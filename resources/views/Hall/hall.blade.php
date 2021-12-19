@@ -44,8 +44,6 @@
                                 <th>Description</th>
                                 <th>Url</th>
                                 <th>Type</th>
-                                <th>Created At</th>
-                                <th>Status</th>
                                 <th>Actions</th>
                             </tr>
                             </thead>

@@ -172,7 +172,7 @@
                                             </div>
                                         </div>
                                         <br>
-                                        <li>
+                                    <!--                                        <li>
                                             <div>
                                                 <h4>
                                                     <i class="las la-toggle-off text-primary"></i>&nbsp;Status
@@ -185,7 +185,7 @@
                                                        data-off="Inactive" data-size="xs"
                                                     {{$hall->status ? 'checked' : ''}}>
                                             </div>
-                                        </li>
+                                        </li>-->
                                         <br>
                                         <br>
                                         <li>

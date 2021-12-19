@@ -31,23 +31,12 @@ class HallsController extends Controller
                 ->addColumn('description', function ($halls) {
                     return '<p>' . $halls->description . '</p>';
                 })
-                ->addColumn('created_at', function ($halls) {
-                    return '<p>' . \Carbon\Carbon::parse($halls->created_at)->diffForHumans() . '</p>';
-                })
-                ->addColumn('status', function ($halls) {
-                    $status = '';
-                    if ($halls->status == 0)
-                        $status .= '<p class="text-danger">Pended</p>';
-                    else
-                        $status .= '<p class="text-primary">Active</p>';
-                    return $status;
-                })
                 ->addColumn('action', function ($halls) {
                     $button = '<button data-id="' . $halls->id . '" id="delete" class="btn btn-danger btn-sm" title="delete"><i class="fa fa-trash"></i></button>&nbsp;
                            <button data-id="' . $halls->id . '" data-type="' . $halls->type . '" id="edit" class="btn btn-info btn-sm" title="settings"><i class="fa fa-edit"></i></button>';
                     return $button;
                 })
-                ->rawColumns(['name'], ['gallery'], ['title'], ['description'], ['created_at'], ['status'])
+                ->rawColumns(['name'], ['gallery'], ['title'], ['description'])
                 ->escapeColumns(['action' => 'action'])
                 ->make(true);
         }
@@ -144,7 +133,6 @@ class HallsController extends Controller
                 $data = Hall::query()->find($id);
                 $validator = null;
                 $type = (int)$request->type;
-                $status = (int)$request->status;
                 $url = "";
                 $description = "";
 
@@ -197,7 +185,6 @@ class HallsController extends Controller
                         $wedget->save();
                     }
                     $data->type = $type;
-                    $data->status = $status;
                     $data->updated_at = Carbon::now();
                     $data->save();
                     return response()->json(['success' => 'Successfully create Agents']);
