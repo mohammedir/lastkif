@@ -27,7 +27,7 @@
     <div class="row">
         <div class="col-md-12 mb-30">
             <div class="card card-statistics">
-                <div class="card-body" >
+                <div class="card-body">
                     <div class="">
                         <div class="">
                             <strong><i class="far fa-caret-square-right"></i> Agent Details</strong>

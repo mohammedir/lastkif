@@ -13,7 +13,7 @@
 <!-- chart -->
 <script src="{{ URL::asset('assets/js/chart-init.js') }}"></script>
 <!-- calendar -->
-<script src="{{ URL::asset('assets/js/calendar.init.js') }}"></script>
+
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/locales-all.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/locales-all.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.js"></script>

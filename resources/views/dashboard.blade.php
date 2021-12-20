@@ -568,12 +568,12 @@
                                     </li>
                                 </ul>
                             </div>
-                        </div>
+ة                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="calendar-main mb-30">
+<!--            <div class="calendar-main mb-30">
                 <div class="row">
                     <div class="col-lg-3">
                         <div class="row">
@@ -622,7 +622,7 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- Modal Add Category -->
+                        &lt;!&ndash; Modal Add Category &ndash;&gt;
                         <div class="modal" tabindex="-1" role="dialog" id="add-category">
                             <div class="modal-dialog">
                                 <div class="modal-content">
@@ -663,7 +663,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>-->
             <!--=================================
  wrapper -->
 

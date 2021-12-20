@@ -8064,7 +8064,7 @@ a[data-goto]:hover {
   border: 1px solid #84ba3f; }
 
 .fc-event, .fc-event-dot {
-  background-color: #84ba3f; }
+  background-color: #007bff; }
 
 .fc-event, .fc-event:hover {
   color: #fff;
@@ -20977,15 +20977,15 @@ ul.list-unstyled li {
     margin-right: 20px; }
     .admin-header.navbar .navbar-brand-wrapper .navbar-brand img {
       max-width: 100%;
-      margin: auto; }
+       }
   .admin-header.navbar .navbar-brand-wrapper .brand-logo-mini {
     display: none; }
 
 .admin-header .navbar-brand {
   height: auto;
-  padding: 9px 0; }
+  }
   .admin-header .navbar-brand img {
-    height: 30px; }
+     }
 
 .admin-header .search .search-btn {
   color: #6c757d;

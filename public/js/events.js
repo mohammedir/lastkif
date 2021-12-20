@@ -52,6 +52,7 @@ $(function () {
                     url: 'events/fetch',
                 }
             ],
+
             dateClick: function (info) {
                 // $('#modal-add-event').modal('show');
                 createEvent(calendar);
