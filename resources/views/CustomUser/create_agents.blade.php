@@ -36,6 +36,7 @@
                                     <input type="hidden" id="user-id" name="user-id">
                                 </li>
                                 <br>
+                                <!-- Upload Image-->
                                 <li>
                                     <div>
                                         <div id="image_user_uploaded">

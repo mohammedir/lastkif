@@ -36,13 +36,18 @@ $(function () {
                     contentType: false,
                     success: function (response) {
                         console.log("success");
-                        banner = response.banner;
-                        $('#image_user_uploaded img').attr('src', "{{asset(uploadcustomuser/" + banner + ")}}");
-                        $('#banner_error').html(response.success);
-                        //$('#banner_error').css('color', '#002e80');
-                        $('#banner_error').removeClass("text-danger");
-                        $('#banner_error').addClass("text-primary");
-                        $('#banner_error').css('display', 'block');
+                        if (response['success']){
+                            banner = response.banner;
+                            $('#image_user_uploaded img').attr('src', "{{asset(uploadcustomuser/" + banner + ")}}");
+                            $('#banner_error').html(response.success);
+                            //$('#banner_error').css('color', '#002e80');
+                            $('#banner_error').removeClass("text-danger");
+                            $('#banner_error').addClass("text-primary");
+                            $('#banner_error').css('display', 'block');
+                        }else {
+                            printErrorMsg(response.error);
+                        }
+
                     }
                 });
             } else {

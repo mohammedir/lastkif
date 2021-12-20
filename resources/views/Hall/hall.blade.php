@@ -39,7 +39,6 @@
                             <tr>
                                 <th>Sl No</th>
                                 <th>Name</th>
-                                <th>Gallery</th>
                                 <th>Title</th>
                                 <th>Description</th>
                                 <th>Url</th>

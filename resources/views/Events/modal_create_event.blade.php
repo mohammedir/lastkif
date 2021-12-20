@@ -29,6 +29,28 @@
                             <div id="page-1">
                                 <div class="card">
                                     <div class="card-body">
+                                        <!-- Upload Image-->
+                                        <div>
+                                            <div id="image_user_uploaded">
+                                                <!-- uploadcustomuser/1639865270.jpg      -->
+                                                <img class="user-image" width="70"
+                                                     src="{{asset("images/event.png")}}">
+                                            </div>
+                                            <br>
+                                            <p>event banner ratio 2:1 (.jpeg, .png, .jpg)</p>
+                                            <form class="hidden-image-upload">
+                                                {{csrf_field()}}
+                                                <input name="_token" type="hidden"
+                                                       value="5lgtt8AgbeF3lprptj8HNXVPceRhoJbqBeErBI1k">
+                                                <input class="" id="banner" name="banner" type="file"
+                                                       value="Agent Banner"
+                                                       accept="image/png, image/jpeg, image/jpg">
+                                                <p id="banner_error" class="text-danger"
+                                                   style="display: none"></p>
+                                            </form>
+
+                                        </div>
+                                        <br>
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div>

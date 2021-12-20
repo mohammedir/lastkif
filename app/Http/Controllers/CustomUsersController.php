@@ -22,7 +22,7 @@ class CustomUsersController extends Controller
         if ($request->ajax()) {
             return DataTables::of($custom_users)
                 ->addColumn('banner', function ($custom_users) {
-                    $banner = asset('uploadcustomuser/' . $custom_users->banner);
+                    $banner = asset("uploadcustomuser/" . $custom_users->banner);//file_put_contents
                     return '<img style="width: 60px; height: 30px;" src="' . $banner . '">';//object-position: center; object-fit: none;
                 })
                 ->addColumn('name', function ($custom_users) {
@@ -228,10 +228,10 @@ class CustomUsersController extends Controller
     public function upload_image(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'banner' => 'mimes:jpeg,png,jpg|dimensions:width=1920,height=960|max:1920',
+            'banner' => 'mimes:jpeg,png,jpg|dimensions:width=2000,height=1000',
         ], [
             'banner.mimes' => 'صيغة المرفق يجب ان تكون  jpeg , png , jpg',
-            'banner.dimensions' => 'ابعاد الصورة يجب ان تكون 960*1920',
+            'banner.dimensions' => 'ابعاد الصورة يجب ان تكون 1000*2000',
         ]);
 
 

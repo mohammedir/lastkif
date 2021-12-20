@@ -57,6 +57,7 @@ class EventsController extends Controller
                     $event->type = $request->event_type;
                     $event->event_key = $request->event_key;
                     $event->url = $request->event_external_link;
+                    $banner = $request->banner;
                     $event->created_at = Carbon::now();
                     $event->updated_at = Carbon::now();
                     /*Upload images*/
@@ -86,8 +87,6 @@ class EventsController extends Controller
                     'organizer_en_name' => 'required:event_user_details,name|max:255',
                     'manager_ar_name' => 'required:event_user_details,name|max:255',
                     'manager_en_name' => 'required:event_user_details,name|max:255',
-                    'description_ar' => 'required:events,description|max:255',
-                    'description_en' => 'required:events,description|max:255',
                 ], [
                     'title_ar.required' => "Arabic title required",
                     'title_en.required' => "English title required",
@@ -96,8 +95,6 @@ class EventsController extends Controller
                     'organizer_en_name.required' => "English Organizer name required",
                     'manager_ar_name.required' => "Arabic Manager name required",
                     'manager_en_name.required' => "English Manager name required",
-                    'description_ar.required' => "Arabic Description required",
-                    'description_en.required' => "English Description required",
                 ]);
                 if ($validatorUser->passes()) {
                     $event = new Event();
@@ -194,8 +191,6 @@ class EventsController extends Controller
                     'organizer_en_name' => 'required:event_user_details,name|max:255',
                     'manager_ar_name' => 'required:event_user_details,name|max:255',
                     'manager_en_name' => 'required:event_user_details,name|max:255',
-                    'description_ar' => 'required:events,description|max:255',
-                    'description_en' => 'required:events,description|max:255',
                 ], [
                     'title_ar.required' => "Arabic title required",
                     'title_en.required' => "English title required",
@@ -204,8 +199,6 @@ class EventsController extends Controller
                     'organizer_en_name.required' => "English Organizer name required",
                     'manager_ar_name.required' => "Arabic Manager name required",
                     'manager_en_name.required' => "English Manager name required",
-                    'description_ar.required' => "Arabic Description required",
-                    'description_en.required' => "English Description required",
                 ]);
                 if ($validatorUser->passes()) {
                     $event = Event::query()->find($id)->update([
@@ -283,23 +276,11 @@ class EventsController extends Controller
         }
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         //
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         $event = Event::find($id);
@@ -332,5 +313,32 @@ class EventsController extends Controller
             }
             return response()->json(['error' => 'failed delete']);
         }
+    }
+
+    public function upload_image(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'banner' => 'mimes:jpeg,png,jpg|dimensions:width=1920,height=960|max:1920',
+        ], [
+            'banner.mimes' => 'صيغة المرفق يجب ان تكون  jpeg , png , jpg',
+            'banner.dimensions' => 'ابعاد الصورة يجب ان تكون 960*1920',
+        ]);
+
+
+        if ($validator->passes()) {
+            if ($request->ajax()) {
+                $data = $request->file('file');
+                $extension = $data->getClientOriginalExtension();
+                $filename = time() . '.' . $extension; // renameing image
+                $path = public_path('uploadsevents/');
+                $usersImage = public_path("uploadsevents/{$filename}"); // get previous image from folder
+                $upload_success = $data->move($path, $filename);
+                return response()->json([
+                    'success' => 'Success Uploaded banner',
+                    'banner' => $filename
+                ]);
+            }
+        }
+        return response()->json(['error' => $validator->errors()->toArray()]);
     }
 }

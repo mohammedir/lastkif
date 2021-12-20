@@ -79,6 +79,7 @@ Route::group(
         Route::get('/users/{id}', [EventsController::class, 'eventUsers'])->name('events.users');
         Route::get('/show/{id}', [EventsController::class, 'show'])->name('events.show');
         Route::delete('/delete/{id}', [EventsController::class, 'destroy'])->name('events.delete');
+        Route::post('/upload/image', [EventsController::class, 'upload_image'])->name('events.upload_image');
     });
 
     Route::prefix('halls')->group(function () {
@@ -96,20 +97,20 @@ Route::group(
         Route::get('/managers/{type}', [CustomUsersController::class, 'index'])->name('customusers.managers');
         Route::get('/providers/{type}', [CustomUsersController::class, 'index'])->name('customusers.providers');
         Route::get('/edit/{id}', [CustomUsersController::class, 'edit'])->name('customusers.edit');
-        Route::post('/update/agents/{id}', [CustomUsersController::class, 'update_agents'])->name('activities.update_agents');
-        Route::post('/update/partners/{id}', [CustomUsersController::class, 'update_partners'])->name('activities.update_partners');
-        Route::post('/update/managers/{id}', [CustomUsersController::class, 'update_managers'])->name('activities.update_managers');
-        Route::post('/update/providers/{id}', [CustomUsersController::class, 'update_providers'])->name('activities.update_providers');
-        Route::delete('/delete/{id}', [CustomUsersController::class, 'destroy'])->name('activities.delete');
-        Route::get('/create/agents', [CustomUsersController::class, 'create_agents'])->name('events.create.agents');
-        Route::get('/create/partners', [CustomUsersController::class, 'create_partners'])->name('events.create.partners');
-        Route::get('/create/managers', [CustomUsersController::class, 'create_managers'])->name('events.create.managers');
-        Route::get('/create/providers', [CustomUsersController::class, 'create_providers'])->name('events.create.providers');
-        Route::post('/store/agents', [CustomUsersController::class, 'store_agents'])->name('events.store.agents');
-        Route::post('/store/partners', [CustomUsersController::class, 'store_partners'])->name('events.store.partners');
-        Route::post('/store/managers', [CustomUsersController::class, 'store_managers'])->name('events.store.managers');
-        Route::post('/store/providers', [CustomUsersController::class, 'store_providers'])->name('events.store.providers');
-        Route::post('/upload/image', [CustomUsersController::class, 'upload_image'])->name('events.upload_image');
+        Route::post('/update/agents/{id}', [CustomUsersController::class, 'update_agents'])->name('customusers.update_agents');
+        Route::post('/update/partners/{id}', [CustomUsersController::class, 'update_partners'])->name('customusers.update_partners');
+        Route::post('/update/managers/{id}', [CustomUsersController::class, 'update_managers'])->name('customusers.update_managers');
+        Route::post('/update/providers/{id}', [CustomUsersController::class, 'update_providers'])->name('customusers.update_providers');
+        Route::delete('/delete/{id}', [CustomUsersController::class, 'destroy'])->name('customusers.delete');
+        Route::get('/create/agents', [CustomUsersController::class, 'create_agents'])->name('customusers.create.agents');
+        Route::get('/create/partners', [CustomUsersController::class, 'create_partners'])->name('customusers.create.partners');
+        Route::get('/create/managers', [CustomUsersController::class, 'create_managers'])->name('customusers.create.managers');
+        Route::get('/create/providers', [CustomUsersController::class, 'create_providers'])->name('customusers.create.providers');
+        Route::post('/store/agents', [CustomUsersController::class, 'store_agents'])->name('customusers.store.agents');
+        Route::post('/store/partners', [CustomUsersController::class, 'store_partners'])->name('customusers.store.partners');
+        Route::post('/store/managers', [CustomUsersController::class, 'store_managers'])->name('customusers.store.managers');
+        Route::post('/store/providers', [CustomUsersController::class, 'store_providers'])->name('customusers.store.providers');
+        Route::post('/upload/image', [CustomUsersController::class, 'upload_image'])->name('customusers.upload_image');
     });
     //TODO :: End Moomen Route
 

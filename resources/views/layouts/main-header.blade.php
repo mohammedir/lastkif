@@ -4,8 +4,7 @@ header start-->
     <!-- logo -->
     <div class="text-left navbar-brand-wrapper">
         <a class="navbar-brand brand-logo" href="{{ url('/dashboard') }}"><img src="{{asset("images/kifLandsacpeLogo.png")}}" alt=""></a>
-        <a class="navbar-brand brand-logo-mini" href="{{ url('/dashboard') }}"><img src="{{ asset("images/kifLandsacpeLogo.png") }}"
-                                                                                    alt=""></a>
+        <a class="navbar-brand brand-logo-mini" href="{{ url('/dashboard') }}"><img src="{{ asset("images/kifLandsacpeLogo.png") }}" alt=""></a>
 
 
     </div>

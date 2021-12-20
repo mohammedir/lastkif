@@ -41,9 +41,6 @@ $(function () {
                     data: 'name',
                     name: 'name',
                 }, {
-                    data: 'gallery',
-                    name: 'gallery',
-                }, {
                     data: 'title',
                     name: 'title',
                 }, {

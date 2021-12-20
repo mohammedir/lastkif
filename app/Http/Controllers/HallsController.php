@@ -18,10 +18,6 @@ class HallsController extends Controller
         $halls = Hall::query()->get();
         if ($request->ajax()) {
             return DataTables::of($halls)
-                ->addColumn('gallery', function ($halls) {
-                    $banner = asset('uploadhalls/' . $halls->gallery);
-                    return '<img style="width: 60px; height: 30px;" src="' . $banner . '">';//object-position: center; object-fit: none;
-                })
                 ->addColumn('name', function ($halls) {
                     return '<p>' . $halls->name . '</p>';
                 })
@@ -36,7 +32,7 @@ class HallsController extends Controller
                            <button data-id="' . $halls->id . '" data-type="' . $halls->type . '" id="edit" class="btn btn-info btn-sm" title="settings"><i class="fa fa-edit"></i></button>';
                     return $button;
                 })
-                ->rawColumns(['name'], ['gallery'], ['title'], ['description'])
+                ->rawColumns(['name'],  ['title'], ['description'])
                 ->escapeColumns(['action' => 'action'])
                 ->make(true);
         }

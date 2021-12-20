@@ -17,6 +17,9 @@ $(function () {
     let data_internal_type_update = $('#modal-update-event #data-internal-type');
     let calendarEl = document.getElementById('calendar');
     let calendar;
+    let banner = "";
+    let banner_width = 0;
+    let banner_height = 0;
 
     $(document).ready(function () {
         /*$('#sponsors-image-upload').on('change', function (ev) {
@@ -34,7 +37,80 @@ $(function () {
         $('#create_event').click(function () {
             createEvent(calendar);
         });
+        upload_image();
     });
+
+    function upload_image() {
+        $('#banner').on('change', function (ev) {
+            $('#banner_error').css('display', 'none');
+            var filedata = ev.target.files[0];
+            if (filedata) {
+                //---image preview
+                var reader = new FileReader();
+                reader.onload = function (ev) {
+                    $('#user-image').attr('src', ev.target.result);
+                };
+                reader.readAsDataURL(this.files[0]);
+
+                /*Image diminutions*/
+                var tmpImg = new Image();
+                tmpImg.src = window.URL.createObjectURL(filedata);
+                tmpImg.onload = function () {
+                    banner_width = tmpImg.naturalWidth;
+                    banner_height = tmpImg.naturalHeight;
+                }
+                if (banner_width === 2000 || banner_height === 1000) {
+                    console.log(banner_width + "::" + banner_height);
+                    $('#banner_error').css('display', 'none');
+                    //upload
+                    let bannerUpload = new FormData();
+                    bannerUpload.append('file', this.files[0]);
+                    $.ajax({
+                        url: '/events/upload/image',
+                        data: bannerUpload,
+                        headers: {
+                            'X-CSRF-Token': $('form.hidden-image-upload [name="_token"]').val()
+                        },
+                        dataType: 'json',
+                        async: false,
+                        type: 'post',
+                        processData: false,
+                        contentType: false,
+                        success: function (response) {
+                            if (response['success']) {
+                                banner = response.banner;
+                                $('#image_user_uploaded img').attr('src', "{{asset(uploadcustomuser/" + banner + ")}}");
+                                $('#banner_error').html(response.success);
+                                //$('#banner_error').css('color', '#002e80');
+                                $('#banner_error').removeClass("text-danger");
+                                $('#banner_error').addClass("text-primary");
+                                $('#banner_error').css('display', 'block');
+                            } else {
+                                printErrorMsg(response.error);
+                            }
+                        }
+                    });
+                }
+                else {
+                    console.log(banner_width + ":error:" + banner_height);
+                    $('#banner_error').html('The valid diminutions must be 2:1, 2000*1000 px');
+                    $('#banner_error').css('display', 'block');
+                }
+            } else {
+                $('#banner_error').html("Failed to upload, try again");
+                $('#banner_error').css('display', 'block');
+            }
+
+            function printErrorMsg(msg) {
+                if (msg['banner']) {
+                    $('#banner_error').html(msg['banner']);
+                    $('#banner_error').css('display', 'block');
+                } else {
+                    $('#banner_error').css('display', 'none');
+                }
+            }
+        });
+    }
 
     function prepareCalender() {
         calendar = new FullCalendar.Calendar((calendarEl), {
