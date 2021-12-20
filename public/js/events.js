@@ -59,7 +59,7 @@ $(function () {
             },
             eventClick: function (info) {
                 //console.log('Event: ' + info.event.title);
-                showEvent(calendar, info);
+                updateEvent(calendar, info);
             },
             /*select: function (date) {
                 $('#modal-alert').modal('show');
@@ -236,6 +236,9 @@ $(function () {
                         $('#location').val("");
                         $('#category').val(0);
                         $('#event_type').val(0);
+                        event_type = 0;
+                        data_internal_type.hide();
+                        data_external_type.attr('style', 'display:block !important');
                         event_external_link_input.val("");
                         organizer_ar_name_input.val("");
                         organizer_en_name_input.val("");
@@ -290,6 +293,34 @@ $(function () {
                 } else {
                     url_error.css('display', 'none');
                 }
+                if (msg['manager_ar_name']) {
+                    orgnizerErrorSwitchTab();
+                    manager_ar_name_error.html(msg['manager_ar_name']);
+                    manager_ar_name_error.css('display', 'block');
+                } else {
+                    manager_ar_name_error.css('display', 'none');
+                }
+                if (msg['manager_en_name']) {
+                    orgnizerErrorSwitchTab();
+                    manager_en_name_error.html(msg['manager_en_name']);
+                    manager_en_name_error.css('display', 'block');
+                } else {
+                    manager_en_name_error.css('display', 'none');
+                }
+                if (msg['organizer_ar_name']) {
+                    managerErrorSwitchTab();
+                    organizer_ar_name_error.html(msg['organizer_ar_name']);
+                    organizer_ar_name_error.css('display', 'block');
+                } else {
+                    organizer_ar_name_error.css('display', 'none');
+                }
+                if (msg['organizer_en_name']) {
+                    managerErrorSwitchTab();
+                    organizer_en_name_error.html(msg['organizer_en_name']);
+                    organizer_en_name_error.css('display', 'block');
+                } else {
+                    organizer_en_name_error.css('display', 'none');
+                }
                 if (msg['title_ar']) {
                     eventDetailsErrorSwitchTab();
                     title_ar_error.html(msg['title_ar']);
@@ -325,40 +356,12 @@ $(function () {
                 } else {
                     description_en_error.css('display', 'none');
                 }
-                if (msg['manager_ar_name']) {
-                    orgnizerErrorSwitchTab();
-                    manager_ar_name_error.html(msg['manager_ar_name']);
-                    manager_ar_name_error.css('display', 'block');
-                } else {
-                    manager_ar_name_error.css('display', 'none');
-                }
-                if (msg['manager_en_name']) {
-                    orgnizerErrorSwitchTab();
-                    manager_en_name_error.html(msg['manager_en_name']);
-                    manager_en_name_error.css('display', 'block');
-                } else {
-                    manager_en_name_error.css('display', 'none');
-                }
-                if (msg['organizer_ar_name']) {
-                    managerErrorSwitchTab();
-                    organizer_ar_name_error.html(msg['organizer_ar_name']);
-                    organizer_ar_name_error.css('display', 'block');
-                } else {
-                    organizer_ar_name_error.css('display', 'none');
-                }
-                if (msg['organizer_en_name']) {
-                    managerErrorSwitchTab();
-                    organizer_en_name_error.html(msg['organizer_en_name']);
-                    organizer_en_name_error.css('display', 'block');
-                } else {
-                    organizer_en_name_error.css('display', 'none');
-                }
             }
         });
     }
 
 
-    function showEvent(calendar, info) {
+    function updateEvent(calendar, info) {
         //console.log(info.event.id);
         var id = info.event.id;
         $('#delete_event').click(function () {
@@ -379,6 +382,7 @@ $(function () {
             });
         });
         $('#modal-update-event').modal('show');
+        eventUpdateDetailsErrorSwitchTab();
         /*Input*/
         let title_ar_input = $('#modal-update-event #title_ar');
         let title_en_input = $('#modal-update-event #title_en');
@@ -457,15 +461,15 @@ $(function () {
                         $.each(eventUsers, function (i) {
                             console.log(eventUsers[i]);
                             if (eventUsers[i].type == 0) {
-                                organizer_ar_name_input.val(eventUsers[i].name);
-                                organizer_en_name_input.val(eventUsers[i].name);
-                                organizer_phone_input.val(eventUsers[i].name);
-                                organizer_email_input.val(eventUsers[i].name);
-                                organizer_website_name_input.val(eventUsers[i].name);
-                                organizer_website_url_input.val(eventUsers[i].name);
+                                organizer_ar_name_input.val(eventUsers[i].name['ar']);
+                                organizer_en_name_input.val(eventUsers[i].name['en']);
+                                organizer_phone_input.val(eventUsers[i].phone);
+                                organizer_email_input.val(eventUsers[i].email);
+                                organizer_website_name_input.val(eventUsers[i].website_name);
+                                organizer_website_url_input.val(eventUsers[i].website_url);
                             } else {
-                                manager_ar_name_input.val(eventUsers[i].name);
-                                manager_en_name_input.val(eventUsers[i].name);
+                                manager_ar_name_input.val(eventUsers[i].name['ar']);
+                                manager_en_name_input.val(eventUsers[i].name['en']);
                                 manager_phone_input.val(eventUsers[i].phone);
                                 manager_email_input.val(eventUsers[i].email);
                             }
@@ -585,7 +589,6 @@ $(function () {
                 success: function (response) {
                     /*Reset values*/
                     if (response['error']) {
-                        eventUpdateDetailsErrorSwitchTab();
                         printErrorMsg(response['error']);
                     } else if (response['user_error']) {
                         eventUpdateUserErrorSwitchTab();
@@ -600,7 +603,6 @@ $(function () {
                         organizer_en_name_error.css('display', 'none');
                         manager_ar_name_error.css('display', 'none');
                         manager_en_name_error.css('display', 'none');
-
                         $('#successfully-modal').modal('show');
                         title_en_input.val("");
                         title_ar_input.val("");
@@ -611,6 +613,9 @@ $(function () {
                         location_input.val("");
                         category_input.val(0);
                         event_type_input.val(0);
+                        event_type = 0;
+                        data_internal_type_update.hide();
+                        data_external_type_update.attr('style', 'display:block !important');
                         event_external_link_input.val("");
                         organizer_ar_name_input.val("");
                         organizer_en_name_input.val("");
@@ -658,43 +663,12 @@ $(function () {
             });
 
             function printErrorMsg(msg) {
-                if (msg['title_ar']) {
-                    title_ar_error.html(msg['title_ar']);
-                    title_ar_error.css('display', 'block');
+                if (msg['event_external_link']) {
+                    eventUpdateMoreDetailsErrorSwitchTab();
+                    url_error.html(msg['event_external_link']);
+                    url_error.css('display', 'block');
                 } else {
-                    title_ar_error.css('display', 'none');
-                }
-                if (msg['title_en']) {
-                    title_en_error.html(msg['title_en']);
-                    title_en_error.css('display', 'block');
-                } else {
-                    title_en_error.css('display', 'none');
-                }
-                if (msg['description_ar']) {
-                    description_ar_error.html(msg['description_ar']);
-                    description_ar_error.css('display', 'block');
-                } else {
-                    description_ar_error.css('display', 'none');
-                }
-                if (msg['description_en']) {
-                    description_en_error.html(msg['description_en']);
-                    description_en_error.css('display', 'block');
-                } else {
-                    description_en_error.css('display', 'none');
-                }
-                if (msg['organizer_ar_name']) {
-                    managerUpdateErrorSwitchTab();
-                    organizer_ar_name_error.html(msg['organizer_ar_name']);
-                    organizer_ar_name_error.css('display', 'block');
-                } else {
-                    organizer_ar_name_error.css('display', 'none');
-                }
-                if (msg['organizer_en_name']) {
-                    orgnizerUpdateErrorSwitchTab();
-                    organizer_en_name_error.html(msg['organizer_en_name']);
-                    organizer_en_name_error.css('display', 'block');
-                } else {
-                    organizer_en_name_error.css('display', 'none');
+                    url_error.css('display', 'none');
                 }
                 if (msg['manager_ar_name']) {
                     orgnizerUpdateErrorSwitchTab();
@@ -704,11 +678,60 @@ $(function () {
                     manager_ar_name_error.css('display', 'none');
                 }
                 if (msg['manager_en_name']) {
-                    managerUpdateErrorSwitchTab();
+                    orgnizerUpdateErrorSwitchTab();
                     manager_en_name_error.html(msg['manager_en_name']);
                     manager_en_name_error.css('display', 'block');
                 } else {
                     manager_en_name_error.css('display', 'none');
+                }
+                if (msg['organizer_ar_name']) {
+                    managerUpdateErrorSwitchTab();
+                    organizer_ar_name_error.html(msg['organizer_ar_name']);
+                    organizer_ar_name_error.css('display', 'block');
+                } else {
+                    organizer_ar_name_error.css('display', 'none');
+                }
+                if (msg['organizer_en_name']) {
+                    managerUpdateErrorSwitchTab();
+                    organizer_en_name_error.html(msg['organizer_en_name']);
+                    organizer_en_name_error.css('display', 'block');
+                } else {
+                    organizer_en_name_error.css('display', 'none');
+                }
+                if (msg['title_ar']) {
+                    eventUpdateDetailsErrorSwitchTab();
+                    title_ar_error.html(msg['title_ar']);
+                    title_ar_error.css('display', 'block');
+                } else {
+                    title_ar_error.css('display', 'none');
+                }
+                if (msg['title_en']) {
+                    eventUpdateDetailsErrorSwitchTab();
+                    title_en_error.html(msg['title_en']);
+                    title_en_error.css('display', 'block');
+                } else {
+                    title_en_error.css('display', 'none');
+                }
+                if (msg['event_start']) {
+                    eventUpdateDetailsErrorSwitchTab();
+                    start_error.html(msg['event_start']);
+                    start_error.css('display', 'block');
+                } else {
+                    start_error.css('display', 'none');
+                }
+                if (msg['description_ar']) {
+                    eventUpdateDetailsErrorSwitchTab();
+                    description_ar_error.html(msg['description_ar']);
+                    description_ar_error.css('display', 'block');
+                } else {
+                    description_ar_error.css('display', 'none');
+                }
+                if (msg['description_en']) {
+                    eventUpdateDetailsErrorSwitchTab();
+                    description_en_error.html(msg['description_en']);
+                    description_en_error.css('display', 'block');
+                } else {
+                    description_en_error.css('display', 'none');
                 }
             }
         });
@@ -774,6 +797,13 @@ $(function () {
         $("#profile").addClass("active show");
     }
 
+    function eventUpdateMoreDetailsErrorSwitchTab() {
+        $("#modal-update-event #step-1-tab").removeClass("active show");  // this deactivates the home tab
+        $("#modal-update-event #step-2-tab").addClass("active show");
+        $("#modal-update-event #homeUpdate").removeClass("active show");  // this deactivates the home tab
+        $("#modal-update-event #profileUpdate").addClass("active show");
+    }
+
     function eventUserErrorSwitchTab() {
         $("#step-1-tab").removeClass("active show");  // this deactivates the home tab
         $("#step-2-tab").addClass("active show");
@@ -799,29 +829,29 @@ $(function () {
     function eventUpdateDetailsErrorSwitchTab() {
         $("#modal-update-event #step-1-tab").addClass("active show");  // this deactivates the home tab
         $("#modal-update-event #step-2-tab").removeClass("active show");
-        $("#modal-update-event #home").addClass("active show");  // this deactivates the home tab
-        $("#modal-update-event #profile").removeClass("active show");
+        $("#modal-update-event #homeUpdate").addClass("active show");  // this deactivates the home tab
+        $("#modal-update-event #profileUpdate").removeClass("active show");
     }
 
     function eventUpdateUserErrorSwitchTab() {
         $("#modal-update-event #step-1-tab").removeClass("active show");  // this deactivates the home tab
         $("#modal-update-event #step-2-tab").addClass("active show");
-        $("#modal-update-event #home").removeClass("active show");  // this deactivates the home tab
-        $("#modal-update-event #profile").addClass("active show");
+        $("#modal-update-event #homeUpdate").removeClass("active show");  // this deactivates the home tab
+        $("#modal-update-event #profileUpdate").addClass("active show");
     }
 
     function orgnizerUpdateErrorSwitchTab() {
-        $("#modal-update-event #nav-organizer-tab").removeClass("active show");  // this deactivates the home tab
-        $("#modal-update-event #nav-manager-tab").addClass("active show");
-        $("#modal-update-event #nav-home").removeClass("active show");  // this deactivates the home tab
-        $("#modal-update-event #nav-profile").addClass("active show");
+        $("#modal-update-event #nav-manager-tab-update").addClass("active show");
+        $("#modal-update-event #nav-home-update").removeClass("active show");  // this deactivates the home tab
+        $("#modal-update-event #nav-organizer-tab-update").removeClass("active show");  // this deactivates the home tab
+        $("#modal-update-event #nav-profile-update").addClass("active show");
     }
 
     function managerUpdateErrorSwitchTab() {
-        $("#modal-update-event #nav-organizer-tab").addClass("active show");  // this deactivates the home tab
-        $("#modal-update-event #nav-manager-tab").removeClass("active show");
-        $("#modal-update-event #nav-home").addClass("active show");  // this deactivates the home tab
-        $("#modal-update-event #nav-profile").removeClass("active show");
+        $("#modal-update-event #nav-organizer-tab-update").addClass("active show");  // this deactivates the home tab
+        $("#modal-update-event #nav-manager-tab-update").removeClass("active show");
+        $("#modal-update-event #nav-home-update").addClass("active show");  // this deactivates the home tab
+        $("#modal-update-event #nav-profile-update").removeClass("active show");
     }
 
 });
