@@ -198,7 +198,8 @@ class HallsController extends Controller
     {
         if ($request->ajax()) {
             $hall = Hall::query()->find($id);
-            $hall->widget->delete();
+            if ($hall->widget != null)
+                $hall->widget->delete();
             if ($hall->delete()) {
                 return response()->json(['success' => 'Remove succeeded']);
             }

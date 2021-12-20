@@ -16,6 +16,10 @@ class Event extends Model
     protected $table = "events";
     protected $guarded = [];
     public $timestamps = false;
+    /**
+     * @var mixed
+     */
+    private $description;
 
     public function event_user()
     {

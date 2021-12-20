@@ -67,7 +67,7 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div>
-                                                    <h6><strong class="text-danger">*</strong> Name Arabic</h6>
+                                                    <h6>Name (Arabic)<strong class="text-danger">*</strong></h6>
                                                 </div>
                                                 <input class="form-control" id="name_ar" type="text"
                                                        value="{{@$customuser->getTranslation('name', 'ar')}}">
@@ -76,7 +76,7 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <div>
-                                                    <h6><strong class="text-danger">*</strong> Name English</h6>
+                                                    <h6>Name (English)<strong class="text-danger">*</strong></h6>
                                                 </div>
                                                 <input class="form-control" id="name_en" type="text"
                                                        value="{{@$customuser->getTranslation('name', 'en')}}">
@@ -90,7 +90,7 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div>
-                                                    <h6><strong class="text-danger">*</strong> Country Arabic</h6>
+                                                    <h6>Country (Arabic)<strong class="text-danger">*</strong></h6>
                                                 </div>
                                                 <input class="form-control" id="country_ar" type="text"
                                                        value="{{@$customuser->getTranslation('country', 'ar')}}">
@@ -99,7 +99,7 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <div>
-                                                    <h6><strong class="text-danger">*</strong> Country English</h6>
+                                                    <h6>Country (English)<strong class="text-danger">*</strong></h6>
                                                 </div>
                                                 <input class="form-control" id="country_en" type="text"
                                                        value="{{@$customuser->getTranslation('country', 'en')}}">
@@ -112,7 +112,7 @@
                                     <li>
                                         <div>
                                             <div>
-                                                <h6>Email (optional)</h6>
+                                                <h6>Email </h6>
                                             </div>
                                             <input class="form-control" id="email" type="email"
                                                    value="{{$customuser->email}}">
@@ -122,7 +122,7 @@
                                     <li>
                                         <div>
                                             <div>
-                                                <h6>Phone (optional)</h6>
+                                                <h6>Phone </h6>
                                             </div>
                                             <input class="form-control" id="phone" type="text"
                                                    value="{{$customuser->phone}}">
@@ -132,7 +132,7 @@
                                     <li>
                                         <div>
                                             <div>
-                                                <h6>Website name (optional)</h6>
+                                                <h6>Website name </h6>
                                             </div>
                                             <input class="form-control" id="website_name" type="text"
                                                    value="{{$customuser->website_name}}">
@@ -142,7 +142,7 @@
                                     <li>
                                         <div>
                                             <div>
-                                                <h6>Website URL (optional)</h6>
+                                                <h6>Website URL </h6>
                                             </div>
                                             <input class="form-control" id="website_url" type="url"
                                                    value="{{$customuser->website_url}}">
@@ -152,7 +152,7 @@
                                     <li>
                                         <div>
                                             <div>
-                                                <h6>Location (optional)</h6>
+                                                <h6>Location </h6>
                                             </div>
                                             <input class="form-control" id="location" type="text"
                                                    value="{{$customuser->location}}">

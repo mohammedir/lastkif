@@ -41,7 +41,7 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div>
-                                                    <h6><strong class="text-danger">*</strong> Name (Arabic)</h6>
+                                                    <h6>Name (Arabic)<strong class="text-danger">*</strong></h6>
                                                 </div>
                                                 <input class="form-control" id="name_ar" type="text">
                                                 <p id="name_ar_error" class="text-danger"
@@ -49,7 +49,7 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <div>
-                                                    <h6><strong class="text-danger">*</strong> Name (English)</h6>
+                                                    <h6>Name (English)<strong class="text-danger">*</strong></h6>
                                                 </div>
                                                 <input class="form-control" id="name_en" type="text">
                                                 <p id="name_en_error" class="text-danger"
@@ -106,9 +106,7 @@
                                                     <div class="row">
                                                         <div class="col-md-6">
                                                             <div>
-                                                                <h6><strong class="text-danger">*</strong> Description
-                                                                    (Arabic)
-                                                                </h6>
+                                                                <h6>Description (Arabic)<strong class="text-danger">*</strong></h6>
                                                             </div>
                                                             <textarea rows="3" class="form-control" id="description_ar"
                                                                       type="text"></textarea>
@@ -117,9 +115,7 @@
                                                         </div>
                                                         <div class="col-md-6">
                                                             <div>
-                                                                <h6><strong class="text-danger">*</strong> Description
-                                                                    (English)
-                                                                </h6>
+                                                                <h6>Description (English)<strong class="text-danger">*</strong></h6>
                                                             </div>
                                                             <textarea rows="3" class="form-control" id="description_en"
                                                                       type="text"></textarea>
