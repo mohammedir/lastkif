@@ -594,6 +594,7 @@ $(function () {
                         eventUpdateUserErrorSwitchTab();
                         printErrorMsg(response['user_error']);
                     } else if (response['success']) {
+                        $('#modal-update-event').modal('toggle');
                         title_ar_error.css('display', 'none');
                         title_en_error.css('display', 'none');
                         description_en_error.css('display', 'none');
@@ -655,7 +656,6 @@ $(function () {
                         details_image = "";
                         photo_image = "";
                         video_image = "";
-                        $('#modal-update-event').modal('toggle');
                         calendar.refetchEvents();
                     }
                 }

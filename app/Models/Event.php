@@ -25,4 +25,10 @@ class Event extends Model
     {
         return $this->hasMany(EventUser::class, 'event_fk_id', 'id');
     }
+
+
+    public function event_users()
+    {
+        return $this->hasMany(EventUser::class, 'id', 'event_fk_id');
+    }
 }

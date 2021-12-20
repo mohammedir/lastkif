@@ -76,8 +76,7 @@ class EventsController extends Controller
                     return response()->json(['success' => 'Successfully create new event', 'event' => $event]);
                 } else
                     return response()->json(['error' => $validator->errors()->toArray()]);
-            }
-            elseif ($event_type === "1") {
+            } elseif ($event_type === "1") {
                 $validatorUser = Validator::make($request->all(), [
                     'event_key' => 'unique:events,event_key|max:255',
                     'title_ar' => 'required:events,title|max:255',
@@ -147,8 +146,10 @@ class EventsController extends Controller
     public function update(Request $request, $id)
     {
         if ($request->ajax()) {
+            $event = Event::query()->find($id);
+            $event_users = EventUser::query()->where("event_fk_id", $id)->get();
             $event_type = $request->event_type;
-            $eventId = Event::query()->find($id)->id;
+            $eventId = $id;
             if ($event_type === "0") {
                 $validator = Validator::make($request->all(), [
                     'title_ar' => 'required:events,title|max:255',
@@ -221,22 +222,23 @@ class EventsController extends Controller
                     ]);
                     $event_organizer = EventUser::query()->where("event_fk_id", $eventId)->where('type', '0')->first();
                     //dd($event_organizer);
-                    /*$event_organizer->update([
-                        'name' => ['en' => "$request->organizer_en_name", 'ar' => "$request->organizer_ar_name"],
-                        'phone' => $request->organizer_phone,
-                        'email' => $request->organizer_email,
-                        'website_name' => $request->organizer_website_name,
-                        'website_url' => $request->organizer_website_url,
-                        'type' => 0,
-                    ]);*/
                     if ($event_organizer) {
-                        $event_organizer->name = ['en' => "$request->organizer_en_name", 'ar' => "$request->organizer_ar_name"];
+                        $event_organizer->update([
+                            'name' => ['en' => "$request->organizer_en_name", 'ar' => "$request->organizer_ar_name"],
+                            'phone' => $request->organizer_phone,
+                            'email' => $request->organizer_email,
+                            'website_name' => $request->organizer_website_name,
+                            'website_url' => $request->organizer_website_url,
+                            'type' => 0,
+                        ]);
+                        //dd($event_organizer);
+                        /*$event_organizer->name = ['en' => "$request->organizer_en_name", 'ar' => "$request->organizer_ar_name"];
                         $event_organizer->phone = $request->organizer_phone;
                         $event_organizer->email = $request->organizer_email;
                         $event_organizer->website_name = $request->organizer_website_name;
                         $event_organizer->website_url = $request->organizer_website_url;
                         $event_organizer->type = 0;
-                        $event_organizer->save();
+                        $event_organizer->save();*/
                     } else {
                         $event_organizer = new EventUser();
                         $event_organizer->event_fk_id = $eventId;
@@ -249,20 +251,20 @@ class EventsController extends Controller
                         $event_organizer->save();
                     }
                     /*Manager*/
-                    $event_manager = EventUser::query()->where("event_fk_id", $eventId)->where('type', '0')->first();
-                    /*$event_manager ->update([
-                        'name' => ['en' => "$request->manager_en_name", 'ar' => "$request->manager_ar_name"],
-                        'phone' => $request->manager_phone,
-                        'email' => $request->manager_phone,
-                        'type' => 1,
-                    ]);*/
+                    $event_manager = EventUser::query()->where("event_fk_id", $eventId)->where('type', '1')->first();
                     if ($event_manager) {
-                        $event_manager->name = ['en' => "$request->manager_en_name", 'ar' => "$request->manager_ar_name"];
+                        $event_manager->update([
+                            'name' => ['en' => "$request->manager_en_name", 'ar' => "$request->manager_ar_name"],
+                            'phone' => $request->manager_phone,
+                            'email' => $request->manager_email,
+                            'type' => 1,
+                        ]);
+                        /*$event_manager->name = ['en' => "$request->manager_en_name", 'ar' => "$request->manager_ar_name"];
                         $event_manager->name = $request->manager_en_name;
                         $event_manager->phone = $request->manager_phone;
                         $event_manager->email = $request->manager_email;
                         $event_manager->type = 1;
-                        $event_manager->save();
+                        $event_manager->save();*/
                     } else {
                         /*Manager*/
                         $event_manager = new EventUser();
