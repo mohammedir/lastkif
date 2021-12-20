@@ -439,13 +439,24 @@
                                                                                id="sponsors-image">{{--flexSwitchCheckDefault--}}
                                                                         <label class="form-check-label"
                                                                                for="sponsors-image">Sponsors
-                                                                            image (.JPEG, .JPG, .PNG)</label>
+                                                                            logos (.JPEG, .JPG, .PNG)</label>
                                                                         <br>
-
                                                                     </div>
                                                                     <input type='file' name="file_img"
+                                                                           class="mt-2 d-none"
                                                                            id="sponsors_image_upload"
                                                                            accept=".pdf,.jpg, .png, image/jpeg, image/png"/>
+                                                                    <div>
+                                                                        <ul id="sponsors_list_images"
+                                                                            style="list-style-type: none;margin: 0;padding: 0;overflow: hidden">
+                                                                        <!--                                                                            <li class="mr-3 mt-3 mb-3"
+                                                                                style="float: left;">
+                                                                                <img id="sponsors_list_images_items"
+                                                                                     class="mr-2" width="40"
+                                                                                     src="{{asset("images/event.png")}}">
+                                                                            </li>-->
+                                                                        </ul>
+                                                                    </div>
                                                                     <p id="sponsors_image_upload_error"
                                                                        class="text-danger"
                                                                        style="display: none"></p>
@@ -462,7 +473,7 @@
 
                                                                     </div>
                                                                     <input type='file' id="details_image_upload"
-                                                                           class="dropify"
+                                                                           class="mt-2 d-none"
                                                                            accept=".pdf,.jpg, .png, image/jpeg, image/png"/>
                                                                     <p id="details_image_upload_error"
                                                                        class="text-danger"
@@ -478,9 +489,9 @@
                                                                         <br>
 
                                                                     </div>
-                                                                    <input type='file' id="photo_gallery_upload"
-                                                                           class="dropify"
-                                                                           accept=".pdf,.jpg, .png, image/jpeg, image/png"/>
+                                                                    <textarea class="form-control mt-2 d-none"
+                                                                              id="photo_gallery_upload"
+                                                                              rows="5"></textarea>
                                                                     <p id="photo_gallery_upload_error"
                                                                        class="text-danger"
                                                                        style="display: none"></p>
@@ -493,11 +504,10 @@
                                                                                for="video-image">Video
                                                                             gallery (.JPEG, .JPG, .PNG)</label>
                                                                         <br>
-
                                                                     </div>
-                                                                    <input type='file' id="video_gallery_upload"
-                                                                           class="dropify"
-                                                                           accept=".pdf,.jpg, .png, image/jpeg, image/png"/>
+                                                                    <textarea class="form-control mt-2 d-none"
+                                                                              id="video_gallery_upload"
+                                                                              rows="5"></textarea>
                                                                     <p id="video_gallery_upload_error"
                                                                        class="text-danger"
                                                                        style="display: none"></p>

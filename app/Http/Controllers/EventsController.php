@@ -57,7 +57,7 @@ class EventsController extends Controller
                     $event->type = $request->event_type;
                     $event->event_key = $request->event_key;
                     $event->url = $request->event_external_link;
-                    $banner = $request->banner;
+                    $event->banner = $request->banner;
                     $event->created_at = Carbon::now();
                     $event->updated_at = Carbon::now();
                     /*Upload images*/
