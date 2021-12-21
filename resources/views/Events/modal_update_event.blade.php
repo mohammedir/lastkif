@@ -489,7 +489,7 @@
                                                                     <input type='file' id="details_image_upload"
                                                                            class="mt-2 d-none"
                                                                            accept=".pdf,.jpg, .png, image/jpeg, image/png"/>
-                                                                    <img class="view_image_uploaded" width="70"
+                                                                    <img id="view_image_uploaded" width="70"
                                                                          src="{{asset("images/event.png")}}">
                                                                     <p id="details_image_upload_error"
                                                                        class="text-danger"

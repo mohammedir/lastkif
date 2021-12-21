@@ -75,7 +75,7 @@ $(function () {
                 //---image preview
                 var reader = new FileReader();
                 reader.onload = function (ev) {
-                    $('#user-image').attr('src', ev.target.result);
+                    $('#user-image').attr('src', "http://127.0.0.1:8000/uploadsevents/" + ev.target.result);
                 };
                 reader.readAsDataURL(this.files[0]);
 
@@ -106,7 +106,8 @@ $(function () {
                         success: function (response) {
                             if (response['success']) {
                                 banner = response.banner;
-                                $('#image_user_uploaded img').attr('src', "{{asset(uploadcustomuser/" + banner + ")}}");
+                                //$('#image_user_uploaded img').attr('src', "{{asset(uploadcustomuser/" + banner + ")}}");
+                                $('#image_user_uploaded img').attr('src', "http://127.0.0.1:8000/uploadsevents/" + banner);
                                 $('#banner_error').html(response.success);
                                 //$('#banner_error').css('color', '#002e80');
                                 $('#banner_error').removeClass("text-danger");
@@ -571,8 +572,9 @@ $(function () {
                     //details_image_upload.val(viewImage(event.details_image));
                     details_image_input.prop('checked', true);
                     /*Get details_image*/
-                    var view_image_uploaded = $('#modal-update-event #view_image_uploaded')
-                    view_image_uploaded.attr('src', "{{asset(uploadsevents/" + event.details_image + ")}}");
+                    //var view_image_uploaded = $('#modal-update-event #view_image_uploaded')
+                    // $('#modal-update-event #view_image_uploaded').attr('src', "{{asset(uploadsevents/" + event.details_image + ")}}");
+                    $('#modal-update-event #view_image_uploaded').attr('src', "http://127.0.0.1:8000/uploadsevents/" + event.details_image);
                 }
                 if (event.photo_gallery != null) {
                     photo_gallery_upload.removeClass("d-none")
@@ -588,7 +590,8 @@ $(function () {
                 }
 
                 event_external_link_input.val(event.url);
-                banner_input.attr('src', "{{asset(uploadsevents/" + event.banner + ")}}");
+                //banner_input.attr('src', "{{asset(uploadsevents/" + event.banner + ")}}");
+                banner_input.attr('src', "http://127.0.0.1:8000/uploadsevents/" + event.banner);
                 switch (event.type) {
                     case 0:
                         console.log(event.type);
@@ -1079,10 +1082,11 @@ $(function () {
         button_upload.on('change', function (ev) {
             var filedata = ev.target.files[0];
             if (filedata) {
+
                 //---image preview
                 var reader = new FileReader();
                 reader.onload = function (ev) {
-                    $('#user-image').attr('src', ev.target.result);
+                    //$('#user-image').attr('src', ev.target.result);
                 };
                 reader.readAsDataURL(this.files[0]);
                 //upload
@@ -1103,14 +1107,13 @@ $(function () {
                         if (response['success']) {
                             banner = response.banner;
                             sponsor_list_uploaded.push(banner);
-                            //$('#image_user_uploaded img').attr('src', "{{asset(uploadcustomuser/" + banner + ")}}");
                             sponsors_image_upload_error.html(response.success);
                             //$('#banner_error').css('color', '#002e80');
                             sponsors_image_upload_error.removeClass("text-danger");
                             sponsors_image_upload_error.addClass("text-primary");
                             sponsors_image_upload_error.css('display', 'block');
                             sponsors_image_body = sponsors_list_images.html();
-                            sponsors_list_images.html(sponsors_image_body + ifSuccessUploadSponsorLogUpdateBody());
+                            sponsors_list_images.html(sponsors_image_body + ifSuccessUploadSponsorLogUpdateBody(banner));
                         } else {
                             printErrorMsg(response.error);
                         }
@@ -1221,12 +1224,13 @@ $(function () {
                 //---image preview
                 var reader = new FileReader();
                 reader.onload = function (ev) {
-                    $('#modal-update-event #user-image').attr('src', ev.target.result);
+                    //$('#modal-update-event #user-image').attr('src', ev.target.result);
                 };
                 reader.readAsDataURL(this.files[0]);
                 //upload
                 let bannerUpload = new FormData();
                 bannerUpload.append('file', this.files[0]);
+
                 $.ajax({
                     url: '/events/upload/image',
                     data: bannerUpload,
@@ -1247,7 +1251,7 @@ $(function () {
                             sponsors_image_upload_error.addClass("text-primary");
                             sponsors_image_upload_error.css('display', 'block');
                             sponsors_image_body_update = sponsors_list_images.html();
-                            sponsors_list_images.html(sponsors_image_body_update + ifSuccessUploadSponsorLogUpdateBody());
+                            sponsors_list_images.html(sponsors_image_body_update + ifSuccessUploadSponsorLogUpdateBody(banner));
                         } else {
                             printErrorMsg(response.error);
                         }
@@ -1278,7 +1282,7 @@ $(function () {
                 //---image preview
                 var reader = new FileReader();
                 reader.onload = function (ev) {
-                    $('#user-image').attr('src', ev.target.result);
+                    //$('#user-image').attr('src', ev.target.result);
                 };
                 reader.readAsDataURL(this.files[0]);
                 //upload
@@ -1302,6 +1306,7 @@ $(function () {
                             error_p.removeClass("text-danger");
                             error_p.addClass("text-primary");
                             error_p.css('display', 'block');
+                            $('#view_image_uploaded').attr('src', "http://127.0.0.1:8000/uploadsevents/" + details_image);
                         } else {
                             printErrorMsg(response.error);
                         }
@@ -1323,13 +1328,13 @@ $(function () {
         });
     }
 
-
-    function ifSuccessUploadSponsorLogUpdateBody() {
+    function ifSuccessUploadSponsorLogUpdateBody(image) {
+        console.log(image);
         return "<li class=\"mr-3 mt-3 mb-3\"\n" +
             "                                                                                style=\"float: left;\">\n" +
             "                                                                                <img id=\"sponsors_list_images_items\"\n" +
-            "                                                                                     class=\"mr-2\" width=\"40\"\n" +
-            "                                                                                     src=\"{{asset(\"images/event.png\")}}\">\n" +
+            "                                                                                     class=\"mr-2\" width=\"60\"\n" +
+            "                                                                                     src=\"http://127.0.0.1:8000/uploadsevents/" + image + "\">\n" +
             "                                                                            </li>";
     }
 
@@ -1338,8 +1343,8 @@ $(function () {
         return "<li class=\"mr-3 mt-3 mb-3\"\n" +
             "                                                                                style=\"float: left;\">\n" +
             "                                                                                <img id=\"sponsors_list_images_items\"\n" +
-            "                                                                                     class=\"mr-2\" width=\"40\"\n" +
-            "                                                                                     src=\"{{asset(\"uploadsevents/" + image + ")}}\">\n" +
+            "                                                                                     class=\"mr-2\" width=\"60\"\n" +
+            "                                                                                     src=\"http://127.0.0.1:8000/uploadsevents/" + image + ")}}\">\n" +
             "                                                                            </li> ";
     }
 
@@ -1349,8 +1354,8 @@ $(function () {
             "                                                                                    <ul id=" + image_id + " style=\"list-style-type: none;margin: 0;padding: 0;\">\n" +
             "                                                                                        <li>\n" +
             "                                                                                            <img id=\"sponsors_list_images_items\"\n" +
-            "                                                                                                 class=\"mr-2\" width=\"40\"\n" +
-            "                                                                                                 src=\"{{asset(\"uploadsevents/" + image + ")}}\">\n" +
+            "                                                                                                 class=\"mr-2\" height=\"60\"\n" +
+            "                                                                                                 src=\"http://127.0.0.1:8000/uploadsevents/" + image + "\">\n" +
             "                                                                                        </li>\n" +
             "                                                                                        <li class='mt-1 mb-0'>\n" +
             "                                                                                            <button id='remove_image' data-id=" + image_id + " class=\" btn-danger btn btn-sm\"><i class='fa fa-trash'></i></button>\n" +
