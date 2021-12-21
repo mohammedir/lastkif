@@ -34,14 +34,14 @@
                     <div id='calendar' class=" mt-3">
                     </div>
                 </div>
-                @include('moom.modal_alert')
-                @include('Events.modal_create_event')
-                @include('Events.modal_update_event')
             </div>
         </div>
     </div>
     <!-- row closed -->
 @endsection
 @section('js')
+    @include('moom.modal_alert')
+    @include('Events.modal_create_event')
+    @include('Events.modal_update_event')
     <script src="{{ asset('js/events.js') }}" defer></script>
 @endsection

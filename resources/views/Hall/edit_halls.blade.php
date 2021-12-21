@@ -113,7 +113,8 @@
                                                         <div class="row">
                                                             <div class="col-md-6">
                                                                 <div>
-                                                                    <h6>Description (Arabic)<strong class="text-danger">*</strong></h6>
+                                                                    <h6>Description (Arabic)<strong class="text-danger">*</strong>
+                                                                    </h6>
                                                                 </div>
                                                                 <textarea rows="3" class="form-control"
                                                                           id="description_ar"
@@ -123,7 +124,8 @@
                                                             </div>
                                                             <div class="col-md-6">
                                                                 <div>
-                                                                    <h6>Description (English)<strong class="text-danger">*</strong></h6>
+                                                                    <h6>Description (English)<strong
+                                                                            class="text-danger">*</strong></h6>
                                                                 </div>
                                                                 <textarea rows="3" class="form-control"
                                                                           id="description_en"
@@ -140,7 +142,7 @@
                                                                 <h6>Hall gallery widget Name(English)</h6>
                                                                 <input class="form-control" id="widget_name_en"
                                                                        type="text"
-                                                                       value="{{@$hall->widget->getTranslation('title', 'en')}}">
+                                                                       value="@if ($hall->widget != NULL){{@$hall->widget->getTranslation('title', 'en')}}@endif">
                                                                 <p id="widget_name_en_error" class="text-danger"
                                                                    style="display: none"></p>
                                                             </div>
@@ -148,7 +150,7 @@
                                                                 <h6>Hall gallery widget Name(Arabic)</h6>
                                                                 <input class="form-control" id="widget_name_ar"
                                                                        type="text"
-                                                                       value="{{@$hall->widget->getTranslation('title', 'ar')}}">
+                                                                       value="@if ($hall->widget != NULL){{@$hall->widget->getTranslation('title', 'ar')}}@endif">
                                                                 <p id="widget_name_ar_error" class="text-danger"
                                                                    style="display: none"></p>
                                                             </div>

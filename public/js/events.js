@@ -10,6 +10,7 @@
 /*{{--//TODO:: MOO**MEN S. ALDA**HDOUH 12/15/2021--}}*/
 $(function () {
     let event_type = 0;
+    let event_key = "";
     //const csrfToken = document.head.querySelector("[name=csrf-token][content]").content
     let data_external_type = $('#data-external-type');
     let data_internal_type = $('#data-internal-type');
@@ -20,6 +21,8 @@ $(function () {
     let banner = "";
     let banner_width = 0;
     let banner_height = 0;
+    let sponsor_list_uploaded = [];
+    let details_image = "";
 
     $(document).ready(function () {
 
@@ -35,7 +38,34 @@ $(function () {
             createEvent(calendar);
         });
         upload_image();
+        $(document).on('click', '#remove_image', function () {
+            var id = $(this).data('id');
+            console.log(id + "sdd")
+            remove_image(id);
+        });
     });
+
+    function remove_image(id) {
+        let item_list = $('#modal-update-event #' + id);
+        $.ajax({
+            type: "DELETE",
+            url: "/events/sponsor/image/delete/" + id,
+            data: {
+                _token: $("input[name=_token]").val()
+            },
+            success: function (response) {
+                if (response['success']) {
+                    /*refresh images body*/
+                    console.log(item_list)
+                    item_list.remove();
+                    //sponsors_list_images.html("");
+                    //var sponsors_image_body_update = sponsors_list_images.html();
+                } else if (response['error']) {
+
+                }
+            }
+        });
+    }
 
     function upload_image() {
         $('#banner').on('change', function (ev) {
@@ -154,6 +184,7 @@ $(function () {
         });
         calendar.render();
         checkImageType();
+        checkImageTypeUpdate();
     }
 
     function createEvent(calendar) {
@@ -172,9 +203,10 @@ $(function () {
         let manager_phone_input = $('#manager-phone');
         let manager_email_input = $('#manager-email');
         let sponsors_image_input = $('#sponsors-image');
-        let details_image_input = $('#details-image');
-        let photo_image_input = $('#photo-image');
-        let video_image_input = $('#video-image');
+        let details_image_input = $('#details_image_upload');
+        let photo_image_input = $('#photo_gallery_upload');
+        let video_image_input = $('#video_gallery_upload');
+
         /*Errors*/
         let title_ar_error = $('#title_ar_error');
         let title_en_error = $('#title_en_error');
@@ -210,7 +242,7 @@ $(function () {
             let event_end = $('#end').val();
             let location = $('#location').val();
             let category = $('#category').val();
-            let event_key = title_en + title_ar + description_en + description_ar + event_start + event_end;
+            event_key = title_en + title_ar + description_en + description_ar + event_start + event_end + location + category;
             $('#event_key').val(event_key)
             event_type = $('#event_type').val();
             let event_external_link = "";
@@ -225,7 +257,6 @@ $(function () {
             let manager_phone = "";
             let manager_email = "";
             let sponsors_image = "";
-            let details_image = "";
             let photo_image = "";
             let video_image = "";
             console.log(event_type);
@@ -246,11 +277,12 @@ $(function () {
                     manager_phone = manager_phone_input.val();
                     manager_email = manager_email_input.val();
                     sponsors_image = sponsors_image_input.val();
-                    details_image = details_image_input.val();
                     photo_image = photo_image_input.val();
                     video_image = video_image_input.val();
                     break;
             }
+            event_key = event_key + event_external_link + organizer_ar_name + organizer_en_name + organizer_phone + organizer_email
+                + organizer_website_name + organizer_website_url + manager_ar_name + manager_en_name + manager_phone + manager_email;
             $.ajax({
                 type: "POST",
                 url: "events/create",
@@ -267,7 +299,7 @@ $(function () {
                     location: location,
                     category: category,
                     event_type: event_type,
-                    sponsors_image: sponsors_image,
+                    sponsors_image: sponsor_list_uploaded,
                     details_image: details_image,
                     photo_image: photo_image,
                     video_image: video_image,
@@ -468,9 +500,8 @@ $(function () {
         let end_input = $('#modal-update-event #end');
         let event_type_input = $('#modal-update-event #event_type');
 
-        let sponsors_image_input = $('#modal-update-event #sponsors-image');
         let sponsors_image_input_upload = $('#modal-update-event #sponsors-image-upload');
-
+        let sponsors_image_input = $('#modal-update-event #sponsors-image');
         let details_image_input = $('#modal-update-event #details-image');
         let photo_image_input = $('#modal-update-event #photo-image');
         let video_image_input = $('#modal-update-event #video-image');
@@ -488,6 +519,13 @@ $(function () {
         let manager_phone_input = $('#modal-update-event #manager-phone');
         let manager_email_input = $('#modal-update-event #manager-email');
 
+        let sponsors_image_upload = $('#modal-update-event #sponsors_image_upload');
+        let details_image_upload = $('#modal-update-event #details_image_upload');
+        let photo_gallery_upload = $('#modal-update-event #photo_gallery_upload');
+        let video_gallery_upload = $('#modal-update-event #video_gallery_upload');
+        let sponsors_list_images = $('#modal-update-event #sponsors_list_images');
+        sponsors_list_images.html("");
+        var sponsors_image_body_update = sponsors_list_images.html();
         /*Fill data*/
         //getEventData(id)
         $.ajax({
@@ -503,17 +541,53 @@ $(function () {
                 description_ar_input.val(event.description);
                 description_en_input.val(event.description);
                 location_input.val(event.location);
-                category_input.val(event.category);
+                category_input.val(event.category_fk_id);
                 start_input.val(moment(event.start).format("YYYY-MM-DDTkk:mm"));
                 end_input.val(moment(event.end).format("YYYY-MM-DDTkk:mm"));
-                // end_input.val(event.end);
                 event_type_input.val(event.type);
-                sponsors_image_input.val(event.sponsors_image);
-                details_image_input.val(event.details_image);
-                photo_image_input.val(event.photo_image);
-                video_image_input.val(event.video_image);
+                if (event.sponsors_image != null) {
+                    sponsors_image_upload.removeClass("d-none")
+                    /*Get logos sponsor*/
+                    $.ajax({
+                        method: "get",
+                        url: "events/" + info.event.id + "/sponsor/images",
+                        data: {
+                            _token: $("input[name=_token]").val(),
+                        },
+                        success: function (images) {
+                            console.log(images.length);
+                            for (let i = 0; i < images.length; i++) {
+                                var image_id = images[i]['id'];
+                                var image = images[i]['image'];
+                                sponsors_image_body_update = sponsors_list_images.html();
+                                sponsors_list_images.html(sponsors_image_body_update + sponsorLogsFetch(image_id, image));
+                            }
+                        }
+                    });
+                    sponsors_image_input.prop('checked', true);
+                }
+                if (event.details_image != null) {
+                    details_image_upload.removeClass("d-none")
+                    //details_image_upload.val(viewImage(event.details_image));
+                    details_image_input.prop('checked', true);
+                    /*Get details_image*/
+                    var view_image_uploaded = $('#modal-update-event #view_image_uploaded')
+                    view_image_uploaded.attr('src', "{{asset(uploadsevents/" + event.details_image + ")}}");
+                }
+                if (event.photo_gallery != null) {
+                    photo_gallery_upload.removeClass("d-none")
+                    photo_gallery_upload.val(event.photo_gallery);
+                    photo_image_input.prop('checked', true);
+                    //photo_image_input.val(event.photo_image);
+                }
+                if (event.video_gallery != null) {
+                    video_gallery_upload.removeClass("d-none")
+                    video_gallery_upload.val(event.video_gallery);
+                    video_image_input.prop('checked', true);
+                    //video_image_input.val(event.video_image);
+                }
+
                 event_external_link_input.val(event.url);
-                console.log(event.banner);
                 banner_input.attr('src', "{{asset(uploadsevents/" + event.banner + ")}}");
                 switch (event.type) {
                     case 0:
@@ -527,30 +601,30 @@ $(function () {
                         data_external_type_update.hide();
                         break;
                 }
-                /*Get event user data*/
-                $.ajax({
-                    method: "get",
-                    url: "events/users/" + info.event.id,
-                    data: {
-                        _token: $("input[name=_token]").val(),
-                    },
-                    success: function (eventUsers) {
-                        $.each(eventUsers, function (i) {
-                            console.log(eventUsers[i]);
-                            if (eventUsers[i].type == 0) {
-                                organizer_ar_name_input.val(eventUsers[i].name['ar']);
-                                organizer_en_name_input.val(eventUsers[i].name['en']);
-                                organizer_phone_input.val(eventUsers[i].phone);
-                                organizer_email_input.val(eventUsers[i].email);
-                                organizer_website_name_input.val(eventUsers[i].website_name);
-                                organizer_website_url_input.val(eventUsers[i].website_url);
-                            } else {
-                                manager_ar_name_input.val(eventUsers[i].name['ar']);
-                                manager_en_name_input.val(eventUsers[i].name['en']);
-                                manager_phone_input.val(eventUsers[i].phone);
-                                manager_email_input.val(eventUsers[i].email);
-                            }
-                        });
+            }
+        });
+        /*Get event user data*/
+        $.ajax({
+            method: "get",
+            url: "events/users/" + info.event.id,
+            data: {
+                _token: $("input[name=_token]").val(),
+            },
+            success: function (eventUsers) {
+                $.each(eventUsers, function (i) {
+                    console.log(eventUsers[i]);
+                    if (eventUsers[i].type == 0) {
+                        organizer_ar_name_input.val(eventUsers[i].name['ar']);
+                        organizer_en_name_input.val(eventUsers[i].name['en']);
+                        organizer_phone_input.val(eventUsers[i].phone);
+                        organizer_email_input.val(eventUsers[i].email);
+                        organizer_website_name_input.val(eventUsers[i].website_name);
+                        organizer_website_url_input.val(eventUsers[i].website_url);
+                    } else {
+                        manager_ar_name_input.val(eventUsers[i].name['ar']);
+                        manager_en_name_input.val(eventUsers[i].name['en']);
+                        manager_phone_input.val(eventUsers[i].phone);
+                        manager_email_input.val(eventUsers[i].email);
                     }
                 });
             }
@@ -562,25 +636,11 @@ $(function () {
         let description_en_error = $('#modal-update-event #description_en_error');
         let description_ar_error = $('#modal-update-event #description_ar_error');
         let start_error = $('#modal-update-event #start_error');
-        let end_error = $('#modal-update-event #end_error');
-        let location_error = $('#modal-update-event #location_error');
-        let category_error = $('#modal-update-event #category_error');
-        let type_error = $('#modal-update-event #type_error');
         let url_error = $('#modal-update-event #url_error');
         let organizer_ar_name_error = $('#modal-update-event #organizer_ar_name_error');
         let organizer_en_name_error = $('#modal-update-event #organizer_en_name_error');
-        let organizer_phone_error = $('#modal-update-event #organizer_phone_error');
-        let organizer_email_error = $('#modal-update-event #organizer_email_error');
-        let organizer_website_name_error = $('#modal-update-event #organizer_website_name_error');
-        let organizer_website_url_error = $('#modal-update-event #organizer_website_url_error');
         let manager_ar_name_error = $('#modal-update-event #manager_ar_name_error');
         let manager_en_name_error = $('#modal-update-event #manager_en_name_error');
-        let manager_phone_error = $('#modal-update-event #manager_phone_error');
-        let manager_email_error = $('#modal-update-event #manager_email_error');
-        let sponsors_image_upload_error = $('#modal-update-event #sponsors_image_upload_error');
-        let details_image_upload_error = $('#modal-update-event #details_image_upload_error');
-        let photo_gallery_upload_error = $('#modal-update-event #photo_gallery_upload_error');
-        let video_gallery_upload_error = $('#modal-update-event #video_gallery_upload_error');
         $('#update_event').click(function () {
             /*Input field*/
             let title_en = title_en_input.val();
@@ -591,7 +651,7 @@ $(function () {
             let event_end = end_input.val();
             let location = location_input.val();
             let category = category_input.val();
-            let event_key = title_en + title_ar + description_en + description_ar + event_start + event_end;
+            let event_key = title_en + title_ar + description_en + description_ar + event_start + event_end + location + category;
             $('#event_key').val(event_key)
             event_type = event_type_input.val();
             let event_external_link = "";
@@ -606,7 +666,6 @@ $(function () {
             let manager_phone = "";
             let manager_email = "";
             let sponsors_image = "";
-            let details_image = "";
             let photo_image = "";
             let video_image = "";
 
@@ -626,11 +685,12 @@ $(function () {
                     manager_phone = manager_phone_input.val();
                     manager_email = manager_email_input.val();
                     sponsors_image = sponsors_image_input.val();
-                    details_image = details_image_input.val();
                     photo_image = photo_image_input.val();
                     video_image = video_image_input.val();
                     break;
             }
+            event_key = event_key + event_external_link + organizer_ar_name + organizer_en_name + organizer_phone + organizer_email
+                + organizer_website_name + organizer_website_url + manager_ar_name + manager_en_name + manager_phone + manager_email;
             $.ajax({
                 type: "POST",
                 url: "events/update/" + id,
@@ -959,6 +1019,8 @@ $(function () {
         let photo_gallery_upload = $('#photo_gallery_upload');
         let video_gallery_upload = $('#video_gallery_upload');
 
+        let details_image_upload_error = $('#details_image_upload_error');
+
         /*Sponsor*/
         sponsors_image_input.click(function () {
             sponsors_image_body = sponsors_list_images.html();
@@ -969,6 +1031,7 @@ $(function () {
             } else {
                 sponsors_image_upload.addClass("d-none");
                 sponsors_image_status = 0;
+                sponsor_list_uploaded = [];
             }
             console.log(sponsors_image_status);
         })
@@ -977,6 +1040,7 @@ $(function () {
             if (details_image_input.is(':checked')) {
                 details_image_upload.removeClass("d-none");
                 details_image_status = 1;
+                upload_details_image(details_image_upload, details_image_upload_error);
             } else {
                 details_image_upload.addClass("d-none");
                 details_image_status = 0;
@@ -1009,7 +1073,7 @@ $(function () {
 
     function upload_sponsor_image(button_upload) {
         let sponsors_image_upload_error = $('#sponsors_image_upload_error');
-        let details_image_upload_error = $('#details_image_upload_error');
+
         let photo_gallery_upload_error = $('#photo_gallery_upload_error');
         let video_gallery_upload_error = $('#video_gallery_upload_error');
         button_upload.on('change', function (ev) {
@@ -1038,6 +1102,7 @@ $(function () {
                     success: function (response) {
                         if (response['success']) {
                             banner = response.banner;
+                            sponsor_list_uploaded.push(banner);
                             //$('#image_user_uploaded img').attr('src', "{{asset(uploadcustomuser/" + banner + ")}}");
                             sponsors_image_upload_error.html(response.success);
                             //$('#banner_error').css('color', '#002e80');
@@ -1053,7 +1118,144 @@ $(function () {
                 });
             } else {
                 console.log(banner_width + ":error:" + banner_height);
-                sponsors_image_upload_error.html('The valid diminutions must be 2:1, 2000*1000 px');
+                sponsors_image_upload_error.html('Failed to upload try again');
+                sponsors_image_upload_error.css('display', 'block');
+            }
+
+            function printErrorMsg(msg) {
+                if (msg['banner']) {
+                    sponsors_image_upload_error.html(msg['banner']);
+                    sponsors_image_upload_error.css('display', 'block');
+                } else {
+                    sponsors_image_upload_error.css('display', 'none');
+                }
+            }
+        });
+    }
+
+    /*Update part*/
+    /*Multi images*/
+
+    /*Check*/
+    let sponsors_list_images_update = $('#modal-update-event #sponsors_list_images');
+    let sponsors_image_body_update = sponsors_list_images_update.html();
+
+    function checkImageTypeUpdate() {
+        let sponsors_image_status = 0;
+        let details_image_status = 0;
+        let photo_image_status = 0;
+        let video_image_status = 0;
+
+        let sponsors_image_results = "";
+        let details_image_results = "";
+        let photo_image_results = "";
+        let video_image_results = "";
+
+        let sponsors_image_input = $('#modal-update-event #sponsors-image');
+        let details_image_input = $('#modal-update-event #details-image');
+        let photo_image_input = $('#modal-update-event #photo-image');
+        let video_image_input = $('#modal-update-event #video-image');
+
+        let sponsors_image_upload = $('#modal-update-event #sponsors_image_upload');
+        let details_image_upload = $('#modal-update-event #details_image_upload');
+        let photo_gallery_upload = $('#modal-update-event #photo_gallery_upload');
+        let video_gallery_upload = $('#modal-update-event #video_gallery_upload');
+
+        let details_image_upload_error = $('#modal-update-event #details_image_upload_error');
+
+        /*Sponsor*/
+        sponsors_image_input.click(function () {
+            sponsors_image_body_update = sponsors_list_images.html();
+            if (sponsors_image_input.is(':checked')) {
+                sponsors_image_upload.removeClass("d-none");
+                sponsors_image_status = 1;
+                upload_sponsor_image_update(sponsors_image_upload);
+            } else {
+                sponsors_image_upload.addClass("d-none");
+                sponsors_image_status = 0;
+                sponsor_list_uploaded = [];
+            }
+            console.log(sponsors_image_status);
+        })
+        /*Details image*/
+        details_image_input.click(function () {
+            if (details_image_input.is(':checked')) {
+                details_image_upload.removeClass("d-none");
+                details_image_status = 1;
+                upload_details_image(details_image_upload, details_image_upload_error);
+            } else {
+                details_image_upload.addClass("d-none");
+                details_image_status = 0;
+            }
+            console.log(details_image_status);
+        })
+        /*Photo gallery */
+        photo_image_input.click(function () {
+            if (photo_image_input.is(':checked')) {
+                photo_gallery_upload.removeClass("d-none");
+                photo_image_status = 1;
+            } else {
+                photo_gallery_upload.addClass("d-none");
+                photo_image_status = 0;
+            }
+            console.log(photo_image_status);
+        })
+        /*Video gallery*/
+        video_image_input.click(function () {
+            if (video_image_input.is(':checked')) {
+                video_gallery_upload.removeClass("d-none");
+                video_image_status = 1;
+            } else {
+                video_gallery_upload.addClass("d-none");
+                video_image_status = 0;
+            }
+            console.log(video_image_status);
+        })
+    }
+
+    function upload_sponsor_image_update(button_upload) {
+        let sponsors_image_upload_error = $('#modal-update-event #sponsors_image_upload_error');
+        button_upload.on('change', function (ev) {
+            var filedata = ev.target.files[0];
+            if (filedata) {
+                //---image preview
+                var reader = new FileReader();
+                reader.onload = function (ev) {
+                    $('#modal-update-event #user-image').attr('src', ev.target.result);
+                };
+                reader.readAsDataURL(this.files[0]);
+                //upload
+                let bannerUpload = new FormData();
+                bannerUpload.append('file', this.files[0]);
+                $.ajax({
+                    url: '/events/upload/image',
+                    data: bannerUpload,
+                    headers: {
+                        'X-CSRF-Token': $('form.hidden-image-upload [name="_token"]').val()
+                    },
+                    dataType: 'json',
+                    async: false,
+                    type: 'post',
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        if (response['success']) {
+                            banner = response.banner;
+                            sponsor_list_uploaded.push(banner);
+                            sponsors_image_upload_error.html(response.success);
+                            sponsors_image_upload_error.removeClass("text-danger");
+                            sponsors_image_upload_error.addClass("text-primary");
+                            sponsors_image_upload_error.css('display', 'block');
+                            sponsors_image_body_update = sponsors_list_images.html();
+                            sponsors_list_images.html(sponsors_image_body_update + ifSuccessUploadSponsorLogUpdateBody());
+                        } else {
+                            printErrorMsg(response.error);
+                        }
+                    }
+                });
+            } else {
+                console.log(banner_width + ":error:" + banner_height);
+                sponsors_image_upload_error.html('Failed to upload try again');
                 sponsors_image_upload_error.css('display', 'block');
             }
 
@@ -1069,6 +1271,59 @@ $(function () {
     }
 
 
+    function upload_details_image(button_upload, error_p) {
+        button_upload.on('change', function (ev) {
+            var filedata = ev.target.files[0];
+            if (filedata) {
+                //---image preview
+                var reader = new FileReader();
+                reader.onload = function (ev) {
+                    $('#user-image').attr('src', ev.target.result);
+                };
+                reader.readAsDataURL(this.files[0]);
+                //upload
+                let bannerUpload = new FormData();
+                bannerUpload.append('file', this.files[0]);
+                $.ajax({
+                    url: '/events/upload/image',
+                    data: bannerUpload,
+                    headers: {
+                        'X-CSRF-Token': $('form.hidden-image-upload [name="_token"]').val()
+                    },
+                    dataType: 'json',
+                    async: false,
+                    type: 'post',
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        if (response['success']) {
+                            details_image = response.banner;
+                            error_p.html(response.success);
+                            error_p.removeClass("text-danger");
+                            error_p.addClass("text-primary");
+                            error_p.css('display', 'block');
+                        } else {
+                            printErrorMsg(response.error);
+                        }
+                    }
+                });
+            } else {
+                error_p.html("Failed to upload, try again");
+                error_p.css('display', 'block');
+            }
+
+            function printErrorMsg(msg) {
+                if (msg['banner']) {
+                    error_p.html(msg['banner']);
+                    error_p.css('display', 'block');
+                } else {
+                    error_p.css('display', 'none');
+                }
+            }
+        });
+    }
+
+
     function ifSuccessUploadSponsorLogUpdateBody() {
         return "<li class=\"mr-3 mt-3 mb-3\"\n" +
             "                                                                                style=\"float: left;\">\n" +
@@ -1076,6 +1331,32 @@ $(function () {
             "                                                                                     class=\"mr-2\" width=\"40\"\n" +
             "                                                                                     src=\"{{asset(\"images/event.png\")}}\">\n" +
             "                                                                            </li>";
+    }
+
+
+    function viewImage(image) {
+        return "<li class=\"mr-3 mt-3 mb-3\"\n" +
+            "                                                                                style=\"float: left;\">\n" +
+            "                                                                                <img id=\"sponsors_list_images_items\"\n" +
+            "                                                                                     class=\"mr-2\" width=\"40\"\n" +
+            "                                                                                     src=\"{{asset(\"uploadsevents/" + image + ")}}\">\n" +
+            "                                                                            </li> ";
+    }
+
+    function sponsorLogsFetch(image_id, image) {
+        return "<li class=\"mr-3 mt-3 mb-3\"\n" +
+            "                                                                                    style=\"float: left;\">\n" +
+            "                                                                                    <ul id=" + image_id + " style=\"list-style-type: none;margin: 0;padding: 0;\">\n" +
+            "                                                                                        <li>\n" +
+            "                                                                                            <img id=\"sponsors_list_images_items\"\n" +
+            "                                                                                                 class=\"mr-2\" width=\"40\"\n" +
+            "                                                                                                 src=\"{{asset(\"uploadsevents/" + image + ")}}\">\n" +
+            "                                                                                        </li>\n" +
+            "                                                                                        <li class='mt-1 mb-0'>\n" +
+            "                                                                                            <button id='remove_image' data-id=" + image_id + " class=\" btn-danger btn btn-sm\"><i class='fa fa-trash'></i></button>\n" +
+            "                                                                                        </li>\n" +
+            "                                                                                    </ul>\n" +
+            "                                                                                </li>";
     }
 
 

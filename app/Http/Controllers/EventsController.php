@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Categories;
 use App\Models\Event;
 use App\Models\EventUser;
+use App\Models\SponsoImage;
 use App\slider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -15,7 +17,9 @@ class EventsController extends Controller
 {
     public function index()
     {
-        return view("Events.events");
+        $categories = Categories::query()->get();
+        $sponsor_images = SponsoImage::query()->get();
+        return view("Events.events", compact('categories'));
     }
 
     public function fetch()
@@ -44,8 +48,6 @@ class EventsController extends Controller
                     'event_external_link.required' => 'URL is required!',
                     'event_external_link.url' => 'Enter valid URL!',
                 ]);
-                //$event->title = ['en' => $request->title_en, 'ar' => $request->title_ar];
-                //$event->description = ['en' => $request->description_en, 'ar' => $request->description_ar];
                 if ($validator->passes()) {
                     $event = new Event();
                     $event->title = $request->title_en;
@@ -58,22 +60,13 @@ class EventsController extends Controller
                     $event->event_key = $request->event_key;
                     $event->url = $request->event_external_link;
                     $event->banner = $request->banner;
+                    $event->details_image = $request->details_image;
+                    $event->photo_gallery = $request->photo_image;
+                    $event->video_gallery = $request->video_image;
                     $event->created_at = Carbon::now();
                     $event->updated_at = Carbon::now();
-                    /*Upload images*/
-//                $sponsors_image_upload = $request->file('sponsors_image_upload');
-//                $name_sponsors_image_upload = time() . '.' . $sponsors_image_upload->getClientOriginalName();
-//                $request->desktop->move(public_path('uploadsevents'), $name_sponsors_image_upload);
-//                $event->sponsors_image = $name_sponsors_image_upload;
-                    /*$event->details_image = $request->details_image;
-                    $event->photo_gallery = $request->photo_image;
-                    $event->video_gallery = $request->video_image;*/
                     $event->save();
                     $event_fk_id = $event->id;
-                    /*$event->event_key = $event_fk_id;
-                    $event->save();*/
-                    /*Save event user*/
-                    /*Organizer*/
                     return response()->json(['success' => 'Successfully create new event', 'event' => $event]);
                 } else
                     return response()->json(['error' => $validator->errors()->toArray()]);
@@ -107,12 +100,17 @@ class EventsController extends Controller
                     $event->type = $request->event_type;
                     $event->event_key = $request->event_key;
                     $event->url = $request->event_external_link;
+                    $event->banner = $request->banner;
+                    $event->sponsors_image = $request->banner;
+                    $event->details_image = $request->details_image;
+                    $event->photo_gallery = $request->photo_image;
+                    $event->video_gallery = $request->video_image;
                     $event->created_at = Carbon::now();
                     $event->updated_at = Carbon::now();
                     $event->save();
                     $event_fk_id = $event->id;
-                    /*$event->event_key = $event_fk_id;
-                    $event->save();*/
+                    /*Create orgnizer and manager*/
+                    $event->save();
                     $event_organizer = new EventUser();
                     $event_organizer->event_fk_id = $event_fk_id;
                     $event_organizer->name = ['en' => "$request->organizer_en_name", 'ar' => "$request->organizer_ar_name"];
@@ -130,13 +128,22 @@ class EventsController extends Controller
                     $event_manager->email = $request->manager_email;
                     $event_manager->type = 1;
                     $event_manager->save();
+                    /*Create Sponsor images*/
+                    $sponsors_images_list = $request->sponsors_image;
+                    if ($sponsors_images_list != NULL) {
+                        foreach ($sponsors_images_list as $sponsors_image) {
+                            $image = new SponsoImage();
+                            $image->image = $sponsors_image;
+                            $image->event_fk_id = $event_fk_id;
+                            $image->save();
+                        }
+                    }
                     return response()->json(['success' => 'Successfully create new event']);
                 }
                 return response()->json(['user_error' => $validatorUser->errors()->toArray()]);
             }
             //return response()->json(['error' => 'Failed to create event']);
         }
-
     }
 
     /*{{--//TODO:: MOOM*EN S. ALD*AHDOUH 12/15/2021--}}*/
@@ -173,12 +180,12 @@ class EventsController extends Controller
                         'type' => $request->event_type,
                         'event_key' => $request->event_key,
                         'url' => $request->event_external_link,
+                        'details_image' => $request->details_image,
+                        'photo_gallery' => $request->photo_image,
+                        'video_gallery' => $request->video_image,
                         'updated_at' => Carbon::now(),
                     ]);
                     /*Save event user*/
-                    /*Organizer*/
-                    /*$eventId = Event::query()->find($id)->id;
-                    $event_type = Event::query()->find($id)->type;*/
                     return response()->json(['success' => 'Successfully create new event', 'event' => $event]);
                 } else
                     return response()->json(['error' => $validator->errors()->toArray()]);
@@ -211,6 +218,9 @@ class EventsController extends Controller
                         'type' => $request->event_type,
                         'event_key' => $request->event_key,
                         'url' => $request->event_external_link,
+                        'details_image' => $request->details_image,
+                        'photo_gallery' => $request->photo_image,
+                        'video_gallery' => $request->video_image,
                         'updated_at' => Carbon::now(),
                     ]);
                     $event_organizer = EventUser::query()->where("event_fk_id", $eventId)->where('type', '0')->first();
@@ -268,6 +278,16 @@ class EventsController extends Controller
                         $event_manager->type = 1;
                         $event_manager->save();
                     }
+                    /*Create Sponsor images*/
+                    $sponsors_images_list = $request->sponsors_image;
+                    if ($sponsors_images_list != NULL) {
+                        foreach ($sponsors_images_list as $sponsors_image) {
+                            $image = new SponsoImage();
+                            $image->image = $sponsors_image;
+                            $image->event_fk_id = $eventId;
+                            $image->save();
+                        }
+                    }
                     return response()->json(['success' => 'Successfully create new event']);
                 }
                 return response()->json(['user_error' => $validatorUser->errors()->toArray()]);
@@ -307,8 +327,19 @@ class EventsController extends Controller
     public function destroy(Request $request, $id)
     {
         if ($request->ajax()) {
-            $activity = Event::query()->find($id);
-            if ($activity->delete()) {
+            $event = Event::query()->find($id);
+            if ($event->delete()) {
+                return response()->json(['success' => 'success delete']);
+            }
+            return response()->json(['error' => 'failed delete']);
+        }
+    }
+
+    public function sponsor_image_destroy(Request $request, $id)
+    {
+        if ($request->ajax()) {
+            $sponsor_image = SponsoImage::query()->find($id);
+            if ($sponsor_image->delete()) {
                 return response()->json(['success' => 'success delete']);
             }
             return response()->json(['error' => 'failed delete']);
@@ -340,5 +371,11 @@ class EventsController extends Controller
             }
         }
         return response()->json(['error' => $validator->errors()->toArray()]);
+    }
+
+    public function sponsor_image(Request $request, $id)
+    {
+        $sponsor_images = SponsoImage::query()->where("event_fk_id", $id)->get();
+        return $sponsor_images;
     }
 }

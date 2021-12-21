@@ -137,8 +137,10 @@
                                                         <div class="form-group col-md-12"
                                                              style=" margin: 0; padding: 0">
                                                             <select class="form-control " id="category">
-                                                                <option value="0">Category 11</option>
-                                                                <option value="1">Category 2</option>
+                                                                @foreach($categories as $category)
+                                                                    <option
+                                                                        value="{{$category->id}}">{{$category->name}}</option>
+                                                                @endforeach
                                                             </select>
                                                         </div>
                                                     </div>
@@ -432,7 +434,8 @@
                                                                 </div>
                                                                 {{--End manager--}}
                                                             </div>
-                                                            <div class="tab-pane fade" id="nav-contact-update" role="tabpanel"
+                                                            <div class="tab-pane fade" id="nav-contact-update"
+                                                                 role="tabpanel"
                                                                  aria-labelledby="nav-attachments-tab-update">
 
                                                                 <div class="alert alert-light">
@@ -441,11 +444,33 @@
                                                                                id="sponsors-image">{{--flexSwitchCheckDefault--}}
                                                                         <label class="form-check-label"
                                                                                for="sponsors-image">Sponsors
-                                                                            image (.JPEG, .JPG, .PNG)</label>
+                                                                            logos (.JPEG, .JPG, .PNG)</label>
                                                                         <br>
-
                                                                     </div>
-                                                                    <input type='file' id="sponsors_image_upload"/>
+                                                                    <input type='file' name="file_img"
+                                                                           class="mt-2 d-none"
+                                                                           id="sponsors_image_upload"
+                                                                           accept=".pdf,.jpg, .png, image/jpeg, image/png"/>
+                                                                    <div>
+                                                                        <ul id="sponsors_list_images"
+                                                                            style="list-style-type: none;margin: 0;padding: 0;overflow: hidden">
+                                                                            {{--@foreach($sponsor_images as $image)
+                                                                                <li class="mr-3 mt-3 mb-3"
+                                                                                    style="float: left;">
+                                                                                    <ul style="list-style-type: none;margin: 0;padding: 0;overflow: hidden">
+                                                                                        <li style="float: left;">
+                                                                                            <img id="sponsors_list_images_items"
+                                                                                                 class="mr-2" width="40"
+                                                                                                 src="{{asset("uploadsevents/$image->image")}}">
+                                                                                        </li>
+                                                                                        <li style="float: left;">
+                                                                                            <button data-id="image_id" class="btn btn-sm">Remove</button>
+                                                                                        </li>
+                                                                                    </ul>
+                                                                                </li>
+                                                                            @endforeach--}}
+                                                                        </ul>
+                                                                    </div>
                                                                     <p id="sponsors_image_upload_error"
                                                                        class="text-danger"
                                                                        style="display: none"></p>
@@ -461,7 +486,11 @@
                                                                         <br>
 
                                                                     </div>
-                                                                    <input type='file' id="details_image_upload"/>
+                                                                    <input type='file' id="details_image_upload"
+                                                                           class="mt-2 d-none"
+                                                                           accept=".pdf,.jpg, .png, image/jpeg, image/png"/>
+                                                                    <img class="view_image_uploaded" width="70"
+                                                                         src="{{asset("images/event.png")}}">
                                                                     <p id="details_image_upload_error"
                                                                        class="text-danger"
                                                                        style="display: none"></p>
@@ -476,7 +505,9 @@
                                                                         <br>
 
                                                                     </div>
-                                                                    <input type='file' id="photo_gallery_upload"/>
+                                                                    <textarea class="form-control mt-2 d-none"
+                                                                              id="photo_gallery_upload"
+                                                                              rows="5"></textarea>
                                                                     <p id="photo_gallery_upload_error"
                                                                        class="text-danger"
                                                                        style="display: none"></p>
@@ -489,9 +520,10 @@
                                                                                for="video-image">Video
                                                                             gallery (.JPEG, .JPG, .PNG)</label>
                                                                         <br>
-
                                                                     </div>
-                                                                    <input type='file' id="video_gallery_upload"/>
+                                                                    <textarea class="form-control mt-2 d-none"
+                                                                              id="video_gallery_upload"
+                                                                              rows="5"></textarea>
                                                                     <p id="video_gallery_upload_error"
                                                                        class="text-danger"
                                                                        style="display: none"></p>

@@ -138,8 +138,9 @@
                                                         <div class="form-group col-md-12"
                                                              style=" margin: 0; padding: 0">
                                                             <select class="form-control " id="category">
-                                                                <option value="0">Category 11</option>
-                                                                <option value="1">Category 2</option>
+                                                                @foreach($categories as $category)
+                                                                    <option value="{{$category->id}}">{{$category->name}}</option>
+                                                                @endforeach
                                                             </select>
                                                         </div>
                                                     </div>

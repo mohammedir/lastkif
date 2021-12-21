@@ -80,6 +80,8 @@ Route::group(
         Route::get('/show/{id}', [EventsController::class, 'show'])->name('events.show');
         Route::delete('/delete/{id}', [EventsController::class, 'destroy'])->name('events.delete');
         Route::post('/upload/image', [EventsController::class, 'upload_image'])->name('events.upload_image');
+        Route::get('/{id}/sponsor/images', [EventsController::class, 'sponsor_image'])->name('events.sponsor_image');
+        Route::delete('/sponsor/image/delete/{id}', [EventsController::class, 'sponsor_image_destroy'])->name('events.sponsor_image_destroy');
     });
 
     Route::prefix('halls')->group(function () {
