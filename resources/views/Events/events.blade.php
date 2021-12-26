@@ -16,11 +16,13 @@
                     </button>
                 </div>
                 <div class="col-md-6">
-                    <div class="form-check form-switch" style="padding: 0;margin: 0">
+                    <div class="form-check form-switch float-right" style="padding: 0;margin: 0">
                         <input id="status" class="toggle-class" type="checkbox"
-                               data-onstyle="success"
-                               data-offstyle="danger" data-toggle="toggle" data-on="Active"
-                               data-off="Inactive" data-size="xs"
+                               data-onstyle="secondary"
+                               data-offstyle="primary"
+                               data-toggle="toggle"
+                               data-on="Events"
+                               data-off="Calender" data-size="xs"
                                 {{0 ? 'checked' : ''}}>
                     </div>
                 </div>
@@ -28,7 +30,26 @@
 
             <div class="card card-statistics">
                 <div class="card-body">
-                    <div id='calendar' class=" mt-3">
+                    <div id="events_table_section" class="mt-3 d-none col-md-12">
+                        <div class="table-responsive" style="padding: 30px">
+                            <table id="events_table" class="table table-bordered datatable col-md-12"
+                                   style="text-align: center; width: 100%">
+                                <thead>
+                                <tr class="border-secondary">
+                                    <th>{{trans("events.Sl-No")}}</th>
+                                    <th>{{trans("events.Title")}}</th>
+                                    <th>{{trans("events.Start")}}</th>
+                                    <th>{{trans("events.End")}}</th>
+                                    <th>{{trans("events.Type")}}</th>
+                                    <th>{{trans("events.Actions")}}</th>
+                                </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                    <div id="events_calender_section" class="mt-3">
+                        <div id='calendar'>
+                        </div>
                     </div>
                 </div>
             </div>

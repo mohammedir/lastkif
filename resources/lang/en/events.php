@@ -53,11 +53,10 @@ return [
     'success-delete' => 'success delete',
     'failed-delete' => 'failed delete',
     'Failed-to-upload' => 'Failed to upload, try again',
-    /*Validation*/
-    '' => '',
-    '' => '',
-    '' => '',
-    '' => '',
-    '' => '',
+    /*Table*/
+    'Sl-No' => '#',
+    'Title' => 'Title',
+    'Type' => 'Type',
+    'Actions' => 'Actions',
 
 ];

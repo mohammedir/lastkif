@@ -11,6 +11,7 @@
 $(function () {
     let event_type = 0;
     let event_key = "";
+    const table = $('#events_table');
     //const csrfToken = document.head.querySelector("[name=csrf-token][content]").content
     let data_external_type = $('#data-external-type');
     let data_internal_type = $('#data-internal-type');
@@ -23,6 +24,10 @@ $(function () {
     let banner_height = 0;
     let sponsor_list_uploaded = [];
     let details_image = "";
+    /*Table*/
+    let calender_events_status = 0;
+    let events_table_section = $('#events_table_section');
+    let events_calender_section = $('#events_calender_section');
 
     $(document).ready(function () {
         $.ajaxSetup({
@@ -30,19 +35,92 @@ $(function () {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             }
         });
+
         prepareCalender();
         selectEventType();
         selectEventTypeUpdate();
+        upload_image();
+        upload_image_update();
+        get_events();
+
         $('#create_event').click(function () {
             createEvent(calendar);
         });
-        upload_image();
-        upload_image_update();
         $(document).on('click', '#remove_image', function () {
             var id = $(this).data('id');
             remove_image(id);
         });
+
+
+        $('.toggle-class').change(function () {
+            calender_events_status = $(this).prop('checked') === true ? 1 : 0;
+            //console.log(calender_events_status);
+            switch (calender_events_status) {
+                case 0:
+                    console.log("type 0");
+                    events_table_section.addClass("d-none");
+                    events_calender_section.removeClass("d-none");
+                    //prepareCalender();
+                    calendar.refetchEvents();
+                    break;
+                case 1:
+                    console.log("type 1")
+                    events_table_section.removeClass("d-none");
+                    events_calender_section.addClass("d-none");
+                    table.DataTable().ajax.reload();
+                    break;
+            }
+        });
+
+        $(document).on('click', '#edit', function () {
+            var id = $(this).data('id');
+            updateEvent(id);
+            //location.href = "/halls/edit/" + id;
+        });
+
+        $(document).on('click', '#delete', function () {
+            var id = $(this).data('id');
+            $('#confirm-remove-modal').modal('show');
+            confirm_delete(id);
+        });
     });
+
+    function get_events() {
+        table.DataTable({
+            ajax: {
+                "url": "events/table",
+                "type": 'GET',
+            },
+            columns: [
+                {
+                    name: 'id',
+                }, {
+                    data: 'title',
+                    name: 'title',
+                }, {
+                    data: 'start',
+                    name: 'start',
+                }, {
+                    data: 'end',
+                    name: 'end',
+                }, {
+                    data: 'type',
+                    name: 'type',
+                }, {
+                    data: 'action',
+                    name: 'action',
+                    orderable: false,
+                    searchable: false
+                },
+            ],
+            "columnDefs": [{
+                "render": function (data, type, full, meta) {
+                    return meta.row + 1; // adds id to serial no
+                },
+                "targets": 0
+            }],
+        });
+    }
 
     function remove_image(id) {
         let item_list = $('#modal-update-event #' + id);
@@ -239,7 +317,7 @@ $(function () {
             },
             eventClick: function (info) {
                 //console.log('Event: ' + info.event.title);
-                updateEvent(calendar, info);
+                updateEvent(info.event.id);
             },
             /*select: function (date) {
                 $('#modal-alert').modal('show');
@@ -545,9 +623,9 @@ $(function () {
     }
 
 
-    function updateEvent(calendar, info) {
+    function updateEvent(id) {
         //console.log(info.event.id);
-        var id = info.event.id;
+        //var id = info.event.id;
         console.log(id)
         $('#modal-update-event').modal('show');
         eventUpdateDetailsErrorSwitchTab();
@@ -592,7 +670,7 @@ $(function () {
         //getEventData(id)
         $.ajax({
             method: "get",
-            url: "events/show/" + info.event.id,
+            url: "events/show/" + id,
             data: {
                 _token: $("input[name=_token]").val(),
             },
@@ -612,7 +690,7 @@ $(function () {
                     /*Get logos sponsor*/
                     $.ajax({
                         method: "get",
-                        url: "events/" + info.event.id + "/sponsor/images",
+                        url: "events/" + id + "/sponsor/images",
                         data: {
                             _token: $("input[name=_token]").val(),
                         },
@@ -670,7 +748,7 @@ $(function () {
         /*Get event user data*/
         $.ajax({
             method: "get",
-            url: "events/users/" + info.event.id,
+            url: "events/users/" + id,
             data: {
                 _token: $("input[name=_token]").val(),
             },
@@ -757,7 +835,7 @@ $(function () {
                 + organizer_website_name + organizer_website_url + manager_ar_name + manager_en_name + manager_phone + manager_email;
             $.ajax({
                 type: "POST",
-                url: "events/update/" + info.event.id,
+                url: "events/update/" + id,
                 data: {
                     _token: $("input[name=_token]").val(),
                     action: "update",
@@ -859,6 +937,7 @@ $(function () {
                         photo_image = "";
                         video_image = "";
                         calendar.refetchEvents();
+                        table.DataTable().ajax.reload();
                         setTimeout(function () {
                             //window.location.href = "events";
                             //location.replace(location.events);
@@ -963,6 +1042,7 @@ $(function () {
                     if (response['success']) {
                         // $('#modal-update-event').modal('toggle');
                         calendar.refetchEvents();
+                        table.DataTable().ajax.reload();
                     } else if (response['error']) {
 
                     }

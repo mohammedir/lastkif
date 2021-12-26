@@ -9,6 +9,7 @@ use App\Models\SponsoImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Validator;
+use Yajra\DataTables\DataTables;
 
 /*{{--//TODO::* MOO*MEN* S. ALD*AHDOUH* 12/15/2021 *-- *}}*/
 
@@ -19,6 +20,40 @@ class EventsController extends Controller
         $categories = Categories::query()->get();
         $sponsor_images = SponsoImage::query()->get();
         return view("Events.events", compact('categories'));
+    }
+
+    public function table(Request $request)
+    {
+        $events = Event::query()->get();
+        if ($request->ajax()) {
+            return DataTables::of($events)
+                ->addColumn('start', function ($events) {
+                    if ($events->start == NULL)
+                        return '<p>---</p>';
+                    else
+                        return '<p>' . $events->start . '</p>';
+                })
+                ->addColumn('end', function ($events) {
+                    if ($events->end == NULL)
+                        return '<p>---</p>';
+                    else
+                        return '<p>' . $events->end . '</p>';
+                })
+                ->addColumn('type', function ($events) {
+                    if ($events->type == 0)
+                        return '<p>' . trans('events.External-Event') . '</p>';
+                    else
+                        return '<p>' . trans('events.Internal-Event') . '</p>';
+                })
+                ->addColumn('action', function ($events) {
+                    $button = '<button data-id="' . $events->id . '" id="delete" class="btn btn-danger btn-sm" title="delete"><i class="fa fa-trash"></i></button>&nbsp;
+                           <button data-id="' . $events->id . '" data-type="' . $events->type . '" id="edit" class="btn btn-info btn-sm" title="settings"><i class="fa fa-edit"></i></button>';
+                    return $button;
+                })
+                ->rawColumns(['start'], ['end'], ['type'])
+                ->escapeColumns(['action' => 'action'])
+                ->make(true);
+        }
     }
 
     public function fetch()

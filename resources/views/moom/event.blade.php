@@ -24,7 +24,7 @@
             src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
 
     <link href='https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.13.1/css/all.css' rel='stylesheet'>
-<!--Calender    -->
+    <!--Calender    -->
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.css">
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/locales-all.js"></script>
@@ -82,8 +82,6 @@
                     </button>
                 </div>
             </div>
-
-
         </div>
         <div class="card-body">
             <div id='calendar' class=" mt-3">
