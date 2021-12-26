@@ -1,5 +1,5 @@
 $(function () {
-   // let status = $('.toggle-class').prop('checked') === true ? 1 : 0;
+    // let status = $('.toggle-class').prop('checked') === true ? 1 : 0;
     var hall_id = $('#hall_id').val();
     var hall_type = $('#hall_type_hidden').val();
     let data_external_type = $('#data-external-type');
@@ -30,14 +30,16 @@ $(function () {
     });
 
     function selectEventType() {
-        $('#hall_type').click(function () {
+        $('#hall_type').on('change', function () {
             hall_type = $('#hall_type').val().toString();
             switch (hall_type) {
                 case "0":
+                    console.log(hall_type);
                     data_internal_type.hide();
                     data_external_type.attr('style', 'display:block !important');
                     break;
                 case "1":
+                    console.log(hall_type);
                     data_internal_type.attr('style', 'display:block !important');
                     data_external_type.hide();
                     break;
@@ -74,18 +76,24 @@ $(function () {
             let name_ar = $('#name_ar').val();
             let name_en = $('#name_en').val();
             if (hall_type == 0) {//Internal
+                console.log(hall_type);
                 hall_url = hall_url_input.val();
             } else { //External
-                description_ar = description_ar_input.val();
-                description_en = description_en_input.val();
+
+                /*description_ar = description_ar_input.val();
+                description_en = description_en_input.val();*/
+                description_ar = CKEDITOR.instances['description_ar'].getData();
+                description_en = CKEDITOR.instances['description_en'].getData();
+                //console.log(CKEDITOR.instances['description_ar'].getData());
                 widget_name_en = widget_name_en_input.val();
                 widget_name_ar = widget_name_ar_input.val();
                 widget_value = widget_value_input.val();
             }
-            console.log(status, name_ar, name_en, hall_url, description_ar, description_en, widget_name_en, widget_name_ar, widget_value, hall_type, hall_id);
+            console.log( name_ar, name_en, hall_url, description_ar, description_en, widget_name_en, widget_name_ar, widget_value, hall_type, hall_id);
+            const language = $('#language').val();
             $.ajax({
                 type: "POST",
-                url: "/halls/update/" + hall_id,
+                url: "/" + language + "/halls/update/" + hall_id,
                 data: {
                     _token: $("input[name=_token]").val(),
                     action: "update",

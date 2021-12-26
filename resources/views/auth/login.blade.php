@@ -56,7 +56,10 @@ style="background-image: url(assets/images/login-bg.jpg);"
                     <img height="120" class="" src="{{asset("images/kifSquareLogo.png")}}" alt=""
                          style="display:block;margin:auto;">
                     <div class="mt-50">
-                        <h3 class="mb-30">تسجيل الدخول</h3>
+                        <div class="text-center">
+                            <strong class="text-center" style="color: #007bff; font-size: 25px"><label class="mb-30 text-center">تسجيل الدخول</label></strong>
+                        </div>
+
                         <form method="POST" action="{{ route('login') }}">
                             @csrf
 
@@ -86,14 +89,8 @@ style="background-image: url(assets/images/login-bg.jpg);"
                                 @enderror
 
                             </div>
-                            <div class="section-field">
-                                <div class="remember-checkbox mb-30">
-                                    <input type="checkbox" class="form-control" name="two" id="two"/>
-                                    <label for="two"> تذكرني</label>
-                                    <a href="#" class="text-primary float-right">هل نسيت كلمةالمرور ؟</a>
-                                </div>
-                            </div>
-                            <div class="text-center">
+
+                            <div class="text-center mt-5">
                                 <button class="btn btn-primary btn-lg w-50 "><span>دخول</span>&ensp;<i class="fas fa-sign-in-alt"></i></button>
                             </div>
                         </form>

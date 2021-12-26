@@ -93,7 +93,7 @@ Route::group(
         Route::delete('/delete/{id}', [HallsController::class, 'destroy'])->name('halls.destroy');
     });
 
-    Route::prefix('customusers')->group(function () {
+    Route::prefix('customusers/')->group(function () {
         Route::get('/agents/{type}', [CustomUsersController::class, 'index'])->name('customusers.agents');
         Route::get('/partners/{type}', [CustomUsersController::class, 'index'])->name('customusers.partners');
         Route::get('/managers/{type}', [CustomUsersController::class, 'index'])->name('customusers.managers');

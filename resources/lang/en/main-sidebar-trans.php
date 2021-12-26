@@ -10,7 +10,7 @@ return [
    'Users'               => 'Users',
    'Users-list'          => 'Users list',
    'Users-Permissions'   => 'Users Permissions',
-    'setting'  =>   'settings',
+    'setting'  =>   'Settings',
     'menu-sidebar'=> 'menues management',
 
 

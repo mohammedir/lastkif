@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\CustomUser;
 use Illuminate\Http\Request;
-use Illuminate\Http\Testing\File;
 use Illuminate\Support\Carbon;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\DB;
+
+//$lang = config('app.locale');
+//$language = LanguageSit($lang);
+
 
 /*{{--//TODO:: *** MOOMEN *S.* AL//DAHDOUH 12/19/2021--}}*/
 
@@ -72,11 +74,11 @@ class CustomUsersController extends Controller
                     'country_ar' => 'required:custom_users|max:255',
                     'country_en' => 'required:custom_users|max:255',
                 ], [
-                    'banner.required' => 'Agent Banner is required!',
-                    'name_ar.required' => 'Arabic agent name is required!',
-                    'name_en.required' => 'English agent name is required!',
-                    'country_ar.required' => 'Arabic country name is required!',
-                    'country_en.required' => 'English country name is required!',
+                    'banner.required' => trans('customusers.Agents-Banner-is-required'),
+                    'name_ar.required' => trans('customusers.Arabic-agent-name-is-required'),
+                    'name_en.required' => trans('customusers.English-agent-name-is-required'),
+                    'country_ar.required' => trans('customusers.Arabic-country-name-is-required'),
+                    'country_en.required' => trans('customusers.English-country-name-is-required'),
                 ]);
 
 
@@ -95,7 +97,7 @@ class CustomUsersController extends Controller
                     $data->created_at = Carbon::now();
                     $data->updated_at = Carbon::now();
                     $data->save();
-                    return response()->json(['success' => 'Successfully create Agents']);
+                    return response()->json(['success' => trans('customusers.Successfully-create-Agents')]);
                 }
                 return response()->json(['error' => $validator->errors()->toArray()]);
             }
@@ -113,11 +115,11 @@ class CustomUsersController extends Controller
                     'country_ar' => 'required:custom_users|max:255',
                     'country_en' => 'required:custom_users|max:255',
                 ], [
-                    'banner.required' => 'Partner Banner is required!',
-                    'name_ar.required' => 'Arabic partner name is required!',
-                    'name_en.required' => 'English partner name is required!',
-                    'country_ar.required' => 'Arabic country name is required!',
-                    'country_en.required' => 'English country name is required!',
+                    'banner.required' => trans('customusers.Partners-Banner-is-required'),
+                    'name_ar.required' => trans('customusers.Arabic-Partners-name-is-required'),
+                    'name_en.required' => trans('customusers.English-Partners-name-is-required'),
+                    'country_ar.required' => trans('customusers.Arabic-country-name-is-required'),
+                    'country_en.required' => trans('customusers.English-country-name-is-required'),
                 ]);
 
 
@@ -136,7 +138,7 @@ class CustomUsersController extends Controller
                     $data->created_at = Carbon::now();
                     $data->updated_at = Carbon::now();
                     $data->save();
-                    return response()->json(['success' => 'Successfully create Partner']);
+                    return response()->json(['success' => trans('customusers.Successfully-create-Partner')]);
                 }
                 return response()->json(['error' => $validator->errors()->toArray()]);
             }
@@ -145,41 +147,42 @@ class CustomUsersController extends Controller
 
     public function store_managers(Request $request)
     {
+        //$lang = new LanguageSit();
+        $lang = config('app.locale');
+        //app()->setLocale(trans('customusers.current_lang'));
         if ($request->ajax()) {
             if ($request->action == "create") {
                 $validator = Validator::make($request->all(), [
                     'banner' => 'required',
                     'name_ar' => 'required:custom_users|max:255',
                     'name_en' => 'required:custom_users|max:255',
-                    'country_ar' => 'required:custom_users|max:255',
-                    'country_en' => 'required:custom_users|max:255',
+                    'exhibition_manager' => 'required:custom_users',
                 ], [
-                    'banner.required' => 'Partner Banner is required!',
-                    'name_ar.required' => 'Arabic partner name is required!',
-                    'name_en.required' => 'English partner name is required!',
-                    'country_ar.required' => 'Arabic country name is required!',
-                    'country_en.required' => 'English country name is required!',
+                    'banner.required' => trans('customusers.Manager-Exhibition-Banner-is-required'),
+                    'name_ar.required' => trans('customusers.Arabic-Exhibition-Manager-name-is-required'),
+                    'name_en.required' => trans('customusers.English-Exhibition-Manager-name-is-required'),
+                    'exhibition_manager.required' => trans('customusers.Exhibition-Manager-is-required'),
                 ]);
-
 
                 if ($validator->passes()) {
                     $data = new CustomUser();
                     $banner = $request->banner;
                     $data->banner = $banner;
                     $data->name = ['en' => $request->name_en, 'ar' => $request->name_ar];
-                    $data->country = ['en' => $request->country_en, 'ar' => $request->country_ar];
+                    $data->position = ['en' => $request->position_en, 'ar' => $request->position_ar];
+                    $data->extension_number = $request->extension_number;
+                    $data->exhibition_manager = $request->exhibition_manager;
                     $data->email = $request->email;
                     $data->phone = $request->phone;
-                    $data->website_name = $request->website_name;
-                    $data->website_url = $request->website_url;
-                    $data->location = $request->location;
                     $data->type = $request->type;
                     $data->created_at = Carbon::now();
                     $data->updated_at = Carbon::now();
                     $data->save();
-                    return response()->json(['success' => 'Successfully create Partner']);
+                    return response()->json(['success' => trans('customusers.Successfully-create-Exhibition-Manager')]);
                 }
-                return response()->json(['error' => $validator->errors()->toArray()]);
+                //dd(Config::get('app.locale'));
+
+                return response()->json(['error' => $validator->errors()->toArray(), 'lang' => $lang]);
             }
         }
     }
@@ -192,33 +195,31 @@ class CustomUsersController extends Controller
                     'banner' => 'required',
                     'name_ar' => 'required:custom_users|max:255',
                     'name_en' => 'required:custom_users|max:255',
-                    'country_ar' => 'required:custom_users|max:255',
-                    'country_en' => 'required:custom_users|max:255',
+                    'company_ar' => 'required:custom_users|max:255',
+                    'company_en' => 'required:custom_users|max:255',
                 ], [
-                    'banner.required' => 'Partner Banner is required!',
-                    'name_ar.required' => 'Arabic partner name is required!',
-                    'name_en.required' => 'English partner name is required!',
-                    'country_ar.required' => 'Arabic country name is required!',
-                    'country_en.required' => 'English country name is required!',
+                    'banner.required' => trans('customusers.Provider-Banner-is-required'),
+                    'name_ar.required' => trans('customusers.Arabic-Service-name-is-required'),
+                    'name_en.required' => trans('customusers.English-Service-name-is-required'),
+                    'company_ar.required' => trans('customusers.Arabic-company-name-is-required'),
+                    'company_en.required' => trans('customusers.English-company-name-is-required'),
                 ]);
-
 
                 if ($validator->passes()) {
                     $data = new CustomUser();
                     $banner = $request->banner;
                     $data->banner = $banner;
                     $data->name = ['en' => $request->name_en, 'ar' => $request->name_ar];
-                    $data->country = ['en' => $request->country_en, 'ar' => $request->country_ar];
+                    $data->company_name = ['en' => $request->company_en, 'ar' => $request->company_ar];
                     $data->email = $request->email;
                     $data->phone = $request->phone;
                     $data->website_name = $request->website_name;
                     $data->website_url = $request->website_url;
-                    $data->location = $request->location;
                     $data->type = $request->type;
                     $data->created_at = Carbon::now();
                     $data->updated_at = Carbon::now();
                     $data->save();
-                    return response()->json(['success' => 'Successfully create Partner']);
+                    return response()->json(['success' => trans('customusers.Successfully-create-Partner')]);
                 }
                 return response()->json(['error' => $validator->errors()->toArray()]);
             }
@@ -244,7 +245,7 @@ class CustomUsersController extends Controller
                 $usersImage = public_path("uploadcustomuser/{$filename}"); // get previous image from folder
                 $upload_success = $data->move($path, $filename);
                 return response()->json([
-                    'success' => 'Success Uploaded banner',
+                    'success' => trans('customusers.Success-Uploaded-banner'),
                     'banner' => $filename
                 ]);
             }
@@ -279,11 +280,11 @@ class CustomUsersController extends Controller
                     'country_ar' => 'required:custom_users|max:255',
                     'country_en' => 'required:custom_users|max:255',
                 ], [
-                    'banner.required' => 'Agents Banner is required!',
-                    'name_ar.required' => 'Arabic agents name is required!',
-                    'name_en.required' => 'English agents name is required!',
-                    'country_ar.required' => 'Arabic country name is required!',
-                    'country_en.required' => 'English country name is required!',
+                    'banner.required' => trans('customusers.Agents-Banner-is-required'),
+                    'name_ar.required' => trans('customusers.Arabic-agent-name-is-required'),
+                    'name_en.required' => trans('customusers.English-agent-name-is-required'),
+                    'country_ar.required' => trans('customusers.Arabic-country-name-is-required'),
+                    'country_en.required' => trans('customusers.English-country-name-is-required'),
                 ]);
 
 
@@ -306,9 +307,9 @@ class CustomUsersController extends Controller
                          'status' => $request->status,
                      ]);*/
                     if ($data)
-                        return response()->json(['success' => "Save update succeeded"]);
+                        return response()->json(['success' => trans('customusers.Save-update-succeeded')]);
                     else
-                        return response()->json(['error' => "Save update failed, Please try again"]);
+                        return response()->json(['error' => trans('customusers.Save-update-failed')]);
                 }
                 return response()->json(['error' => $validator->errors()->toArray()]);
             }
@@ -326,11 +327,11 @@ class CustomUsersController extends Controller
                     'country_ar' => 'required:custom_users|max:255',
                     'country_en' => 'required:custom_users|max:255',
                 ], [
-                    'banner.required' => 'Agents Banner is required!',
-                    'name_ar.required' => 'Arabic agents name is required!',
-                    'name_en.required' => 'English agents name is required!',
-                    'country_ar.required' => 'Arabic country name is required!',
-                    'country_en.required' => 'English country name is required!',
+                    'banner.required' => trans('customusers.Partners-Banner-is-required'),
+                    'name_ar.required' => trans('customusers.Arabic-Partners-name-is-required'),
+                    'name_en.required' => trans('customusers.English-Partners-name-is-required'),
+                    'country_ar.required' => trans('customusers.Arabic-country-name-is-required'),
+                    'country_en.required' => trans('customusers.English-country-name-is-required'),
                 ]);
 
 
@@ -353,9 +354,9 @@ class CustomUsersController extends Controller
                          'status' => $request->status,
                      ]);*/
                     if ($data)
-                        return response()->json(['success' => "Save update succeeded"]);
+                        return response()->json(['success' => trans('customusers.Save-update-succeeded')]);
                     else
-                        return response()->json(['error' => "Save update failed, Please try again"]);
+                        return response()->json(['error' => trans('customusers.Save-update-failed')]);
                 }
                 return response()->json(['error' => $validator->errors()->toArray()]);
             }
@@ -370,14 +371,12 @@ class CustomUsersController extends Controller
                     'banner' => 'required',
                     'name_ar' => 'required:custom_users|max:255',
                     'name_en' => 'required:custom_users|max:255',
-                    'country_ar' => 'required:custom_users|max:255',
-                    'country_en' => 'required:custom_users|max:255',
+                    'exhibition_manager' => 'required:custom_users',
                 ], [
-                    'banner.required' => 'Agents Banner is required!',
-                    'name_ar.required' => 'Arabic agents name is required!',
-                    'name_en.required' => 'English agents name is required!',
-                    'country_ar.required' => 'Arabic country name is required!',
-                    'country_en.required' => 'English country name is required!',
+                    'banner.required' => trans('customusers.Manager-Exhibition-Banner-is-required'),
+                    'name_ar.required' => trans('customusers.Arabic-Exhibition-Manager-name-is-required'),
+                    'name_en.required' => trans('customusers.English-Exhibition-Manager-name-is-required'),
+                    'exhibition_manager.required' => trans('customusers.Exhibition-Manager-is-required'),
                 ]);
 
 
@@ -386,23 +385,17 @@ class CustomUsersController extends Controller
                     $banner = $request->banner;
                     $data->banner = $banner;
                     $data->name = ['en' => $request->name_en, 'ar' => $request->name_ar];
-                    $data->country = ['en' => $request->country_en, 'ar' => $request->country_ar];
+                    $data->position = ['en' => $request->position_en, 'ar' => $request->position_ar];
+                    $data->extension_number = $request->extension_number;
+                    $data->exhibition_manager = $request->exhibition_manager;
                     $data->email = $request->email;
                     $data->phone = $request->phone;
-                    $data->website_name = $request->website_name;
-                    $data->website_url = $request->website_url;
-                    $data->location = $request->location;
                     $data->updated_at = Carbon::now();
                     $data->save();
-                    /* $update = Activity::query()->find($id)->update([
-                         'name' => $request->name,
-                         'description' => $request->description,
-                         'status' => $request->status,
-                     ]);*/
                     if ($data)
-                        return response()->json(['success' => "Save update succeeded"]);
+                        return response()->json(['success' => trans('customusers.Save-update-succeeded')]);
                     else
-                        return response()->json(['error' => "Save update failed, Please try again"]);
+                        return response()->json(['error' => trans('customusers.Save-update-failed')]);
                 }
                 return response()->json(['error' => $validator->errors()->toArray()]);
             }
@@ -417,14 +410,14 @@ class CustomUsersController extends Controller
                     'banner' => 'required',
                     'name_ar' => 'required:custom_users|max:255',
                     'name_en' => 'required:custom_users|max:255',
-                    'country_ar' => 'required:custom_users|max:255',
-                    'country_en' => 'required:custom_users|max:255',
+                    'company_ar' => 'required:custom_users|max:255',
+                    'company_en' => 'required:custom_users|max:255',
                 ], [
-                    'banner.required' => 'Agents Banner is required!',
-                    'name_ar.required' => 'Arabic agents name is required!',
-                    'name_en.required' => 'English agents name is required!',
-                    'country_ar.required' => 'Arabic country name is required!',
-                    'country_en.required' => 'English country name is required!',
+                    'banner.required' => trans('customusers.Provider-Banner-is-required'),
+                    'name_ar.required' => trans('customusers.Arabic-Service-name-is-required'),
+                    'name_en.required' => trans('customusers.English-Service-name-is-required'),
+                    'company_ar.required' => trans('customusers.Arabic-company-name-is-required'),
+                    'company_en.required' => trans('customusers.English-company-name-is-required'),
                 ]);
 
 
@@ -432,13 +425,13 @@ class CustomUsersController extends Controller
                     $data = CustomUser::query()->find($id);
                     $banner = $request->banner;
                     $data->banner = $banner;
+                    $data->banner = $banner;
                     $data->name = ['en' => $request->name_en, 'ar' => $request->name_ar];
-                    $data->country = ['en' => $request->country_en, 'ar' => $request->country_ar];
+                    $data->company_name = ['en' => $request->company_en, 'ar' => $request->company_ar];
                     $data->email = $request->email;
                     $data->phone = $request->phone;
                     $data->website_name = $request->website_name;
                     $data->website_url = $request->website_url;
-                    $data->location = $request->location;
                     $data->updated_at = Carbon::now();
                     $data->save();
                     /* $update = Activity::query()->find($id)->update([
@@ -447,9 +440,9 @@ class CustomUsersController extends Controller
                          'status' => $request->status,
                      ]);*/
                     if ($data)
-                        return response()->json(['success' => "Save update succeeded"]);
+                        return response()->json(['success' => trans('customusers.Save-update-succeeded')]);
                     else
-                        return response()->json(['error' => "Save update failed, Please try again"]);
+                        return response()->json(['error' => trans('customusers.Save-update-failed')]);
                 }
                 return response()->json(['error' => $validator->errors()->toArray()]);
             }
@@ -461,11 +454,12 @@ class CustomUsersController extends Controller
         if ($request->ajax()) {
             $customuser = CustomUser::query()->find($id);
             if ($customuser->delete()) {
-                return response()->json(['success' => 'Remove succeeded']);
+                return response()->json(['success' => trans('customusers.Remove-succeeded')]);
             }
-            return response()->json(['error' => 'Remove failed!, Please try again']);
+            return response()->json(['error' => trans('customusers.Remove-failed')]);
         }
     }
 
 
 }
+

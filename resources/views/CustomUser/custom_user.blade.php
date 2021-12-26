@@ -4,35 +4,19 @@
 @section('title')
     @switch($user_type)
         @case(0)
-        Agents
+        {{trans("customusers.Agents")}}
         @break
         @case (1)
-        Partners
+        {{trans("customusers.Partners")}}
         @break
         @case (2)
-        Managers
+        {{trans("customusers.Managers")}}
         @break
         @case (3)
-        Providers
+        {{trans("customusers.Providers")}}
         @break
     @endswitch
 @stop
-@endsection
-@section('page-header')
-    <!-- breadcrumb -->
-    <div class="page-title">
-        <div class="row">
-            <div class="col-sm-6">
-            </div>
-            <div class="col-sm-6">
-                <ol class="breadcrumb pt-0 pr-0 float-left float-sm-right ">
-                    <li class="breadcrumb-item"><a href="#" class="default-color">Halls</a></li>
-                    <li class="breadcrumb-item active">Hall</li>
-                </ol>
-            </div>
-        </div>
-    </div>
-    <!-- breadcrumb -->
 @endsection
 @section('content')
     <!-- row -->
@@ -42,22 +26,22 @@
             @switch($user_type)
                 @case(0)
                 <button id="create_agents" class="btn btn-primary mb-3">
-                    Create Agents
+                    {{trans("customusers.Create-Agents")}}
                 </button>
                 @break
                 @case (1)
                 <button id="create_partners" class="btn btn-primary mb-3">
-                    Create Partners
+                    {{trans("customusers.Create-Partners")}}
                 </button>
                 @break
                 @case (2)
                 <button id="create_managers" class="btn btn-primary mb-3">
-                    Create Managers
+                    {{trans("customusers.Create-Managers")}}
                 </button>
                 @break
                 @case (3)
                 <button id="create_providers" class="btn btn-primary mb-3">
-                    Create Providers
+                    {{trans("customusers.Create-Partners")}}
                 </button>
                 @break
             @endswitch
@@ -71,12 +55,12 @@
                                    style="text-align: center">
                                 <thead>
                                 <tr>
-                                    <th>Sl No</th>
-                                    <th>Banner</th>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Phone</th>
-                                    <th>Actions</th>
+                                    <th>{{trans("customusers.Sl-No")}}</th>
+                                    <th>{{trans("customusers.Banner")}}</th>
+                                    <th>{{trans("customusers.Name")}}</th>
+                                    <th>{{trans("customusers.Email")}}</th>
+                                    <th>{{trans("customusers.Phone")}}</th>
+                                    <th>{{trans("customusers.Actions")}}</th>
                                 </tr>
                                 </thead>
                             </table>
@@ -90,6 +74,7 @@
     <!-- row closed -->
 @endsection
 @section('js')
+    @include('moom.modal_alert')
     <script src="{{ asset('js/custom_users.js') }}" defer></script>
 @endsection
 {{--{{--//TODO:: MOOME*N S. ALDAH*DOUH 12/15/2021--}}

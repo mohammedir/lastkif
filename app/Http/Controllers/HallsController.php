@@ -24,15 +24,18 @@ class HallsController extends Controller
                 ->addColumn('title', function ($halls) {
                     return '<p>' . $halls->title . '</p>';
                 })
-                ->addColumn('description', function ($halls) {
-                    return '<p>' . $halls->description . '</p>';
+                ->addColumn('type', function ($halls) {
+                    if ($halls->type == 0)
+                        return '<p>' . trans('halls.External-Hall') . '</p>';
+                    else
+                        return '<p>' . trans('halls.Internal-Hall') . '</p>';
                 })
                 ->addColumn('action', function ($halls) {
                     $button = '<button data-id="' . $halls->id . '" id="delete" class="btn btn-danger btn-sm" title="delete"><i class="fa fa-trash"></i></button>&nbsp;
                            <button data-id="' . $halls->id . '" data-type="' . $halls->type . '" id="edit" class="btn btn-info btn-sm" title="settings"><i class="fa fa-edit"></i></button>';
                     return $button;
                 })
-                ->rawColumns(['name'],  ['title'], ['description'])
+                ->rawColumns(['name'], ['title'], ['type'])
                 ->escapeColumns(['action' => 'action'])
                 ->make(true);
         }
@@ -57,10 +60,10 @@ class HallsController extends Controller
                         'name_en' => 'required:halls|max:255',
                         'hall_url' => 'required|url',
                     ], [
-                        'name_ar.required' => 'Arabic hall name is required!',
-                        'name_en.required' => 'English hall name is required!',
-                        'hall_url.required' => 'URL is required!',
-                        'hall_url.url' => 'Enter valid URL!',
+                        'name_ar.required' => trans("halls.Arabic-hall-name-is-required"),
+                        'name_en.required' => trans("halls.English-hall-name-is-required"),
+                        'hall_url.required' => trans("halls.URL-is-required"),
+                        'hall_url.url' => trans("halls.Enter-valid-URL"),
                     ]);
                 } else {
                     $validator = Validator::make($request->all(), [
@@ -69,10 +72,10 @@ class HallsController extends Controller
                         'description_ar' => 'required',
                         'description_en' => 'required',
                     ], [
-                        'name_ar.required' => 'Arabic hall name is required!',
-                        'name_en.required' => 'English hall name is required!',
-                        'description_ar.required' => 'Arabic hall description is required!',
-                        'description_en.required' => 'English hall description is required!',
+                        'name_ar.required' => trans("halls.Arabic-hall-name-is-required"),
+                        'name_en.required' => trans("halls.English-hall-name-is-required"),
+                        'description_ar.required' => trans("halls.Arabic-hall-description-is-required"),
+                        'description_en.required' => trans("halls.English hall description is required"),
                     ]);
                 }
 
@@ -84,12 +87,13 @@ class HallsController extends Controller
                         $data->url = $request->hall_url;
                     } else {
                         $data->description = ['en' => $request->description_en, 'ar' => $request->description_ar];
+                        $data->widget_value = $request->widget_value;
                         /*Crete widget*/
                         /*$wedget = widgetsTable::query()->create([
                             'title' => ['en' => $request->widget_name_en, 'ar' => $request->widget_name_ar],
                             'value' => $request->widget_value
                         ]);*/
-                        $wedget = new widgetsTable();
+                        /*$wedget = new widgetsTable();
                         $wedget->title = ['en' => $request->widget_name_en, 'ar' => $request->widget_name_ar];
                         $wedget->value = $request->widget_value;
                         $wedget->value_ar = $request->widget_value;
@@ -98,13 +102,13 @@ class HallsController extends Controller
                         $wedget->updated_at = Carbon::now();
                         $wedget->save();
                         $widget_fk_id = $wedget->id;
-                        $data->widget_fk_id = $widget_fk_id;
+                        $data->widget_fk_id = $widget_fk_id;*/
                     }
                     $data->type = $type;
                     $data->created_at = Carbon::now();
                     $data->updated_at = Carbon::now();
                     $data->save();
-                    return response()->json(['success' => 'Successfully create Agents']);
+                    return response()->json(['success' => trans("halls.Successfully-create-Hall")]);
                 }
                 return response()->json(['error' => $validator->errors()->toArray()]);
             }
@@ -132,17 +136,16 @@ class HallsController extends Controller
                 $url = "";
                 $description = "";
 
-                $wedget = widgetsTable::query()->find($data->widget->id);
                 if ($type == 0) {
                     $validator = Validator::make($request->all(), [
                         'name_ar' => 'required:halls|max:255',
                         'name_en' => 'required:halls|max:255',
                         'hall_url' => 'required|url',
                     ], [
-                        'name_ar.required' => 'Arabic hall name is required!',
-                        'name_en.required' => 'English hall name is required!',
-                        'hall_url.required' => 'URL is required!',
-                        'hall_url.url' => 'Enter valid URL!',
+                        'name_ar.required' => trans("halls.Arabic-hall-name-is-required"),
+                        'name_en.required' => trans("halls.English-hall-name-is-required"),
+                        'hall_url.required' => trans("halls.URL-is-required"),
+                        'hall_url.url' => trans("halls.Enter-valid-URL"),
                     ]);
                 } else {
                     $validator = Validator::make($request->all(), [
@@ -151,10 +154,10 @@ class HallsController extends Controller
                         'description_ar' => 'required',
                         'description_en' => 'required',
                     ], [
-                        'name_ar.required' => 'Arabic hall name is required!',
-                        'name_en.required' => 'English hall name is required!',
-                        'description_ar.required' => 'Arabic hall description is required!',
-                        'description_en.required' => 'English hall description is required!',
+                        'name_ar.required' => trans("halls.Arabic-hall-name-is-required"),
+                        'name_en.required' => trans("halls.English-hall-name-is-required"),
+                        'description_ar.required' => trans("halls.Arabic-hall-description-is-required"),
+                        'description_en.required' => trans("halls.English hall description is required"),
                     ]);
                 }
 
@@ -164,26 +167,34 @@ class HallsController extends Controller
                     if ($type == 0) {
                         $data->url = $request->hall_url;
                         $data->description = ['en' => "", 'ar' => ""];
-                        $wedget->title = ['en' => "", 'ar' => ""];
-                        $wedget->value = "";
-                        $wedget->value_ar = "";
-                        $wedget->value_en = "";
-                        $wedget->updated_at = Carbon::now();
-                        $wedget->save();
+                        $data->widget_value = $request->widget_value;
+                        /*if ($data->widget) {
+                            $wedget = widgetsTable::query()->find($data->widget->id);
+                            $wedget->title = ['en' => "", 'ar' => ""];
+                            $wedget->value = "";
+                            $wedget->value_ar = "";
+                            $wedget->value_en = "";
+                            $wedget->updated_at = Carbon::now();
+                            $wedget->save();
+                        }*/
                     } else {
                         $data->url = "";
                         $data->description = ['en' => $request->description_en, 'ar' => $request->description_ar];
-                        $wedget->title = ['en' => $request->widget_name_en, 'ar' => $request->widget_name_ar];
-                        $wedget->value = $request->widget_value;
-                        $wedget->value_ar = $request->widget_value;
-                        $wedget->value_en = $request->widget_value;
-                        $wedget->updated_at = Carbon::now();
-                        $wedget->save();
+                        $data->widget_value = $request->widget_value;
+                        /*if ($data->widget) {
+                            $wedget = widgetsTable::query()->find($data->widget->id);
+                            $wedget->title = ['en' => $request->widget_name_en, 'ar' => $request->widget_name_ar];
+                            $wedget->value = $request->widget_value;
+                            $wedget->value_ar = $request->widget_value;
+                            $wedget->value_en = $request->widget_value;
+                            $wedget->updated_at = Carbon::now();
+                            $wedget->save();
+                        }*/
                     }
                     $data->type = $type;
                     $data->updated_at = Carbon::now();
                     $data->save();
-                    return response()->json(['success' => 'Successfully create Agents']);
+                    return response()->json(['success' => trans("halls.Successfully-update-Hall")]);
                 }
                 return response()->json(['error' => $validator->errors()->toArray()]);
             }
@@ -197,9 +208,9 @@ class HallsController extends Controller
             if ($hall->widget != null)
                 $hall->widget->delete();
             if ($hall->delete()) {
-                return response()->json(['success' => 'Remove succeeded']);
+                return response()->json(['success' => trans("halls.Remove-succeeded")]);
             }
-            return response()->json(['error' => 'Remove failed!, Please try again']);
+            return response()->json(['error' => trans("halls.Remove-failed")]);
         }
     }
 }

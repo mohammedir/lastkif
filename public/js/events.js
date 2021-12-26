@@ -25,7 +25,6 @@ $(function () {
     let details_image = "";
 
     $(document).ready(function () {
-
         $.ajaxSetup({
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -38,9 +37,9 @@ $(function () {
             createEvent(calendar);
         });
         upload_image();
+        upload_image_update();
         $(document).on('click', '#remove_image', function () {
             var id = $(this).data('id');
-            console.log(id + "sdd")
             remove_image(id);
         });
     });
@@ -86,54 +85,132 @@ $(function () {
                     banner_width = tmpImg.naturalWidth;
                     banner_height = tmpImg.naturalHeight;
                 }
-                if (banner_width === 2000 || banner_height === 1000) {
-                    console.log(banner_width + "::" + banner_height);
-                    $('#banner_error').css('display', 'none');
-                    //upload
-                    let bannerUpload = new FormData();
-                    bannerUpload.append('file', this.files[0]);
-                    $.ajax({
-                        url: '/events/upload/image',
-                        data: bannerUpload,
-                        headers: {
-                            'X-CSRF-Token': $('form.hidden-image-upload [name="_token"]').val()
-                        },
-                        dataType: 'json',
-                        async: false,
-                        type: 'post',
-                        processData: false,
-                        contentType: false,
-                        success: function (response) {
-                            if (response['success']) {
-                                banner = response.banner;
-                                //$('#image_user_uploaded img').attr('src', "{{asset(uploadcustomuser/" + banner + ")}}");
-                                $('#image_user_uploaded img').attr('src', "http://127.0.0.1:8000/uploadsevents/" + banner);
-                                $('#banner_error').html(response.success);
-                                //$('#banner_error').css('color', '#002e80');
-                                $('#banner_error').removeClass("text-danger");
-                                $('#banner_error').addClass("text-primary");
-                                $('#banner_error').css('display', 'block');
-                            } else {
-                                printErrorMsg(response.error);
-                            }
+                //if (banner_width === 2000 || banner_height === 1000) {
+                console.log(banner_width + "::" + banner_height);
+                $('#banner_error').css('display', 'none');
+                //upload
+                let bannerUpload = new FormData();
+                bannerUpload.append('file', this.files[0]);
+                $.ajax({
+                    url: '/events/upload/image',
+                    data: bannerUpload,
+                    headers: {
+                        'X-CSRF-Token': $('form.hidden-image-upload [name="_token"]').val()
+                    },
+                    dataType: 'json',
+                    async: false,
+                    type: 'post',
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        if (response['success']) {
+                            banner = response.banner;
+                            //$('#image_user_uploaded img').attr('src', "{{asset(uploadcustomuser/" + banner + ")}}");
+                            $('#image_user_uploaded img').attr('src', "http://127.0.0.1:8000/uploadsevents/" + banner);
+                            $('#banner_error').html(response.success);
+                            //$('#banner_error').css('color', '#002e80');
+                            $('#banner_error').removeClass("text-danger");
+                            $('#banner_error').addClass("text-primary");
+                            $('#banner_error').css('display', 'block');
+                        } else {
+                            printErrorMsg(response.error);
                         }
-                    });
-                } else {
+                    }
+                });
+                /*} else {
                     console.log(banner_width + ":error:" + banner_height);
                     $('#banner_error').html('The valid diminutions must be 2:1, 2000*1000 px');
                     $('#banner_error').css('display', 'block');
-                }
+                    $('#banner_error').addClass("text-danger");
+                }*/
             } else {
                 $('#banner_error').html("Failed to upload, try again");
                 $('#banner_error').css('display', 'block');
+                $('#banner_error').addClass("text-danger");
             }
 
             function printErrorMsg(msg) {
                 if (msg['banner']) {
                     $('#banner_error').html(msg['banner']);
                     $('#banner_error').css('display', 'block');
+                    $('#banner_error').addClass("text-danger");
                 } else {
                     $('#banner_error').css('display', 'none');
+                }
+            }
+        });
+    }
+
+    function upload_image_update() {
+        $('#modal-update-event #banner').on('change', function (ev) {
+            $('#modal-update-event #banner_error').css('display', 'none');
+            var filedata = ev.target.files[0];
+            if (filedata) {
+                //---image preview
+                var reader = new FileReader();
+                reader.onload = function (ev) {
+                    $('#modal-update-event #user-image').attr('src', "http://127.0.0.1:8000/uploadsevents/" + ev.target.result);
+                };
+                reader.readAsDataURL(this.files[0]);
+
+                /*Image diminutions*/
+                var tmpImg = new Image();
+                tmpImg.src = window.URL.createObjectURL(filedata);
+                tmpImg.onload = function () {
+                    banner_width = tmpImg.naturalWidth;
+                    banner_height = tmpImg.naturalHeight;
+                }
+                //if (banner_width === 2000 || banner_height === 1000) {
+                console.log(banner_width + "::" + banner_height);
+                $('#banner_error').css('display', 'none');
+                //upload
+                let bannerUpload = new FormData();
+                bannerUpload.append('file', this.files[0]);
+                $.ajax({
+                    url: '/events/upload/image',
+                    data: bannerUpload,
+                    headers: {
+                        'X-CSRF-Token': $('form.hidden-image-upload [name="_token"]').val()
+                    },
+                    dataType: 'json',
+                    async: false,
+                    type: 'post',
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        if (response['success']) {
+                            banner = response.banner;
+                            //$('#image_user_uploaded img').attr('src', "{{asset(uploadcustomuser/" + banner + ")}}");
+                            $('#image_user_uploaded img').attr('src', "http://127.0.0.1:8000/uploadsevents/" + banner);
+                            $('#modal-update-event #banner_error').html(response.success);
+                            //$('#banner_error').css('color', '#002e80');
+                            $('#modal-update-event #banner_error').removeClass("text-danger");
+                            $('#modal-update-event #banner_error').addClass("text-primary");
+                            $('#modal-update-event #banner_error').css('display', 'block');
+                        } else {
+                            printErrorMsg(response.error);
+                        }
+                    }
+                });
+                /*} else {
+                    console.log(banner_width + ":error:" + banner_height);
+                    $('#modal-update-event #banner_error').html('The valid diminutions must be 2:1, 2000*1000 px');
+                    $('#modal-update-event #banner_error').css('display', 'block');
+                    $('#modal-update-event #banner_error').addClass("text-danger");
+                }*/
+            } else {
+                $('#modal-update-event #banner_error').html("Failed to upload, try again");
+                $('#modal-update-event #banner_error').css('display', 'block');
+                $('#modal-update-event #banner_error').addClass("text-danger");
+            }
+
+            function printErrorMsg(msg) {
+                if (msg['banner']) {
+                    $('#modal-update-event #banner_error').html(msg['banner']);
+                    $('#modal-update-event #banner_error').css('display', 'block');
+                    $('#modal-update-event #banner_error').addClass("text-danger");
+                } else {
+                    $('#modal-update-event #banner_error').css('display', 'none');
                 }
             }
         });
@@ -471,23 +548,7 @@ $(function () {
     function updateEvent(calendar, info) {
         //console.log(info.event.id);
         var id = info.event.id;
-        $('#delete_event').click(function () {
-            $.ajax({
-                type: "DELETE",
-                url: "/events/delete/" + id,
-                data: {
-                    _token: $("input[name=_token]").val()
-                },
-                success: function (response) {
-                    if (response['success']) {
-                        $('#modal-update-event').modal('toggle');
-                        calendar.refetchEvents();
-                    } else if (response['error']) {
-
-                    }
-                }
-            });
-        });
+        console.log(id)
         $('#modal-update-event').modal('show');
         eventUpdateDetailsErrorSwitchTab();
         /*Input*/
@@ -543,8 +604,8 @@ $(function () {
                 description_en_input.val(event.description);
                 location_input.val(event.location);
                 category_input.val(event.category_fk_id);
-                start_input.val(moment(event.start).format("YYYY-MM-DDTkk:mm"));
-                end_input.val(moment(event.end).format("YYYY-MM-DDTkk:mm"));
+                start_input.val(moment(event.start).format("YYYY-MM-DD"));
+                end_input.val(moment(event.end).format("YYYY-MM-DD"));
                 event_type_input.val(event.type);
                 if (event.sponsors_image != null) {
                     sponsors_image_upload.removeClass("d-none")
@@ -696,7 +757,7 @@ $(function () {
                 + organizer_website_name + organizer_website_url + manager_ar_name + manager_en_name + manager_phone + manager_email;
             $.ajax({
                 type: "POST",
-                url: "events/update/" + id,
+                url: "events/update/" + info.event.id,
                 data: {
                     _token: $("input[name=_token]").val(),
                     action: "update",
@@ -710,7 +771,7 @@ $(function () {
                     location: location,
                     category: category,
                     event_type: event_type,
-                    sponsors_image: sponsors_image,
+                    sponsors_image: sponsor_list_uploaded,
                     details_image: details_image,
                     photo_image: photo_image,
                     video_image: video_image,
@@ -736,6 +797,7 @@ $(function () {
                         printErrorMsg(response['user_error']);
                     } else if (response['success']) {
                         $('#modal-update-event').modal('toggle');
+                        $('#successfully-modal').modal('show');
                         title_ar_error.css('display', 'none');
                         title_en_error.css('display', 'none');
                         description_en_error.css('display', 'none');
@@ -745,7 +807,6 @@ $(function () {
                         organizer_en_name_error.css('display', 'none');
                         manager_ar_name_error.css('display', 'none');
                         manager_en_name_error.css('display', 'none');
-                        $('#successfully-modal').modal('show');
                         title_en_input.val("");
                         title_ar_input.val("");
                         description_en_input.val("");
@@ -798,6 +859,12 @@ $(function () {
                         photo_image = "";
                         video_image = "";
                         calendar.refetchEvents();
+                        setTimeout(function () {
+                            //window.location.href = "events";
+                            //location.replace(location.events);
+                            //location.reload(true)
+                            window.self.window.self.window.window.location = window.location;
+                        }, 1000);
                     }
                 }
 
@@ -876,10 +943,37 @@ $(function () {
                 }
             }
         });
+
+        $('#delete_event').click(function () {
+            $('#confirm-remove-modal').modal('show');
+            $('#modal-update-event').modal('toggle');
+            confirm_delete(id);
+        });
+    }
+
+    function confirm_delete(id) {
+        $(document).on('click', '#confirm_delete', function () {
+            $.ajax({
+                type: "DELETE",
+                url: "/events/delete/" + id,
+                data: {
+                    _token: $("input[name=_token]").val()
+                },
+                success: function (response) {
+                    if (response['success']) {
+                        // $('#modal-update-event').modal('toggle');
+                        calendar.refetchEvents();
+                    } else if (response['error']) {
+
+                    }
+                }
+            });
+
+        });
     }
 
     function selectEventType() {
-        $('#event_type').click(function () {
+        $('#event_type').on('change', function () {
             event_type = $('#event_type').val().toString();
             switch (event_type) {
                 case "0":
@@ -1165,14 +1259,14 @@ $(function () {
         let video_gallery_upload = $('#modal-update-event #video_gallery_upload');
 
         let details_image_upload_error = $('#modal-update-event #details_image_upload_error');
-
+        upload_sponsor_image_update(sponsors_image_upload);
+        upload_details_image(details_image_upload, details_image_upload_error);
         /*Sponsor*/
         sponsors_image_input.click(function () {
             sponsors_image_body_update = sponsors_list_images.html();
             if (sponsors_image_input.is(':checked')) {
                 sponsors_image_upload.removeClass("d-none");
                 sponsors_image_status = 1;
-                upload_sponsor_image_update(sponsors_image_upload);
             } else {
                 sponsors_image_upload.addClass("d-none");
                 sponsors_image_status = 0;
@@ -1185,7 +1279,7 @@ $(function () {
             if (details_image_input.is(':checked')) {
                 details_image_upload.removeClass("d-none");
                 details_image_status = 1;
-                upload_details_image(details_image_upload, details_image_upload_error);
+
             } else {
                 details_image_upload.addClass("d-none");
                 details_image_status = 0;
@@ -1222,6 +1316,7 @@ $(function () {
             var filedata = ev.target.files[0];
             if (filedata) {
                 //---image preview
+
                 var reader = new FileReader();
                 reader.onload = function (ev) {
                     //$('#modal-update-event #user-image').attr('src', ev.target.result);
@@ -1250,8 +1345,8 @@ $(function () {
                             sponsors_image_upload_error.removeClass("text-danger");
                             sponsors_image_upload_error.addClass("text-primary");
                             sponsors_image_upload_error.css('display', 'block');
-                            sponsors_image_body_update = sponsors_list_images.html();
-                            sponsors_list_images.html(sponsors_image_body_update + ifSuccessUploadSponsorLogUpdateBody(banner));
+                            sponsors_image_body_update = sponsors_list_images_update.html();
+                            sponsors_list_images_update.html(sponsors_image_body_update + ifSuccessUploadSponsorLogUpdateBody(banner));
                         } else {
                             printErrorMsg(response.error);
                         }
@@ -1333,7 +1428,7 @@ $(function () {
         return "<li class=\"mr-3 mt-3 mb-3\"\n" +
             "                                                                                style=\"float: left;\">\n" +
             "                                                                                <img id=\"sponsors_list_images_items\"\n" +
-            "                                                                                     class=\"mr-2\" width=\"60\"\n" +
+            "                                                                                     class=\"mr-2\" height=\"60\"\n" +
             "                                                                                     src=\"http://127.0.0.1:8000/uploadsevents/" + image + "\">\n" +
             "                                                                            </li>";
     }
@@ -1343,7 +1438,7 @@ $(function () {
         return "<li class=\"mr-3 mt-3 mb-3\"\n" +
             "                                                                                style=\"float: left;\">\n" +
             "                                                                                <img id=\"sponsors_list_images_items\"\n" +
-            "                                                                                     class=\"mr-2\" width=\"60\"\n" +
+            "                                                                                     class=\"mr-2\" height=\"60\"\n" +
             "                                                                                     src=\"http://127.0.0.1:8000/uploadsevents/" + image + ")}}\">\n" +
             "                                                                            </li> ";
     }

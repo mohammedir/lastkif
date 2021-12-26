@@ -6,7 +6,6 @@ use App\Models\Categories;
 use App\Models\Event;
 use App\Models\EventUser;
 use App\Models\SponsoImage;
-use App\slider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Validator;
@@ -42,11 +41,11 @@ class EventsController extends Controller
                     'event_start' => 'required',
                     'event_external_link' => 'required:events,url|url',
                 ], [
-                    'title_ar.required' => "Arabic title required",
-                    'title_en.required' => "English title required",
-                    'event_start.required' => "The date is required!",
-                    'event_external_link.required' => 'URL is required!',
-                    'event_external_link.url' => 'Enter valid URL!',
+                    'title_ar.required' => trans('events.Arabic-title-required'),
+                    'title_en.required' => trans('events.English-title-required'),
+                    'event_start.required' => trans('events.The-date-is-required'),
+                    'event_external_link.required' => trans('events.URL-is-required'),
+                    'event_external_link.url' => trans('events.Enter-valid-URL'),
                 ]);
                 if ($validator->passes()) {
                     $event = new Event();
@@ -67,9 +66,9 @@ class EventsController extends Controller
                     $event->updated_at = Carbon::now();
                     $event->save();
                     $event_fk_id = $event->id;
-                    return response()->json(['success' => 'Successfully create new event', 'event' => $event]);
+                    return response()->json(['success' => trans('events.Successfully-create-new-event'), 'event' => $event]);
                 } else
-                    return response()->json(['error' => $validator->errors()->toArray()]);
+                    return response()->json(['error' => $validator->errors()->toArray(), 'langu' => config('app.locale')]);
             } elseif ($event_type === "1") {
                 $validatorUser = Validator::make($request->all(), [
                     'event_key' => 'unique:events,event_key|max:255',
@@ -81,13 +80,13 @@ class EventsController extends Controller
                     'manager_ar_name' => 'required:event_user_details,name|max:255',
                     'manager_en_name' => 'required:event_user_details,name|max:255',
                 ], [
-                    'title_ar.required' => "Arabic title required",
-                    'title_en.required' => "English title required",
-                    'event_start.required' => "The date is required!",
-                    'organizer_ar_name.required' => "Arabic Organizer name required",
-                    'organizer_en_name.required' => "English Organizer name required",
-                    'manager_ar_name.required' => "Arabic Manager name required",
-                    'manager_en_name.required' => "English Manager name required",
+                    'title_ar.required' => trans('events.Arabic-title-required'),
+                    'title_en.required' => trans('events.English-title-required'),
+                    'event_start.required' => trans('events.The-date-is-required'),
+                    'organizer_ar_name.required' => trans('events.Arabic-Organizer-name-required'),
+                    'organizer_en_name.required' => trans('events.English-Organizer-name-required'),
+                    'manager_ar_name.required' => trans('events.Arabic-Manager-name-required'),
+                    'manager_en_name.required' => trans('events.English-Manager-name-required'),
                 ]);
                 if ($validatorUser->passes()) {
                     $event = new Event();
@@ -101,7 +100,7 @@ class EventsController extends Controller
                     $event->event_key = $request->event_key;
                     $event->url = $request->event_external_link;
                     $event->banner = $request->banner;
-                    $event->sponsors_image = $request->banner;
+                    $event->sponsors_image = "on";
                     $event->details_image = $request->details_image;
                     $event->photo_gallery = $request->photo_image;
                     $event->video_gallery = $request->video_image;
@@ -138,7 +137,7 @@ class EventsController extends Controller
                             $image->save();
                         }
                     }
-                    return response()->json(['success' => 'Successfully create new event']);
+                    return response()->json(['success' => trans('events.Successfully-create-new-event')]);
                 }
                 return response()->json(['user_error' => $validatorUser->errors()->toArray()]);
             }
@@ -161,11 +160,11 @@ class EventsController extends Controller
                     'event_start' => 'required',
                     'event_external_link' => 'required:events,url|url',
                 ], [
-                    'title_ar.required' => "Arabic title required",
-                    'title_en.required' => "English title required",
-                    'event_start.required' => "The date is required!",
-                    'event_external_link.required' => 'URL is required!',
-                    'event_external_link.url' => 'Enter valid URL!',
+                    'title_ar.required' => trans('events.Arabic-title-required'),
+                    'title_en.required' => trans('events.English-title-required'),
+                    'event_start.required' => trans('events.The-date-is-required'),
+                    'event_external_link.required' => trans('events.URL-is-required'),
+                    'event_external_link.url' => trans('events.Enter-valid-URL'),
                 ]);
                 //$event->title = ['en' => $request->title_en, 'ar' => $request->title_ar];
                 //$event->description = ['en' => $request->description_en, 'ar' => $request->description_ar];
@@ -199,13 +198,13 @@ class EventsController extends Controller
                     'manager_ar_name' => 'required:event_user_details,name|max:255',
                     'manager_en_name' => 'required:event_user_details,name|max:255',
                 ], [
-                    'title_ar.required' => "Arabic title required",
-                    'title_en.required' => "English title required",
-                    'event_start.required' => "The date is required!",
-                    'organizer_ar_name.required' => "Arabic Organizer name required",
-                    'organizer_en_name.required' => "English Organizer name required",
-                    'manager_ar_name.required' => "Arabic Manager name required",
-                    'manager_en_name.required' => "English Manager name required",
+                    'title_ar.required' => trans('events.Arabic-title-required'),
+                    'title_en.required' => trans('events.English-title-required'),
+                    'event_start.required' => trans('events.The-date-is-required'),
+                    'organizer_ar_name.required' => trans('events.Arabic-Organizer-name-required'),
+                    'organizer_en_name.required' => trans('events.English-Organizer-name-required'),
+                    'manager_ar_name.required' => trans('events.Arabic-Manager-name-required'),
+                    'manager_en_name.required' => trans('events.English-Manager-name-required'),
                 ]);
                 if ($validatorUser->passes()) {
                     $event = Event::query()->find($id)->update([
@@ -280,6 +279,7 @@ class EventsController extends Controller
                     }
                     /*Create Sponsor images*/
                     $sponsors_images_list = $request->sponsors_image;
+                    // dd($request->sponsors_image);
                     if ($sponsors_images_list != NULL) {
                         foreach ($sponsors_images_list as $sponsors_image) {
                             $image = new SponsoImage();
@@ -288,7 +288,7 @@ class EventsController extends Controller
                             $image->save();
                         }
                     }
-                    return response()->json(['success' => 'Successfully create new event']);
+                    return response()->json(['success' => trans('events.Successfully-create-new-event')]);
                 }
                 return response()->json(['user_error' => $validatorUser->errors()->toArray()]);
             }
@@ -329,9 +329,9 @@ class EventsController extends Controller
         if ($request->ajax()) {
             $event = Event::query()->find($id);
             if ($event->delete()) {
-                return response()->json(['success' => 'success delete']);
+                return response()->json(['success' => trans('events.success-delete')]);
             }
-            return response()->json(['error' => 'failed delete']);
+            return response()->json(['error' => trans('events.failed-delete')]);
         }
     }
 
@@ -340,9 +340,9 @@ class EventsController extends Controller
         if ($request->ajax()) {
             $sponsor_image = SponsoImage::query()->find($id);
             if ($sponsor_image->delete()) {
-                return response()->json(['success' => 'success delete']);
+                return response()->json(['success' => trans('events.success-delete')]);
             }
-            return response()->json(['error' => 'failed delete']);
+            return response()->json(['error' => trans('events.failed-delete')]);
         }
     }
 
@@ -365,7 +365,7 @@ class EventsController extends Controller
                 $usersImage = public_path("uploadsevents/{$filename}"); // get previous image from folder
                 $upload_success = $data->move($path, $filename);
                 return response()->json([
-                    'success' => 'Success Uploaded banner',
+                    'success' => trans('events.Success-Uploaded-banner'),
                     'banner' => $filename
                 ]);
             }

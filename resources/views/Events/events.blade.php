@@ -2,32 +2,29 @@
 @section('css')
 
 @section('title')
-    Events
+    {{trans('events.Events')}}
 @stop
-@endsection
-@section('page-header')
-    <!-- breadcrumb -->
-    <div class="page-title">
-        <div class="row">
-            <div class="col-sm-6">
-            </div>
-            <div class="col-sm-6">
-                <ol class="breadcrumb pt-0 pr-0 float-left float-sm-right ">
-                    <li class="breadcrumb-item"><a href="#" class="default-color">Home</a></li>
-                    <li class="breadcrumb-item active">Page Title</li>
-                </ol>
-            </div>
-        </div>
-    </div>
-    <!-- breadcrumb -->
 @endsection
 @section('content')
     <!-- row -->
     <div class="row">
         <div class="col-md-12 mb-30">
-            <button id="create_event" class="btn btn-primary mb-3">
-                Create Event
-            </button>
+            <div class="row">
+                <div class="col-md-6">
+                    <button id="create_event" class="btn btn-primary mb-3">
+                        {{trans('events.Create-Event')}}
+                    </button>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-check form-switch" style="padding: 0;margin: 0">
+                        <input id="status" class="toggle-class" type="checkbox"
+                               data-onstyle="success"
+                               data-offstyle="danger" data-toggle="toggle" data-on="Active"
+                               data-off="Inactive" data-size="xs"
+                                {{0 ? 'checked' : ''}}>
+                    </div>
+                </div>
+            </div>
 
             <div class="card card-statistics">
                 <div class="card-body">

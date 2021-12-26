@@ -2,25 +2,8 @@
 @section('css')
 
 @section('title')
-    Create Hall
+    {{trans("halls.Create-Halls")}}
 @stop
-@endsection
-@section('page-header')
-    <!-- breadcrumb -->
-    {{--//TODO:: MO*OMEN S. ALDAHDOU*H 12/15/2021--}}
-    <div class="page-title">
-        <div class="row">
-            <div class="col-sm-6">
-            </div>
-            <div class="col-sm-6">
-                <ol class="breadcrumb pt-0 pr-0 float-left float-sm-right ">
-                    <li class="breadcrumb-item"><a href="#" class="default-color">Home</a></li>
-                    <li class="breadcrumb-item active">Page Title</li>
-                </ol>
-            </div>
-        </div>
-    </div>
-    <!-- breadcrumb -->
 @endsection
 @section('content')
     <!-- row -->
@@ -30,7 +13,8 @@
                 <div class="card-body">
                     <div class="mt-3">
                         <div class="card-header alert alert-light">
-                            <strong><i class="far fa-caret-square-right"></i> Hall Details</strong>
+                            <input type="hidden" id="language" value="{{config('app.locale')}}">
+                            <strong><i class="far fa-caret-square-right"></i> {{trans("halls.Hall-Details")}}</strong>
                             <div class="mt-4">
                                 <ul class="ul-project" style="list-style-type: none; margin: 0; padding: 0">
                                     <li>
@@ -41,7 +25,8 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div>
-                                                    <h6>Name (Arabic)<strong class="text-danger">*</strong></h6>
+                                                    <p>{{trans("halls.Name-ar")}}<strong class="text-danger">*</strong>
+                                                    </p>
                                                 </div>
                                                 <input class="form-control" id="name_ar" type="text">
                                                 <p id="name_ar_error" class="text-danger"
@@ -49,7 +34,8 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <div>
-                                                    <h6>Name (English)<strong class="text-danger">*</strong></h6>
+                                                    <p>{{trans("halls.Name-en")}}<strong class="text-danger">*</strong>
+                                                    </p>
                                                 </div>
                                                 <input class="form-control" id="name_en" type="text">
                                                 <p id="name_en_error" class="text-danger"
@@ -60,16 +46,15 @@
                                     <br>
                                     <li>
                                         <div>
-                                            <h6>
-                                                <i class="las la-hand-pointer text-primary"></i>Hall type
-                                            </h6>
+                                            <p></i>{{trans("halls.Hall-type")}}
+                                                </h6>
                                             <div class=""
                                                  style=" margin: 0">
                                                 <div class="form-group col-md-6"
                                                      style=" margin: 0; padding: 0">
                                                     <select class="alert alert-secondary " id="hall_type">
-                                                        <option value="0">External Hall</option>
-                                                        <option value="1">Internal Hall</option>
+                                                        <option value="0">{{trans("halls.External-Hall")}}</option>
+                                                        <option value="1">{{trans("halls.Internal-Hall")}}</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -82,17 +67,17 @@
                                             <ul class="list-group-item" style="list-style-type: none">
                                                 <li>
                                                     <div>
-                                                        <strong>
-                                                            <i class="las la-link text-primary"></i><strong
-                                                                class="text-danger">*</strong>Link
-                                                        </strong>
+                                                        <p>{{trans("halls.Link")}}
+                                                            <strong
+                                                                    class="text-danger">*</strong>
+                                                        </p>
                                                         <div class="input-group rounded-md  ">
                                                             <span class="input-group-text"><i
-                                                                    class="fas fa-link"></i></span>
+                                                                        class="fas fa-link"></i></span>
                                                             <input
-                                                                class="form-control col-md-12"
-                                                                id="url" name="url" type="url"
-                                                                placeholder="URL (required)">
+                                                                    class="form-control col-md-12"
+                                                                    id="url" name="url" type="url"
+                                                                    placeholder="">
                                                         </div>
                                                         <p id="url_error" class="text-danger"
                                                            style="display: none"></p>
@@ -103,47 +88,54 @@
                                         <div id="data-internal-type" class="d-none">
                                             <ul class="list-group-item" style="list-style-type: none">
                                                 <li>
-                                                    <div class="row">
-                                                        <div class="col-md-6">
-                                                            <div>
-                                                                <h6>Description (Arabic)<strong class="text-danger">*</strong></h6>
-                                                            </div>
-                                                            <textarea rows="3" class="form-control" id="description_ar"
-                                                                      type="text"></textarea>
-                                                            <p id="description_ar_error" class="text-danger"
-                                                               style="display: none"></p>
+                                                    <div class="">
+                                                        <div>
+                                                            <p>{{trans("halls.Description-ar")}}<strong
+                                                                        class="text-danger">*</strong></p>
                                                         </div>
-                                                        <div class="col-md-6">
-                                                            <div>
-                                                                <h6>Description (English)<strong class="text-danger">*</strong></h6>
-                                                            </div>
-                                                            <textarea rows="3" class="form-control" id="description_en"
-                                                                      type="text"></textarea>
-                                                            <p id="description_en_error" class="text-danger"
-                                                               style="display: none"></p>
-                                                        </div>
+                                                        <textarea rows="3" class=" ckeditor form-control"
+                                                                  id="description_ar"
+                                                                  type="text"></textarea>
+                                                        <p id="description_ar_error" class="text-danger"
+                                                           style="display: none"></p>
                                                     </div>
                                                 </li>
                                                 <br>
                                                 <li>
-                                                    <div class="row">
-                                                        <div class="col-md-6">
-                                                            <h6>Hall gallery widget Name(English)</h6>
-                                                            <input class="form-control" id="widget_name_en" type="text">
-                                                            <p id="widget_name_en_error" class="text-danger"
-                                                               style="display: none"></p>
+                                                    <div class="">
+                                                        <div>
+                                                            <p>{{trans("halls.Description-en")}}<strong
+                                                                        class="text-danger">*</strong></p>
                                                         </div>
-                                                        <div class="col-md-6">
-                                                            <h6>Hall gallery widget Name(Arabic)</h6>
-                                                            <input class="form-control" id="widget_name_ar" type="text">
-                                                            <p id="widget_name_ar_error" class="text-danger"
-                                                               style="display: none"></p>
-                                                        </div>
+                                                        <textarea rows="3" class="ckeditor form-control"
+                                                                  id="description_en"
+                                                                  type="text"></textarea>
+                                                        <p id="description_en_error" class="text-danger"
+                                                           style="display: none"></p>
                                                     </div>
+                                                </li>
+                                                <br>
+                                                <li>
+                                                    <!--                                                    <div class="row">
+                                                                                                            <div class="col-md-6">
+                                                                                                                <p>Hall gallery widget Name(English)</h6>
+                                                                                                                <input class="form-control" id="widget_name_en" type="text">
+                                                                                                                <p id="widget_name_en_error" class="text-danger"
+                                                                                                                   style="display: none"></p>
+                                                                                                            </div>
+                                                                                                            <div class="col-md-6">
+                                                                                                                <p>Hall gallery widget Name(Arabic)</h6>
+                                                                                                                <input class="form-control" id="widget_name_ar" type="text">
+                                                                                                                <p id="widget_name_ar_error" class="text-danger"
+                                                                                                                   style="display: none"></p>
+                                                                                                            </div>
+                                                                                                        </div>-->
                                                     <br>
                                                     <!-- Page Value-->
                                                     <div class="form-group">
-                                                        <h6>Hall gallery widget</h6>
+                                                        <p>{{trans("halls.Hall-gallery")}}
+                                                            <strong>{{trans("halls.Elfsight")}}</strong></p>
+
                                                         <textarea class="form-control"
                                                                   id="widget_value"
                                                                   rows="10"></textarea>
@@ -155,8 +147,7 @@
                                     <br>
                                     <br>
                                     <li class="text-center">
-                                        <button id="create-halls" class="btn btn-primary"><i
-                                                class="lar la-save"></i> Create
+                                        <button id="create-halls" class="btn btn-primary"> {{trans("halls.Create")}}
                                         </button>
                                     </li>
                                 </ul>
@@ -171,5 +162,6 @@
 @endsection
 @section('js')
     @include('moom.modal_alert')
+    <script src="//cdn.ckeditor.com/4.14.1/standard/ckeditor.js"></script>
     <script src="{{ asset('js/create_halls.js') }}" defer></script>
 @endsection

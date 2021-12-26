@@ -11,7 +11,7 @@ class CustomUser extends Model
     //use HasFactory;
     use HasTranslations;
 
-    public $translatable = ['name', 'country'];
+    public $translatable = ['name', 'country','position','company_name'];
     protected $table = "custom_users";
     protected $guarded = [];
     public $timestamps = false;

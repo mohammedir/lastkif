@@ -2,26 +2,10 @@
 @section('css')
     {{--{{--//TODO:: MOOM*EN S. ALDAHDO*UH 12/15/2021--}}
 @section('title')
-    Edit Agent
+    {{trans("customusers.Edit-Agent")}}
 @stop
 @endsection
-@section('page-header')
-    <!-- breadcrumb -->
-    <div class="page-title">
-        <div class="row">
-            <div class="col-sm-6">
-                <!--                <h1 class="fs-1">EDIT AGENTS</h1>-->
-            </div>
-            <div class="col-sm-6">
-                <ol class="breadcrumb pt-0 pr-0 float-left float-sm-right ">
-                    <li class="breadcrumb-item"><a href="#" class="default-color">Halls</a></li>
-                    <li class="breadcrumb-item active">Hall</li>
-                </ol>
-            </div>
-        </div>
-    </div>
-    <!-- breadcrumb -->
-@endsection
+
 @section('content')
     <!-- row -->
     <div class="row">
@@ -31,7 +15,8 @@
                 <div class="card-body">
                     <div class="mt-3">
                         <div class="card-header alert alert-light">
-                            <strong><i class="far fa-caret-square-right"></i> Agent Details</strong>
+                            <input type="hidden" id="language" value="{{config('app.locale')}}">
+                            <strong><i class="far fa-caret-square-right"></i> {{trans("customusers.Agent-Details")}}</strong>
                             <div class="mt-4">
                                 <ul class="ul-project" style="list-style-type: none; margin: 0; padding: 0">
                                     <li>
@@ -46,7 +31,7 @@
                                                      src="{{asset("uploadcustomuser/$customuser->banner")}}">
                                             </div>
                                             <br>
-                                            <p>agent banner ratio 2:1 (.jpeg, .png, .jpg)</p>
+                                            <p>{{trans("customusers.agent-banner-ratio")}}</p>
                                             <form class="hidden-image-upload">
                                                 {{csrf_field()}}
                                                 <input name="_token" type="hidden"
@@ -67,7 +52,7 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div>
-                                                    <h6>Name (Arabic)<strong class="text-danger">*</strong></h6>
+                                                    <p>{{trans("customusers.Name-ar")}}<strong class="text-danger">*</strong></p>
                                                 </div>
                                                 <input class="form-control" id="name_ar" type="text"
                                                        value="{{@$customuser->getTranslation('name', 'ar')}}">
@@ -76,7 +61,7 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <div>
-                                                    <h6>Name (English)<strong class="text-danger">*</strong></h6>
+                                                    <p>{{trans("customusers.Name-en")}}<strong class="text-danger">*</strong></p>
                                                 </div>
                                                 <input class="form-control" id="name_en" type="text"
                                                        value="{{@$customuser->getTranslation('name', 'en')}}">
@@ -90,7 +75,7 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div>
-                                                    <h6>Country (Arabic)<strong class="text-danger">*</strong></h6>
+                                                    <p>{{trans("customusers.Country-ar")}}<strong class="text-danger">*</strong></p>
                                                 </div>
                                                 <input class="form-control" id="country_ar" type="text"
                                                        value="{{@$customuser->getTranslation('country', 'ar')}}">
@@ -99,7 +84,7 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <div>
-                                                    <h6>Country (English)<strong class="text-danger">*</strong></h6>
+                                                    <p>{{trans("customusers.Country-en")}}<strong class="text-danger">*</strong></p>
                                                 </div>
                                                 <input class="form-control" id="country_en" type="text"
                                                        value="{{@$customuser->getTranslation('country', 'en')}}">
@@ -112,7 +97,7 @@
                                     <li>
                                         <div>
                                             <div>
-                                                <h6>Email </h6>
+                                                <p>{{trans("customusers.Email")}} </p>
                                             </div>
                                             <input class="form-control" id="email" type="email"
                                                    value="{{$customuser->email}}">
@@ -122,7 +107,7 @@
                                     <li>
                                         <div>
                                             <div>
-                                                <h6>Phone </h6>
+                                                <p>{{trans("customusers.Phone")}} </p>
                                             </div>
                                             <input class="form-control" id="phone" type="text"
                                                    value="{{$customuser->phone}}">
@@ -132,7 +117,7 @@
                                     <li>
                                         <div>
                                             <div>
-                                                <h6>Website name </h6>
+                                                <p>{{trans("customusers.Website-name")}} </p>
                                             </div>
                                             <input class="form-control" id="website_name" type="text"
                                                    value="{{$customuser->website_name}}">
@@ -142,7 +127,7 @@
                                     <li>
                                         <div>
                                             <div>
-                                                <h6>Website URL </h6>
+                                                <p>{{trans("customusers.Website-URL")}}</p>
                                             </div>
                                             <input class="form-control" id="website_url" type="url"
                                                    value="{{$customuser->website_url}}">
@@ -152,14 +137,14 @@
                                     <li>
                                         <div>
                                             <div>
-                                                <h6>Location </h6>
+                                                <p>{{trans("customusers.Location")}} </p>
                                             </div>
                                             <input class="form-control" id="location" type="text"
                                                    value="{{$customuser->location}}">
                                         </div>
                                     </li>
                                     <br>
-<!--                                    <li>
+                                <!--                                    <li>
                                         <div>
                                             <h4>
                                                 <i class="las la-toggle-off text-primary"></i>&nbsp;Status
@@ -177,7 +162,7 @@
                                     <br>
                                     <li class="text-center">
                                         <button id="update-agents" class="btn btn-primary"><i
-                                                class="lar la-save"></i> Save
+                                                class="lar la-save"></i> {{trans("customusers.Save")}}
                                         </button>
                                     </li>
                                 </ul>
@@ -187,7 +172,7 @@
                     <br>
                     <br>
                     {{--Section Remove project--}}
-                    <div class="row">
+<!--                    <div class="row">
                         <div class="col-md-12">
                             <div class="card shadow">
                                 <div class="row alert alert-danger text-dark"
@@ -207,7 +192,7 @@
                         </div>
                         <br>
                         <input type="hidden" value="0" id="is_user_page">
-                    </div>
+                    </div>-->
                 </div>
 
 

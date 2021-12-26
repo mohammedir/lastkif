@@ -13,7 +13,7 @@ $(function () {
 
         $(document).on('click', '#delete', function () {
             var id = $(this).data('id');
-            delete_hall(id);
+            confirm_delete(id);
         });
 
         /*Create custom user*/
@@ -27,9 +27,21 @@ $(function () {
         });
     });
 
+    function confirm_delete(id) {
+        $('#confirm-remove-modal').modal('show');
+        $(document).on('click', '#confirm_delete', function () {
+            delete_hall(id);
+        });
+    }
+
     /*{{--//TODO:: MOOM**EN S. ALDA**HDOUH 12/15/2021--}}*/
     function get_halls() {
         table.DataTable({
+            /*processing: true,
+           serverSide: true,
+           pageLength: 10,
+           sDom: 'lrtip',
+           "order": [[0, "desc"]],*/
             ajax: {
                 "url": "halls",
                 "type": 'GET',
@@ -43,12 +55,6 @@ $(function () {
                 }, {
                     data: 'title',
                     name: 'title',
-                }, {
-                    data: 'description',
-                    name: 'description',
-                }, {
-                    data: 'url',
-                    name: 'url',
                 }, {
                     data: 'type',
                     name: 'type',

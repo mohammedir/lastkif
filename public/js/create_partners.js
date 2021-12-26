@@ -1,6 +1,9 @@
 /*start Project Setting and edit*/
 $(function () {
     let banner = "";
+    let banner_width = 0;
+    let banner_height = 0;
+    let banner_response = 0;
     $(document).ready(function () {
         $("#name_ar").focus();
         create_user();
@@ -14,44 +17,86 @@ $(function () {
             if (filedata) {
                 //---image preview
                 var reader = new FileReader();
-                reader.onload = function (ev) {
+                /*reader.onload = function (ev) {
                     $('#user-image').attr('src', ev.target.result);
-                };
-                reader.readAsDataURL(this.files[0]);
+                };*/
+                //reader.readAsDataURL(this.files[0]);
+                /*Image diminutions*/
+                var tmpImg = new Image();
+                tmpImg.src = window.URL.createObjectURL(filedata);
+                tmpImg.onload = function () {
+                    banner_width = tmpImg.width;
+                    banner_height = tmpImg.height;
+                }
                 /// preview end
                 //upload
-                let bannerUpload = new FormData();
-                bannerUpload.append('file', this.files[0]);
-                console.log(bannerUpload);
-                $.ajax({
-                    url: '/customusers/upload/image',
-                    data: bannerUpload,
-                    headers: {
-                        'X-CSRF-Token': $('form.hidden-image-upload [name="_token"]').val()
-                    },
-                    dataType: 'json',
-                    async: false,
-                    type: 'post',
-                    processData: false,
-                    contentType: false,
-                    success: function (response) {
-                        console.log("success");
-                        banner = response.banner;
-                        $('#image_user_uploaded img').attr('src', "{{asset(uploadcustomuser/" + banner + ")}}");
-                        $('#banner_error').html(response.success);
-                        $('#banner_error').removeClass("text-danger");
-                        $('#banner_error').addClass("text-primary");
-                        $('#banner_error').css('display', 'block');
-                    }
-                });
+                let check_dim = banner_height * 2;
+                console.log(banner_width + "::" + banner_height);
+                //if (check_dim === banner_width) {
+                    console.log(check_dim);
+                    let bannerUpload = new FormData();
+                    bannerUpload.append('file', this.files[0]);
+                    console.log(bannerUpload);
+                    const language = $('#language').val();
+                    $.ajax({
+                        url: "/" + language + '/customusers/upload/image',
+                        data: bannerUpload,
+                        headers: {
+                            'X-CSRF-Token': $('form.hidden-image-upload [name="_token"]').val()
+                        },
+                        dataType: 'json',
+                        async: false,
+                        type: 'post',
+                        processData: false,
+                        contentType: false,
+                        success: function (response) {
+                            banner_response = response;
+                            if (response['success']) {
+                                banner_width = 0;
+                                banner_height = 0;
+                                banner = response.banner;
+                                $('#image_user_uploaded img').attr('src', "http://127.0.0.1:8000/uploadcustomuser/" + banner);
+                                $('#banner_error').html(response.success);
+                                //$('#banner_error').css('color', '#002e80');
+                                $('#banner_error').removeClass("text-danger");
+                                $('#banner_error').addClass("text-primary");
+                                $('#banner_error').css('display', 'block');
+                            } else {
+                                banner_width = 0;
+                                banner_height = 0;
+                                printErrorMsg(response.error);
+                            }
+                        }
+                    });
+                /*} else {
+                    //Error diminutions
+                    banner_width = 0;
+                    banner_height = 0;
+                    if (language == "en")
+                        $('#banner_error').html("The image dimensions must be in 2:1");
+                    else
+                        $('#banner_error').html("أبعاد الصورة يجب أن تكون 2:1");
+                    $('#banner_error').addClass("text-danger");
+                    $('#banner_error').removeClass("text-primary");
+                    $('#banner_error').css('display', 'block');
+                }*/
             } else {
-                console.log("failed");
-                printErrorMsg(response.error);
+                banner_width = 0;
+                banner_height = 0;
+                if (language == "en")
+                    $('#banner_error').html("Failed to upload, try again");
+                else
+                    $('#banner_error').html("فشل تحميل الصورة حاول مرة أخرى");
+                $('#banner_error').addClass("text-danger");
+                $('#banner_error').removeClass("text-primary");
+                $('#banner_error').css('display', 'block');
             }
 
             function printErrorMsg(msg) {
                 if (msg['banner']) {
                     $('#banner_error').html(msg['banner']);
+                    $('#banner_error').addClass("text-danger");
+                    $('#banner_error').removeClass("text-primary");
                     $('#banner_error').css('display', 'block');
                 } else {
                     $('#banner_error').css('display', 'none');
@@ -71,7 +116,7 @@ $(function () {
         name_en_error.css('display', 'none');
         country_ar_error.css('display', 'none');
         country_en_error.css('display', 'none');
-
+        const language = $('#language').val();
         $('#create-partners').click(function () {
             //const banner = $('#banner').val();
             const name_ar = $('#name_ar').val();
@@ -85,7 +130,7 @@ $(function () {
             const location = $('#location').val();
             $.ajax({
                 type: "POST",
-                url: "/customusers/store/partners",
+                url: "/" + language +"/customusers/store/partners",
                 data: {
                     _token: $("input[name=_token]").val(),
                     action: "create",

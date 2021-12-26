@@ -23362,8 +23362,8 @@ textarea.form-control {
   color: #626262; }
 
 .pagination .page-item.active .page-link {
-  background: #84ba3f;
-  border-color: #84ba3f;
+  background: #007bff;
+  border-color: #007bff;
   color: #ffffff; }
 
 /* style-customizer */
@@ -23861,3 +23861,21 @@ div.style-customizer .content-chooser input[type=radio]:checked ~ label {
     padding: 6px 19px !important; }
   .fc-right .fc-button-group .fc-button {
     padding: 6px 13px !important; } }
+
+/*--------------------------------------*/
+#sidebarnav li a:hover{
+  color: #007bff;
+  background-color: #FFF;
+  border-radius: 10px;
+  transform: translateX(-1em);
+}
+/*----------------*/
+.fc-daygrid-event-harness a{
+  color: #FFFFFF;
+  background-color: #007bff;
+}
+
+.fc-daygrid-event-harness a:hover{
+  color: #007bff;
+  background-color: #deebfc;
+}

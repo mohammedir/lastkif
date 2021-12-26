@@ -11,7 +11,7 @@ $(function () {
     });
 
     function selectEventType() {
-        $('#hall_type').click(function () {
+        $('#hall_type').on('change', function () {
             hall_type = $('#hall_type').val().toString();
             switch (hall_type) {
                 case "0":
@@ -49,20 +49,27 @@ $(function () {
             let widget_value = "";
             const name_ar = $('#name_ar').val();
             const name_en = $('#name_en').val();
-            if (hall_type === 0) {//Internal
-                hall_url = $('#url').val();
-                console.log("url:" + hall_url)
-            } else { //External
-                description_ar = $('#description_ar').val();
-                description_en = $('#description_en').val();
-                widget_name_en = $('#widget_name_en').val();
-                widget_name_ar = $('#widget_name_ar').val();
-                widget_value = $('#widget_value').val();
+            console.log(hall_type);
+            switch (hall_type) {
+                case "0"://Internal
+                    console.log("Sass" + hall_type);
+                    hall_url = $('#url').val();
+                    break;
+                case "1"://External
+                    console.log("Sass" + hall_type);
+                    /*description_ar = $('#description_ar').val();
+                    description_en = $('#description_en').val();*/
+                    description_ar = CKEDITOR.instances['description_ar'].getData();
+                    description_en = CKEDITOR.instances['description_en'].getData();
+                    widget_name_en = $('#widget_name_en').val();
+                    widget_name_ar = $('#widget_name_ar').val();
+                    widget_value = $('#widget_value').val();
             }
-            console.log(hall_type, name_ar, name_en, hall_url, description_ar, description_en, widget_name_en, widget_name_ar, widget_value)
+            // console.log(hall_type, name_ar, name_en, hall_url, description_ar, description_en, widget_name_en, widget_name_ar, widget_value)
+            const language = $('#language').val();
             $.ajax({
                 type: "POST",
-                url: "/halls/store",
+                url: "/" + language + "/halls/store",
                 data: {
                     _token: $("input[name=_token]").val(),
                     action: "create",
@@ -86,8 +93,10 @@ $(function () {
                         $('#name_ar').val("");
                         $('#name_en').val("");
                         $('#url').val("");
-                        $('#description_ar').val("");
-                        $('#description_en').val("");
+                        /*$('#description_ar').val("");
+                        $('#description_en').val("");*/
+                        CKEDITOR.instances['description_ar'].setData('');
+                        CKEDITOR.instances['description_en'].setData('');
                         $('#widget_name_en').val("");
                         $('#widget_name_ar').val("");
                         $('#widget_value').val("");

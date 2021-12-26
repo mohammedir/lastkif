@@ -20,7 +20,9 @@ $(function () {
 
         $(document).on('click', '#delete', function () {
             var id = $(this).data('id');
-            delete_user(id);
+            console.log(id)
+            confirm_delete(id);
+
         });
 
         /*Create custom user*/
@@ -42,6 +44,13 @@ $(function () {
             delete_user(user_id)
         });
     })
+
+    function confirm_delete(id) {
+        $('#confirm-remove-modal').modal('show');
+        $(document).on('click', '#confirm_delete', function () {
+            delete_user(id);
+        });
+    }
 
     /*{{--//TODO:: MOOM**EN S. ALDA**HDOUH 12/15/2021--}}*/
     function get_users() {
@@ -83,7 +92,7 @@ $(function () {
                 }, {
                     data: 'phone',
                     name: 'phone',
-                },  {
+                }, {
                     data: 'action',
                     name: 'action',
                     orderable: false,
