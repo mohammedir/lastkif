@@ -33,3 +33,8 @@ Calender
 @else
     <link href="{{ URL::asset('assets/css/rtl.css') }}" rel="stylesheet">
 @endif
+
+{{--Tags--}}
+<!-- Bootstrap Tags Input CDN -->
+<link rel='stylesheet'
+      href='https://bootstrap-tagsinput.github.io/bootstrap-tagsinput/dist/bootstrap-tagsinput.css'>

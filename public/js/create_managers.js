@@ -8,7 +8,27 @@ $(function () {
         $("#name_ar").focus();
         create_user();
         upload_image();
+        tags();
     });
+
+    function tags() {
+        $('#exhibition_manager').on('change', function (event) {
+
+            var $element = $(event.target);
+            var $container = $element.closest('.example');
+            if (!$element.data('tagsinput'))
+                return;
+
+            var val = $element.val();
+            if (val === null)
+                val = "null";
+            var items = $element.tagsinput('items');
+            console.log(items);
+            console.log(val);
+            $('code', $('pre.val', $container)).html(($.isArray(val) ? JSON.stringify(val) : "\"" + val.replace('"', '\\"') + "\""));
+            $('code', $('pre.items', $container)).html(JSON.stringify($element.tagsinput('items')));
+        }).trigger('change');
+    }
 
     function upload_image() {
         $('#banner').on('change', function (ev) {
@@ -31,40 +51,40 @@ $(function () {
                 /// preview end
                 //upload
                 //if (banner_height === banner_width) {
-                    let bannerUpload = new FormData();
-                    bannerUpload.append('file', this.files[0]);
-                    console.log(bannerUpload);
-                    const language = $('#language').val();
-                    $.ajax({
-                        url: "/" + language + '/customusers/upload/image',
-                        data: bannerUpload,
-                        headers: {
-                            'X-CSRF-Token': $('form.hidden-image-upload [name="_token"]').val()
-                        },
-                        dataType: 'json',
-                        async: false,
-                        type: 'post',
-                        processData: false,
-                        contentType: false,
-                        success: function (response) {
-                            banner_response = response;
-                            if (response['success']) {
-                                banner_width = 0;
-                                banner_height = 0;
-                                banner = response.banner;
-                                $('#image_user_uploaded img').attr('src', "http://127.0.0.1:8000/uploadcustomuser/" + banner);
-                                $('#banner_error').html(response.success);
-                                //$('#banner_error').css('color', '#002e80');
-                                $('#banner_error').removeClass("text-danger");
-                                $('#banner_error').addClass("text-primary");
-                                $('#banner_error').css('display', 'block');
-                            } else {
-                                banner_width = 0;
-                                banner_height = 0;
-                                printErrorMsg(response.error);
-                            }
+                let bannerUpload = new FormData();
+                bannerUpload.append('file', this.files[0]);
+                console.log(bannerUpload);
+                const language = $('#language').val();
+                $.ajax({
+                    url: "/" + language + '/customusers/upload/image',
+                    data: bannerUpload,
+                    headers: {
+                        'X-CSRF-Token': $('form.hidden-image-upload [name="_token"]').val()
+                    },
+                    dataType: 'json',
+                    async: false,
+                    type: 'post',
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        banner_response = response;
+                        if (response['success']) {
+                            banner_width = 0;
+                            banner_height = 0;
+                            banner = response.banner;
+                            $('#image_user_uploaded img').attr('src', "http://127.0.0.1:8000/uploadcustomuser/" + banner);
+                            $('#banner_error').html(response.success);
+                            //$('#banner_error').css('color', '#002e80');
+                            $('#banner_error').removeClass("text-danger");
+                            $('#banner_error').addClass("text-primary");
+                            $('#banner_error').css('display', 'block');
+                        } else {
+                            banner_width = 0;
+                            banner_height = 0;
+                            printErrorMsg(response.error);
                         }
-                    });
+                    }
+                });
                 /*} else {
                     //Error diminutions
                     banner_width = 0;
@@ -191,6 +211,18 @@ $(function () {
                     name_en_error.css('display', 'block');
                 } else {
                     name_en_error.css('display', 'none');
+                }
+                if (msg['position_ar']) {
+                    position_ar_error.html(msg['position_ar']);
+                    position_ar_error.css('display', 'block');
+                } else {
+                    position_ar_error.css('display', 'none');
+                }
+                if (msg['position_en']) {
+                    position_en_error.html(msg['position_en']);
+                    position_en_error.css('display', 'block');
+                } else {
+                    position_en_error.css('display', 'none');
                 }
                 if (msg['exhibition_manager']) {
                     exhibition_manager_error.html(msg['exhibition_manager']);

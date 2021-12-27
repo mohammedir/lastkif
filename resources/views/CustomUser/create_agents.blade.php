@@ -51,7 +51,7 @@
                                         <div class="col-md-6">
                                             <div>
                                                 <p>{{trans("customusers.Name-ar")}}<strong
-                                                        class="text-danger">*</strong></p>
+                                                            class="text-danger">*</strong></p>
                                             </div>
                                             <input class="form-control" id="name_ar" type="text">
                                             <p id="name_ar_error" class="text-danger"
@@ -60,7 +60,7 @@
                                         <div class="col-md-6">
                                             <div>
                                                 <p>{{trans("customusers.Name-en")}}<strong
-                                                        class="text-danger">*</strong></p>
+                                                            class="text-danger">*</strong></p>
                                             </div>
                                             <input class="form-control" id="name_en" type="text">
                                             <p id="name_en_error" class="text-danger"
@@ -74,7 +74,7 @@
                                         <div class="col-md-6">
                                             <div>
                                                 <p>{{trans("customusers.Country-ar")}}<strong
-                                                        class="text-danger">*</strong></p>
+                                                            class="text-danger">*</strong></p>
                                             </div>
                                             <input class="form-control" id="country_ar" type="text">
                                             <p id="country_ar_error" class="text-danger"
@@ -83,7 +83,7 @@
                                         <div class="col-md-6">
                                             <div>
                                                 <p>{{trans("customusers.Country-en")}}<strong
-                                                        class="text-danger">*</strong></p>
+                                                            class="text-danger">*</strong></p>
                                             </div>
                                             <input class="form-control" id="country_en" type="text">
                                             <p id="country_en_error" class="text-danger"
@@ -102,11 +102,35 @@
                                 </li>
                                 <br>
                                 <li>
-                                    <div>
+                                    <div id="phone_div">
                                         <div>
                                             <p>{{trans("customusers.Phone")}} </p>
                                         </div>
-                                        <input class="form-control" id="phone" type="text">
+                                        <!--<input class="form-control" id="phone" type="text">-->
+                                        <input id="phone" type="text" name="keywords"
+                                               class="form-control"
+                                               value="{{ old('keywords') }}"/>
+                                        <p id="phone_error" class="text-primary d-none">{{trans('customusers.phone_length')}}</p>
+                                        <style type="text/css">
+                                            .bootstrap-tagsinput {
+                                                width: 100%;
+                                                border-color: rgba(246, 247, 248, 0);
+                                                height: 50px;
+                                                background-color: #f6f7f8;
+                                                padding-top: 15px;
+                                            }
+
+                                            .bootstrap-tagsinput .tag {
+                                                margin-right: 2px;
+                                                color: white !important;
+                                                background-color: #007bff;
+                                                padding: .2em .6em .3em;
+                                                font-size: 100%;
+                                                font-weight: 700;
+                                                vertical-align: baseline;
+                                                border-radius: .25em;
+                                            }
+                                        </style>
                                     </div>
                                 </li>
                                 <br>
@@ -140,7 +164,7 @@
                                 <br>
                                 <li class="text-center">
                                     <button id="create-agents" class="btn btn-primary"><i
-                                            class="lar la-save"></i> {{trans("customusers.Create")}}
+                                                class="lar la-save"></i> {{trans("customusers.Create")}}
                                     </button>
                                 </li>
                             </ul>

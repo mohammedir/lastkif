@@ -4,12 +4,79 @@ $(function () {
     let banner_width = 0;
     let banner_height = 0;
     let banner_response = 0;
+    let phone_length = 0;
+    let phone_error = $('#phone_error');
+    let is_error_phone = 0;
+    let language = $('#language').val();
 
     $(document).ready(function () {
         $("#name_ar").focus();
         create_user();
         upload_image();
+        tags();
     });
+
+    function tags() {
+        /*$('#phone_div input').tagsinput({
+            maxTags: 4
+        });*/
+        $('#phone_div input').on('change', function (event) {
+
+            var $element = $(event.target);
+            $element.tagsinput({
+                maxTags: 4
+            });
+            // event.tagsinput(4);
+            var $container = $element.closest('.example');
+            if (!$element.data('tagsinput'))
+                return;
+
+            var val = $element.val();
+            if (val === null)
+                val = "null";
+            var items = $element.tagsinput('items');
+            console.log(items.length);
+            console.log(val);
+
+            //phone_length = items.length;
+            if (items.length === 4) {
+                phone_error.removeClass("d-none");
+            } else {
+                phone_error.addClass("d-none");
+                //$('#phone').val(val);
+            }
+
+            is_error_phone = 0;
+            for (let i = 0; i < items.length; i++) {
+                if (items.length > 0) {
+                    if (items[i].length < 7 || items[i].length > 10) {
+                        is_error_phone = is_error_phone + 1;
+                        //console.log(items[i] + "length" + i);
+                        //console.log(is_error_phone);
+                        phone_error.removeClass("d-none");
+                        phone_error.addClass("text-danger");
+                        if (language === "en")
+                            phone_error.html("The phone number length must be 8-10!");
+                        else
+                            phone_error.html("يجب أن يكون طول الرقم المدخل بين 8-10 أرقام!");
+                        //$element.tagsinput('remove', items[4]);
+                    } else if (!$.isNumeric(items[i])) {
+                        console.log("asd");
+                        phone_error.removeClass("d-none");
+                        phone_error.addClass("text-danger");
+                        if (language === "en")
+                            phone_error.html("the phone must be number not contain alpha!");
+                        else
+                            phone_error.html("غير مسموح إدخال حروف فقط أرقام!");
+                        //$element.tagsinput('remove', items[4]);
+                        is_error_phone = is_error_phone + 1;
+                    }
+                }
+            }
+            $('code', $('pre.val', $container)).html(($.isArray(val) ? JSON.stringify(val) : "\"" + val.replace('"', '\\"') + "\""));
+            $('code', $('pre.items', $container)).html(JSON.stringify($element.tagsinput('items')));
+        }).trigger('change');
+    }
 
     function upload_image() {
         $('#banner').on('change', function (ev) {
@@ -119,6 +186,12 @@ $(function () {
         country_en_error.css('display', 'none');
 
         $('#create-agents').click(function () {
+            if (is_error_phone > 0) {
+                phone_error.removeClass("d-none");
+                phone_error.addClass("text-danger");
+                phone_error.html("the phone number length must be 8-10");
+                return;
+            }
             //const banner = $('#banner').val();
             const name_ar = $('#name_ar').val();
             const name_en = $('#name_en').val();
@@ -129,7 +202,7 @@ $(function () {
             const website_name = $('#website_name').val();
             const website_url = $('#website_url').val();
             const location = $('#location').val();
-            const language = $('#language').val();
+            console.log(phone);
             $.ajax({
                 type: "POST",
                 url: "/" + language + "/customusers/store/agents",
@@ -161,12 +234,13 @@ $(function () {
                         $('#country_ar').val("");
                         $('#country_en').val("");
                         $('#email').val("");
-                        $('#phone').val("");
                         $('#website_name').val("");
                         $('#website_url').val("");
                         $('#location').val("");
                         $('#successfully-save #message').html(response.success);
                         $('#successfully-save').modal('show');
+                        is_error_phone = 0;
+                        $('#phone').tagsinput('removeAll');
                         /*setTimeout(function () {
                             window.location.href = "/customusers/agents/0";
                         }, 1000);*/

@@ -4,11 +4,76 @@ $(function () {
     let banner_width = 0;
     let banner_height = 0;
     let banner_response = 0;
+    let phone_error = $('#phone_error');
+    let is_error_phone = false;
+    let language = $('#language').val();
     $(document).ready(function () {
         $("#name_ar").focus();
         create_user();
         upload_image();
+        tags();
     });
+
+    function tags() {
+        /*$('#phone_div input').tagsinput({
+            maxTags: 4
+        });*/
+        $('#phone_div input').on('change', function (event) {
+            var $element = $(event.target);
+            $element.tagsinput({
+                maxTags: 4
+            });
+            // event.tagsinput(4);
+            var $container = $element.closest('.example');
+            if (!$element.data('tagsinput'))
+                return;
+
+            var val = $element.val();
+            if (val === null)
+                val = "null";
+            var items = $element.tagsinput('items');
+            console.log(items);
+            console.log(val);
+
+            if (items.length === 4) {
+                phone_error.removeClass("d-none");
+            } else {
+                phone_error.addClass("d-none");
+                //$('#phone').val(val);
+            }
+
+            is_error_phone = 0;
+            for (let i = 0; i < items.length; i++) {
+                if (items.length > 0) {
+                    if (items[i].length < 7 || items[i].length > 10) {
+                        is_error_phone = is_error_phone + 1;
+                        //console.log(items[i] + "length" + i);
+                        //console.log(is_error_phone);
+                        phone_error.removeClass("d-none");
+                        phone_error.addClass("text-danger");
+                        if (language === "en")
+                            phone_error.html("The phone number length must be 8-10!");
+                        else
+                            phone_error.html("يجب أن يكون طول الرقم المدخل بين 8-10 أرقام!");
+                        //$element.tagsinput('remove', items[4]);
+                    } else if (!$.isNumeric(items[i])) {
+                        console.log("asd");
+                        phone_error.removeClass("d-none");
+                        phone_error.addClass("text-danger");
+                        if (language === "en")
+                            phone_error.html("the phone must be number not contain alpha!");
+                        else
+                            phone_error.html("غير مسموح إدخال حروف فقط أرقام!");
+                        //$element.tagsinput('remove', items[4]);
+                        is_error_phone = is_error_phone + 1;
+                    }
+                }
+            }
+
+            $('code', $('pre.val', $container)).html(($.isArray(val) ? JSON.stringify(val) : "\"" + val.replace('"', '\\"') + "\""));
+            $('code', $('pre.items', $container)).html(JSON.stringify($element.tagsinput('items')));
+        }).trigger('change');
+    }
 
     function upload_image() {
         $('#banner').on('change', function (ev) {
@@ -33,41 +98,41 @@ $(function () {
                 let check_dim = banner_height * 2;
                 console.log(banner_width + "::" + banner_height);
                 //if (check_dim === banner_width) {
-                    console.log(check_dim);
-                    let bannerUpload = new FormData();
-                    bannerUpload.append('file', this.files[0]);
-                    console.log(bannerUpload);
-                    const language = $('#language').val();
-                    $.ajax({
-                        url: "/" + language + '/customusers/upload/image',
-                        data: bannerUpload,
-                        headers: {
-                            'X-CSRF-Token': $('form.hidden-image-upload [name="_token"]').val()
-                        },
-                        dataType: 'json',
-                        async: false,
-                        type: 'post',
-                        processData: false,
-                        contentType: false,
-                        success: function (response) {
-                            banner_response = response;
-                            if (response['success']) {
-                                banner_width = 0;
-                                banner_height = 0;
-                                banner = response.banner;
-                                $('#image_user_uploaded img').attr('src', "http://127.0.0.1:8000/uploadcustomuser/" + banner);
-                                $('#banner_error').html(response.success);
-                                //$('#banner_error').css('color', '#002e80');
-                                $('#banner_error').removeClass("text-danger");
-                                $('#banner_error').addClass("text-primary");
-                                $('#banner_error').css('display', 'block');
-                            } else {
-                                banner_width = 0;
-                                banner_height = 0;
-                                printErrorMsg(response.error);
-                            }
+                console.log(check_dim);
+                let bannerUpload = new FormData();
+                bannerUpload.append('file', this.files[0]);
+                console.log(bannerUpload);
+                const language = $('#language').val();
+                $.ajax({
+                    url: "/" + language + '/customusers/upload/image',
+                    data: bannerUpload,
+                    headers: {
+                        'X-CSRF-Token': $('form.hidden-image-upload [name="_token"]').val()
+                    },
+                    dataType: 'json',
+                    async: false,
+                    type: 'post',
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        banner_response = response;
+                        if (response['success']) {
+                            banner_width = 0;
+                            banner_height = 0;
+                            banner = response.banner;
+                            $('#image_user_uploaded img').attr('src', "http://127.0.0.1:8000/uploadcustomuser/" + banner);
+                            $('#banner_error').html(response.success);
+                            //$('#banner_error').css('color', '#002e80');
+                            $('#banner_error').removeClass("text-danger");
+                            $('#banner_error').addClass("text-primary");
+                            $('#banner_error').css('display', 'block');
+                        } else {
+                            banner_width = 0;
+                            banner_height = 0;
+                            printErrorMsg(response.error);
                         }
-                    });
+                    }
+                });
                 /*} else {
                     //Error diminutions
                     banner_width = 0;
@@ -116,8 +181,13 @@ $(function () {
         name_en_error.css('display', 'none');
         country_ar_error.css('display', 'none');
         country_en_error.css('display', 'none');
-        const language = $('#language').val();
         $('#create-partners').click(function () {
+            if (is_error_phone > 0) {
+                phone_error.removeClass("d-none");
+                phone_error.addClass("text-danger");
+                phone_error.html("the phone number length must be 8-10");
+                return;
+            }
             //const banner = $('#banner').val();
             const name_ar = $('#name_ar').val();
             const name_en = $('#name_en').val();
@@ -125,12 +195,13 @@ $(function () {
             const country_en = $('#country_en').val();
             const email = $('#email').val();
             const phone = $('#phone').val();
+            console.log(phone);
             const website_name = $('#website_name').val();
             const website_url = $('#website_url').val();
             const location = $('#location').val();
             $.ajax({
                 type: "POST",
-                url: "/" + language +"/customusers/store/partners",
+                url: "/" + language + "/customusers/store/partners",
                 data: {
                     _token: $("input[name=_token]").val(),
                     action: "create",
@@ -159,12 +230,13 @@ $(function () {
                         $('#country_ar').val("");
                         $('#country_en').val("");
                         $('#email').val("");
-                        $('#phone').val("");
                         $('#website_name').val("");
                         $('#website_url').val("");
                         $('#location').val("");
                         $('#successfully-save #message').html(response.success);
                         $('#successfully-save').modal('show');
+                        is_error_phone = 0;
+                        $('#phone').tagsinput('removeAll');
                         /*setTimeout(function () {
                             window.location.href = "/customusers/partners/1";
                         }, 1000);*/

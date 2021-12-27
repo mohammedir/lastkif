@@ -3,21 +3,42 @@
 return [
 
     'Dashboard'         => 'الرئيسية',
-    'Slider'            => 'سلايدر',
-    'Widgets'           => 'ودجات',
+    'Slider'            => 'Slider',
+    'Widgets'           => 'Elfsight',
     'Pages'             => 'الصفحات',
-    'Subscribed-Users'  => 'المستخدمون المشتركون',
-    'Users'             => 'المستخدمون',
+    'Subscribed-Users'  => 'القائمة البريدية',
+    'Users'             => 'مدراء النظام',
     'Users-list'        => 'قائمة المستخدمون',
     'Users-Permissions' => 'صلاحيات المستخدمون',
     'setting'  =>   'الاعدادات',
     'menu-sidebar'=> 'ادارة القوائم',
+    'news' => 'الأخبار',
+    'HomePagecounter' => 'عداد الصفحة الرئيسية',
+
+    'events-sidbar' =>  'الأحداث',
+    'special-events-sidbar' =>  'أحداث خاصة',
+    'Halls-sidbar'  =>  'القاعات',
+    'Agents-sidbar' =>  'العملاء',
+    'Partners-sidbar' => 'الشركاء',
+    'Managers-sidbar' => 'مديري المعارض',
+    'Providers-sidbar' => 'مقدمي الخدمات',
+
+
+
+
+
 
 
 
     /*  main-header */
 
-    'logout'   => 'خروج'
+    'logout'   => 'خروج',
+
+
+    /*news*/
+    'titlenews(EN)' => 'العنوان (EN)',
+    'titlenews(AR)' => 'العنوان (AR)',
+    'urlnews' => 'الرابط',
 
 
 

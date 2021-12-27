@@ -78,7 +78,7 @@
                                                 </div>
                                                 <input class="form-control" id="position_ar" type="text"
                                                        value="{{@$customuser->getTranslation('position', 'ar')}}">
-                                                <p id="country_ar_error" class="text-danger"
+                                                <p id="position_ar_error" class="text-danger"
                                                    style="display: none"></p>
                                             </div>
                                             <div class="col-md-6">
@@ -87,7 +87,7 @@
                                                 </div>
                                                 <input class="form-control" id="position_en" type="text"
                                                        value="{{@$customuser->getTranslation('position', 'en')}}">
-                                                <p id="country_en_error" class="text-danger"
+                                                <p id="position_en_error" class="text-danger"
                                                    style="display: none"></p>
                                             </div>
                                         </div>
@@ -123,7 +123,7 @@
                                         </div>
                                     </li>
                                     <br>
-                                    <li>
+<!--                                    <li>
                                         <div>
                                             <p>
                                                 <i class="las la-hand-pointer text-primary"></i>{{trans("customusers.Exhibition-manager")}}<strong class="text-danger">*</strong>
@@ -142,7 +142,42 @@
                                             <p id="exhibition_manager_error" class="text-danger"
                                                style="display: none"></p>
                                         </div>
+                                    </li>-->
+                                    <br>
+                                    <li>
+                                        <div>
+                                            <p>
+                                                <i class="las la-hand-pointer text-primary"></i>{{trans("customusers.Exhibition-manager")}}<strong class="text-danger">*</strong>
+                                            </p>
+                                            <!--                                                <input id="tags_tag" name="tags_tag" class="form-control" type="text">-->
+                                            <input id="exhibition_manager" type="text" name="keywords"
+                                                   class="form-control"
+                                                   value="{{@$customuser->exhibition_manager}}"
+                                                   data-role="tagsinput"/>
+                                            <p id="exhibition_manager_error" class="text-danger"
+                                               style="display: none"></p>
+                                            <style type="text/css">
+                                                .bootstrap-tagsinput {
+                                                    width: 100%;
+                                                    border-color: #f6f7f8;
+                                                    height: 50px;
+                                                    background-color: #f6f7f8;
+                                                    padding-top: 10px;
+                                                }
+                                                .bootstrap-tagsinput .tag {
+                                                    margin-right: 2px;
+                                                    color: white !important;
+                                                    background-color: #007bff;
+                                                    padding: .2em .6em .3em;
+                                                    font-size: 100%;
+                                                    font-weight: 700;
+                                                    vertical-align: baseline;
+                                                    border-radius: .25em;
+                                                }
+                                            </style>
+                                        </div>
                                     </li>
+                                    <br>
                                     <br>
                                     <br>
                                     <li class="text-center">

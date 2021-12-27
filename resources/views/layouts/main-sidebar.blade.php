@@ -8,7 +8,7 @@
                     <!-- menu item todo-->
                     <li>
                         <a href="{{ url('/' . $page='dashboard') }}"><i class="fas fa-home"></i><span
-                                class="right-nav-text">{{trans('main-sidebar-trans.Dashboard')}}</span> </a>
+                                    class="right-nav-text">{{trans('main-sidebar-trans.Dashboard')}}</span> </a>
                     </li>
                     <!-- menu title -->
                     <!--                    <li class="mt-10 mb-10 text-muted pl-4 font-medium menu-title">Components </li>
@@ -18,7 +18,7 @@
                     <!-- menu item chat-->
                         <li>
                             <a href="{{ url('/' . $page='pages') }}"><i class="ti-comments"></i><span
-                                    class="right-nav-text">{{trans('main-sidebar-trans.Pages')}}
+                                        class="right-nav-text">{{trans('main-sidebar-trans.Pages')}}
                             </span></a>
                         </li>
                 @endcan()
@@ -27,7 +27,7 @@
                     <!-- menu mange todo-->
                         <li>
                             <a href="{{ url('/' . $page='menus') }}"><i class="ti-menu-alt"></i><span
-                                    class="right-nav-text">{{trans('main-sidebar-trans.menu-sidebar')}}</span> </a>
+                                        class="right-nav-text">{{trans('main-sidebar-trans.menu-sidebar')}}</span> </a>
                         </li>
                 @endcan()
 
@@ -35,7 +35,7 @@
                     <!-- menu item todo-->
                         <li>
                             <a href="{{ url('/' . $page='slider') }}"><i class="ti-menu-alt"></i><span
-                                    class="right-nav-text">{{trans('main-sidebar-trans.Slider')}}</span> </a>
+                                        class="right-nav-text">{{trans('main-sidebar-trans.Slider')}}</span> </a>
                         </li>
                 @endcan()
 
@@ -50,7 +50,7 @@
                     @can('show-subscribedUsers-sidebar')
                         <li>
                             <a href="{{ url('/' . $page='getNotification') }}"><i class="ti-comments"></i><span
-                                    class="right-nav-text">{{trans('main-sidebar-trans.Subscribed-Users')}}
+                                        class="right-nav-text">{{trans('main-sidebar-trans.Subscribed-Users')}}
                             </span></a>
                         </li>
                 @endcan()
@@ -61,7 +61,7 @@
                         <li>
                             <a href="javascript:void(0);" data-toggle="collapse" data-target="#users">
                                 <div class="pull-left"><i class="ti-palette"></i><span
-                                        class="right-nav-text">{{trans('main-sidebar-trans.Users')}}</span></div>
+                                            class="right-nav-text">{{trans('main-sidebar-trans.Users')}}</span></div>
                                 <div class="pull-right"><i class="ti-plus"></i></div>
                                 <div class="clearfix"></div>
 
@@ -88,14 +88,14 @@
                     <!-- menu item Widgets-->
                     <li>
                         <a href="{{ url('/' . $page='widgets') }}"><i class="ti-blackboard"></i><span
-                                class="right-nav-text">{{trans('main-sidebar-trans.Widgets')}}</span>
+                                    class="right-nav-text">{{trans('main-sidebar-trans.Widgets')}}</span>
                         </a>
                     </li>
 
                     <!-- menu item Widgets-->
                     <li>
                         <a href="{{ url('/' . $page='settings') }}"><i class="ti-blackboard"></i><span
-                                class="right-nav-text">{{trans('main-sidebar-trans.setting')}}</span>
+                                    class="right-nav-text">{{trans('main-sidebar-trans.setting')}}</span>
                         </a>
                     </li>
 
@@ -106,29 +106,49 @@
                     </li>-->
 
                     <!--TODO::START MOOEMN ALDAH*DOUH ROUTE -->
-                    <li class="nav-item">
+                <!--                    <li class="nav-item">
                         <a class="nav-link" aria-current="page" href="{{ url('/' . $page='events') }}"><i
                                 class="far fa-calendar-alt"></i>Events</a>
+                    </li>-->
+                    <li>
+                        <a href="javascript:void(0);" data-toggle="collapse" data-target="#events">
+                            <div class="pull-left"><i class="fas fa-user-shield"></i><span
+                                        class="right-nav-text">{{trans('main-sidebar-trans.events-sidbar')}}</span>
+                            </div>
+                            <div class="pull-right"><i class="ti-plus"></i></div>
+                            <div class="clearfix"></div>
+
+                        </a>
+                        <ul id="events" class="collapse" data-parent="#sidebarnav">
+                            <li><a class="nav-link" aria-current="page" href="{{ url('/' . $page='events') }}"><i
+                                            class="far fa-calendar-alt"></i>{{trans('main-sidebar-trans.events-sidbar')}}
+                                </a>
+                            </li>
+                            <li><a class="slide-item" href="{{ url('/' . ($page = 'specialevents')) }}"><i
+                                            class="fas fa-user-friends"></i>{{trans('main-sidebar-trans.special-events-sidbar')}}
+                                </a></li>
+
+                        </ul>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url('/' . $page='halls') }}"><i
-                                class="fas fa-place-of-worship"></i>Halls</a>
+                                    class="fas fa-place-of-worship"></i>Halls</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url('/' . $page='customusers/agents/0') }}"><i
-                                class="far fa-user"></i>Agents</a>
+                                    class="far fa-user"></i>Agents</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url('/' . $page='customusers/partners/1') }}"><i
-                                class="far fa-handshake"></i>Partners</a>
+                                    class="far fa-handshake"></i>Partners</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url('/' . $page='customusers/managers/2') }}"><i
-                                class="fas fa-users-cog"></i>Managers</a>
+                                    class="fas fa-users-cog"></i>Managers</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url('/' . $page='customusers/providers/3') }}"><i
-                                class="fas fa-user-astronaut"></i>Providers</a>
+                                    class="fas fa-user-astronaut"></i>Providers</a>
                     </li>
                     <!--                    <li>
                                             <a href="javascript:void(0);" data-toggle="collapse" data-target="#custom_users">

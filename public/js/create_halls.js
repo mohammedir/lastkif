@@ -1,7 +1,7 @@
 /*start Project Setting and edit*/
 $(function () {
     let banner = "";
-    let hall_type = 0;
+    let hall_type = "0";
     let data_external_type = $('#data-external-type');
     let data_internal_type = $('#data-internal-type');
     $(document).ready(function () {
@@ -12,7 +12,7 @@ $(function () {
 
     function selectEventType() {
         $('#hall_type').on('change', function () {
-            hall_type = $('#hall_type').val().toString();
+            hall_type =  $('#hall_type').val().toString();
             switch (hall_type) {
                 case "0":
                     console.log(hall_type)

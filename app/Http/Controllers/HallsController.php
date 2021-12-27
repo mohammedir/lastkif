@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\CustomUser;
 use App\Models\Hall;
+use App\Models\hallsPage;
 use App\Models\widgetsTable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -108,6 +109,21 @@ class HallsController extends Controller
                     $data->created_at = Carbon::now();
                     $data->updated_at = Carbon::now();
                     $data->save();
+                    if ($data) {
+                        $hall_fk_id = $data->id;
+                        /*Add Hall in admin menu*/
+                        $hallsPage = new hallsPage();
+                        $hallsPage->page_fk_id = $hall_fk_id;
+                        $hallsPage->label = $request->name_en;
+                        $hallsPage->sort = 4;
+                        $hallsPage->status = 1;
+                        $hallsPage->type = 0;
+                        $hallsPage->menu = 1;
+                        $hallsPage->depth = 1;
+                        $hallsPage->class = 4;
+                        $hallsPage->created_at = Carbon::now();
+                        $hallsPage->save();
+                    }
                     return response()->json(['success' => trans("halls.Successfully-create-Hall")]);
                 }
                 return response()->json(['error' => $validator->errors()->toArray()]);

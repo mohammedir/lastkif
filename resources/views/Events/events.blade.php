@@ -11,9 +11,9 @@
         <div class="col-md-12 mb-30">
             <div class="row">
                 <div class="col-md-6">
-                    <button id="create_event" class="btn btn-primary mb-3">
+                    <a href="{{route('events.createevent')}}" id="create_event" class="btn btn-primary mb-3">
                         {{trans('events.Create-Event')}}
-                    </button>
+                    </a>
                 </div>
                 <div class="col-md-6">
                     <div class="form-check form-switch float-right" style="padding: 0;margin: 0">
@@ -60,6 +60,7 @@
 @section('js')
     @include('moom.modal_alert')
     @include('Events.modal_create_event')
+    @include('Events.view_event')
     @include('Events.modal_update_event')
     <script src="{{ asset('js/events.js') }}" defer></script>
 @endsection

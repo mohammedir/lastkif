@@ -50,6 +50,8 @@ return [
     'Position-en' => 'Position (en)',
     'Extension-number' => 'Extension number',
     'Exhibition-manager' => 'Exhibition manager',
+    'Manager-position-is-required-ar' => 'Arabic Position is required',
+    'Manager-position-is-required-en' => 'English Position is required',
     /*Provider*/
     'Provider-Details' => 'Provider Details',
     'provider-banner-ratio' => 'provider banner ratio 1:1 (.jpeg, .png, .jpg)',
@@ -84,4 +86,6 @@ return [
     'Remove-succeeded' => 'Remove succeeded',
     'Remove-failed' => 'Remove failed!, Please try again',
     'Partner-Details' => 'Partner Details',
+    'phone_length' => 'Only 4 Phone Numbers allowed',
+    'the_phone_number' => 'The phone number length must be 8-10',
 ];

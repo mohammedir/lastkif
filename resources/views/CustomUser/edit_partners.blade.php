@@ -109,12 +109,36 @@
                                     </li>
                                     <br>
                                     <li>
-                                        <div>
+                                        <input id="value_phones_tags" type="hidden" value="{{$customuser->phone}}">
+                                        <div id="phone_div">
                                             <div>
                                                 <p>{{trans("customusers.Phone")}} </p>
                                             </div>
-                                            <input class="form-control" id="phone" type="text"
-                                                   value="{{$customuser->phone}}">
+                                            <input id="phone" type="text" name="keywords"
+                                                   class="form-control"
+                                                   value="{{$customuser->phone}}"
+                                                   data-role="tagsinput"/>
+                                            <p id="phone_error" class="text-primary d-none">{{trans('customusers.phone_length')}}</p>
+                                            <style type="text/css">
+                                                .bootstrap-tagsinput {
+                                                    width: 100%;
+                                                    border-color: #f6f7f8;
+                                                    height: 50px;
+                                                    background-color: #f6f7f8;
+                                                    padding-top: 10px;
+                                                }
+
+                                                .bootstrap-tagsinput .tag {
+                                                    margin-right: 2px;
+                                                    color: white !important;
+                                                    background-color: #007bff;
+                                                    padding: .2em .6em .3em;
+                                                    font-size: 100%;
+                                                    font-weight: 700;
+                                                    vertical-align: baseline;
+                                                    border-radius: .25em;
+                                                }
+                                            </style>
                                         </div>
                                     </li>
                                     <br>

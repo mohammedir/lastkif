@@ -22,7 +22,27 @@ $(function () {
         });
 
         upload_image();
+        tags();
     })
+
+    function tags() {
+        $('#exhibition_manager').on('change', function (event) {
+
+            var $element = $(event.target);
+            var $container = $element.closest('.example');
+            if (!$element.data('tagsinput'))
+                return;
+
+            var val = $element.val();
+            if (val === null)
+                val = "null";
+            var items = $element.tagsinput('items');
+            console.log(items);
+            console.log(val);
+            $('code', $('pre.val', $container)).html(($.isArray(val) ? JSON.stringify(val) : "\"" + val.replace('"', '\\"') + "\""));
+            $('code', $('pre.items', $container)).html(JSON.stringify($element.tagsinput('items')));
+        }).trigger('change');
+    }
 
     function upload_image() {
         $('#banner').on('change', function (ev) {
@@ -192,6 +212,18 @@ $(function () {
                         name_en_error.css('display', 'block');
                     } else {
                         name_en_error.css('display', 'none');
+                    }
+                    if (msg['position_ar']) {
+                        position_ar_error.html(msg['position_ar']);
+                        position_ar_error.css('display', 'block');
+                    } else {
+                        position_ar_error.css('display', 'none');
+                    }
+                    if (msg['position_en']) {
+                        position_en_error.html(msg['position_en']);
+                        position_en_error.css('display', 'block');
+                    } else {
+                        position_en_error.css('display', 'none');
                     }
                     if (msg['exhibition_manager']) {
                         exhibition_manager_error.html(msg['exhibition_manager']);

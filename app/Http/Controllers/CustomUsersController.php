@@ -156,11 +156,15 @@ class CustomUsersController extends Controller
                     'banner' => 'required',
                     'name_ar' => 'required:custom_users|max:255',
                     'name_en' => 'required:custom_users|max:255',
+                    'position_ar' => 'required:custom_users',
+                    'position_en' => 'required:custom_users',
                     'exhibition_manager' => 'required:custom_users',
                 ], [
                     'banner.required' => trans('customusers.Manager-Exhibition-Banner-is-required'),
                     'name_ar.required' => trans('customusers.Arabic-Exhibition-Manager-name-is-required'),
                     'name_en.required' => trans('customusers.English-Exhibition-Manager-name-is-required'),
+                    'position_ar.required' => trans('customusers.Manager-position-is-required-ar'),
+                    'position_en.required' => trans('customusers.Manager-position-is-required-en'),
                     'exhibition_manager.required' => trans('customusers.Exhibition-Manager-is-required'),
                 ]);
 
@@ -371,11 +375,15 @@ class CustomUsersController extends Controller
                     'banner' => 'required',
                     'name_ar' => 'required:custom_users|max:255',
                     'name_en' => 'required:custom_users|max:255',
+                    'position_ar' => 'required:custom_users',
+                    'position_en' => 'required:custom_users',
                     'exhibition_manager' => 'required:custom_users',
                 ], [
                     'banner.required' => trans('customusers.Manager-Exhibition-Banner-is-required'),
                     'name_ar.required' => trans('customusers.Arabic-Exhibition-Manager-name-is-required'),
                     'name_en.required' => trans('customusers.English-Exhibition-Manager-name-is-required'),
+                    'position_ar.required' => trans('customusers.Manager-position-is-required-ar'),
+                    'position_en.required' => trans('customusers.Manager-position-is-required-en'),
                     'exhibition_manager.required' => trans('customusers.Exhibition-Manager-is-required'),
                 ]);
 

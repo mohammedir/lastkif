@@ -84,4 +84,5 @@ return [
     'Remove-succeeded' => 'نجحت الحذف',
     'Remove-failed' => 'فشل الحدف !، يرجى المحاولة مرة أخرى',
     'Partner-Details' => 'تفاصيل الشريك',
+    'phone_length' => 'مسموح فقط ٤ أرقام هاتف',
 ];

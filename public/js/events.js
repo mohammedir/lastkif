@@ -44,7 +44,7 @@ $(function () {
         get_events();
 
         $('#create_event').click(function () {
-            createEvent(calendar);
+            //createEvent(calendar);
         });
         $(document).on('click', '#remove_image', function () {
             var id = $(this).data('id');
@@ -313,11 +313,12 @@ $(function () {
 
             dateClick: function (info) {
                 // $('#modal-add-event').modal('show');
-                createEvent(calendar);
+                //createEvent(calendar);
             },
             eventClick: function (info) {
                 //console.log('Event: ' + info.event.title);
-                updateEvent(info.event.id);
+                //updateEvent(info.event.id);
+                $('#view_event_model').modal('show');
             },
             /*select: function (date) {
                 $('#modal-alert').modal('show');
@@ -1112,13 +1113,6 @@ $(function () {
         $("#profile").addClass("active show");
     }
 
-    function eventUpdateMoreDetailsErrorSwitchTab() {
-        $("#modal-update-event #step-1-tab").removeClass("active show");  // this deactivates the home tab
-        $("#modal-update-event #step-2-tab").addClass("active show");
-        $("#modal-update-event #homeUpdate").removeClass("active show");  // this deactivates the home tab
-        $("#modal-update-event #profileUpdate").addClass("active show");
-    }
-
     function eventUserErrorSwitchTab() {
         $("#step-1-tab").removeClass("active show");  // this deactivates the home tab
         $("#step-2-tab").addClass("active show");
@@ -1141,6 +1135,13 @@ $(function () {
     }
 
     /*Edit event*/
+    function eventUpdateMoreDetailsErrorSwitchTab() {
+        $("#modal-update-event #step-1-tab").removeClass("active show");  // this deactivates the home tab
+        $("#modal-update-event #step-2-tab").addClass("active show");
+        $("#modal-update-event #homeUpdate").removeClass("active show");  // this deactivates the home tab
+        $("#modal-update-event #profileUpdate").addClass("active show");
+    }
+
     function eventUpdateDetailsErrorSwitchTab() {
         $("#modal-update-event #step-1-tab").addClass("active show");  // this deactivates the home tab
         $("#modal-update-event #step-2-tab").removeClass("active show");

@@ -5,6 +5,8 @@ use Mcamara\LaravelLocalization\Facades\LaravelLocalization;
 use App\Http\Controllers\CustomUsersController;
 use App\Http\Controllers\EventsController;
 use App\Http\Controllers\HallsController;
+use App\Http\Controllers\SpecialEventsController;
+use App\Http\Controllers\ViewImageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -76,6 +78,8 @@ Route::group(
         Route::get('/table', [EventsController::class, 'table'])->name('events.table');
         Route::get('/fetch', [EventsController::class, 'fetch'])->name('events.fetch');
         Route::post('/create', [EventsController::class, 'create'])->name('events.create');
+        Route::get('/createevent', [EventsController::class, 'createevent'])->name('events.createevent');
+        Route::post('/store', [EventsController::class, 'store'])->name('events.store');
         Route::post('/update/{id}', [EventsController::class, 'update'])->name('events.update');
         Route::get('/users/{id}', [EventsController::class, 'eventUsers'])->name('events.users');
         Route::get('/show/{id}', [EventsController::class, 'show'])->name('events.show');
@@ -83,6 +87,14 @@ Route::group(
         Route::post('/upload/image', [EventsController::class, 'upload_image'])->name('events.upload_image');
         Route::get('/{id}/sponsor/images', [EventsController::class, 'sponsor_image'])->name('events.sponsor_image');
         Route::delete('/sponsor/image/delete/{id}', [EventsController::class, 'sponsor_image_destroy'])->name('events.sponsor_image_destroy');
+    });
+
+    Route::prefix('view_image')->group(function () {
+        Route::get('/{image_link}', [ViewImageController::class, 'index'])->name('view_image');
+    });
+
+    Route::prefix('specialevents')->group(function () {
+        Route::get('/', [SpecialEventsController::class, 'index'])->name('specialevents');
     });
 
     Route::prefix('halls')->group(function () {

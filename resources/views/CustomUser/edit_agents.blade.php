@@ -16,7 +16,8 @@
                     <div class="mt-3">
                         <div class="card-header alert alert-light">
                             <input type="hidden" id="language" value="{{config('app.locale')}}">
-                            <strong><i class="far fa-caret-square-right"></i> {{trans("customusers.Agent-Details")}}</strong>
+                            <strong><i class="far fa-caret-square-right"></i> {{trans("customusers.Agent-Details")}}
+                            </strong>
                             <div class="mt-4">
                                 <ul class="ul-project" style="list-style-type: none; margin: 0; padding: 0">
                                     <li>
@@ -52,7 +53,8 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div>
-                                                    <p>{{trans("customusers.Name-ar")}}<strong class="text-danger">*</strong></p>
+                                                    <p>{{trans("customusers.Name-ar")}}<strong
+                                                                class="text-danger">*</strong></p>
                                                 </div>
                                                 <input class="form-control" id="name_ar" type="text"
                                                        value="{{@$customuser->getTranslation('name', 'ar')}}">
@@ -61,7 +63,8 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <div>
-                                                    <p>{{trans("customusers.Name-en")}}<strong class="text-danger">*</strong></p>
+                                                    <p>{{trans("customusers.Name-en")}}<strong
+                                                                class="text-danger">*</strong></p>
                                                 </div>
                                                 <input class="form-control" id="name_en" type="text"
                                                        value="{{@$customuser->getTranslation('name', 'en')}}">
@@ -75,7 +78,8 @@
                                         <div class="row">
                                             <div class="col-md-6">
                                                 <div>
-                                                    <p>{{trans("customusers.Country-ar")}}<strong class="text-danger">*</strong></p>
+                                                    <p>{{trans("customusers.Country-ar")}}<strong
+                                                                class="text-danger">*</strong></p>
                                                 </div>
                                                 <input class="form-control" id="country_ar" type="text"
                                                        value="{{@$customuser->getTranslation('country', 'ar')}}">
@@ -84,7 +88,8 @@
                                             </div>
                                             <div class="col-md-6">
                                                 <div>
-                                                    <p>{{trans("customusers.Country-en")}}<strong class="text-danger">*</strong></p>
+                                                    <p>{{trans("customusers.Country-en")}}<strong
+                                                                class="text-danger">*</strong></p>
                                                 </div>
                                                 <input class="form-control" id="country_en" type="text"
                                                        value="{{@$customuser->getTranslation('country', 'en')}}">
@@ -105,12 +110,36 @@
                                     </li>
                                     <br>
                                     <li>
-                                        <div>
+                                        <input id="value_phones_tags" type="hidden" value="{{$customuser->phone}}">
+                                        <div id="phone_div">
                                             <div>
                                                 <p>{{trans("customusers.Phone")}} </p>
                                             </div>
-                                            <input class="form-control" id="phone" type="text"
-                                                   value="{{$customuser->phone}}">
+                                            <input id="phone" type="text" name="keywords"
+                                                   class="form-control"
+                                                   value="{{$customuser->phone}}"
+                                                   data-role="tagsinput"/>
+                                            <p id="phone_error" class="text-primary d-none">{{trans('customusers.phone_length')}}</p>
+                                            <style type="text/css">
+                                                .bootstrap-tagsinput {
+                                                    width: 100%;
+                                                    border-color: #f6f7f8;
+                                                    height: 50px;
+                                                    background-color: #f6f7f8;
+                                                    padding-top: 10px;
+                                                }
+
+                                                .bootstrap-tagsinput .tag {
+                                                    margin-right: 2px;
+                                                    color: white !important;
+                                                    background-color: #007bff;
+                                                    padding: .2em .6em .3em;
+                                                    font-size: 100%;
+                                                    font-weight: 700;
+                                                    vertical-align: baseline;
+                                                    border-radius: .25em;
+                                                }
+                                            </style>
                                         </div>
                                     </li>
                                     <br>
@@ -162,7 +191,7 @@
                                     <br>
                                     <li class="text-center">
                                         <button id="update-agents" class="btn btn-primary"><i
-                                                class="lar la-save"></i> {{trans("customusers.Save")}}
+                                                    class="lar la-save"></i> {{trans("customusers.Save")}}
                                         </button>
                                     </li>
                                 </ul>
@@ -171,8 +200,8 @@
                     </div>
                     <br>
                     <br>
-                    {{--Section Remove project--}}
-<!--                    <div class="row">
+                {{--Section Remove project--}}
+                <!--                    <div class="row">
                         <div class="col-md-12">
                             <div class="card shadow">
                                 <div class="row alert alert-danger text-dark"
