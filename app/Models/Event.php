@@ -10,9 +10,9 @@ class Event extends Model
 {
     /*{{--//TODO:: *MOOM*EN S*. ALDAH*DOUH 12/15/2021--}}*/
     //use HasFactory;
-    // use HasTranslations;
+    use HasTranslations;
 
-    //public $translatable = ['title', 'description'];
+    public $translatable = ['description'];
     protected $table = "events";
     protected $guarded = [];
     public $timestamps = false;

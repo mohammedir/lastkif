@@ -78,8 +78,6 @@ Route::group(
         Route::get('/table', [EventsController::class, 'table'])->name('events.table');
         Route::get('/fetch', [EventsController::class, 'fetch'])->name('events.fetch');
         Route::post('/create', [EventsController::class, 'create'])->name('events.create');
-        Route::get('/createevent', [EventsController::class, 'createevent'])->name('events.createevent');
-        Route::post('/store', [EventsController::class, 'store'])->name('events.store');
         Route::post('/update/{id}', [EventsController::class, 'update'])->name('events.update');
         Route::get('/users/{id}', [EventsController::class, 'eventUsers'])->name('events.users');
         Route::get('/show/{id}', [EventsController::class, 'show'])->name('events.show');
@@ -87,6 +85,12 @@ Route::group(
         Route::post('/upload/image', [EventsController::class, 'upload_image'])->name('events.upload_image');
         Route::get('/{id}/sponsor/images', [EventsController::class, 'sponsor_image'])->name('events.sponsor_image');
         Route::delete('/sponsor/image/delete/{id}', [EventsController::class, 'sponsor_image_destroy'])->name('events.sponsor_image_destroy');
+
+        /*New*/
+        Route::get('/createevent', [EventsController::class, 'createevent'])->name('events.createevent');
+        Route::post('/store', [EventsController::class, 'store'])->name('events.store');
+        Route::get('/edit/{id}', [EventsController::class, 'edit'])->name('events.edit');
+        Route::post('/updateevent/{id}', [EventsController::class, 'updateevent'])->name('events.updateevent');
     });
 
     Route::prefix('view_image')->group(function () {

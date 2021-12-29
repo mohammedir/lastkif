@@ -18,6 +18,7 @@ $(function () {
     let calender_events_status = 0;
     let events_table_section = $('#events_table_section');
     let events_calender_section = $('#events_calender_section');
+    let language = $('#language').val();
     $(document).ready(function () {
         $.ajaxSetup({
             headers: {
@@ -27,7 +28,138 @@ $(function () {
 
         createEvent();
         selectEventType();
+        upload_image();
+        tabs_controler();
+        remove_image();
+        checkImageType();
+        selectDate();
     });
+
+    function selectDate(){
+        var dtToday = new Date();
+
+        var month = dtToday.getMonth() + 1;
+        var day = dtToday.getDate();
+        var year = dtToday.getFullYear();
+        if(month < 10)
+            month = '0' + month.toString();
+        if(day < 10)
+            day = '0' + day.toString();
+
+        var maxDate = year + '-' + month + '-' + day;
+
+        // or instead:
+        // var maxDate = dtToday.toISOString().substr(0, 10);
+
+        //alert(maxDate);
+        console.log(maxDate);
+        $('#start').attr('min', maxDate);
+        $('#end').attr('min', maxDate);
+    }
+
+    function remove_image() {
+        $(document).on('click', '#remove_image', function () {
+            var id = $(this).data('id');
+            remove_image(id);
+        });
+    }
+
+    function tabs_controler() {
+        $('.toggle-class').change(function () {
+            calender_events_status = $(this).prop('checked') === true ? 1 : 0;
+            //console.log(calender_events_status);
+            switch (calender_events_status) {
+                case 0:
+                    console.log("type 0");
+                    events_table_section.addClass("d-none");
+                    events_calender_section.removeClass("d-none");
+                    //prepareCalender();
+                    calendar.refetchEvents();
+                    break;
+                case 1:
+                    console.log("type 1")
+                    events_table_section.removeClass("d-none");
+                    events_calender_section.addClass("d-none");
+                    table.DataTable().ajax.reload();
+                    break;
+            }
+        });
+    }
+
+    function upload_image() {
+        $('#banner').on('change', function (ev) {
+            $('#banner_error').css('display', 'none');
+            var filedata = ev.target.files[0];
+            if (filedata) {
+                //---image preview
+                var reader = new FileReader();
+                reader.onload = function (ev) {
+                    $('#user-image').attr('src', "http://127.0.0.1:8000/uploadsevents/" + ev.target.result);
+                };
+                reader.readAsDataURL(this.files[0]);
+
+                /*Image diminutions*/
+                var tmpImg = new Image();
+                tmpImg.src = window.URL.createObjectURL(filedata);
+                tmpImg.onload = function () {
+                    banner_width = tmpImg.naturalWidth;
+                    banner_height = tmpImg.naturalHeight;
+                }
+                //if (banner_width === 2000 || banner_height === 1000) {
+                console.log(banner_width + "::" + banner_height);
+                $('#banner_error').css('display', 'none');
+                //upload
+                let bannerUpload = new FormData();
+                bannerUpload.append('file', this.files[0]);
+                $.ajax({
+                    url: "/" + language +'/events/upload/image',
+                    data: bannerUpload,
+                    headers: {
+                        'X-CSRF-Token': $('form.hidden-image-upload [name="_token"]').val()
+                    },
+                    dataType: 'json',
+                    async: false,
+                    type: 'post',
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        if (response['success']) {
+                            banner = response.banner;
+                            //$('#image_user_uploaded img').attr('src', "{{asset(uploadcustomuser/" + banner + ")}}");
+                            $('#image_user_uploaded img').attr('src', "http://127.0.0.1:8000/uploadsevents/" + banner);
+                            $('#banner_error').html(response.success);
+                            //$('#banner_error').css('color', '#002e80');
+                            $('#banner_error').removeClass("text-danger");
+                            $('#banner_error').addClass("text-primary");
+                            $('#banner_error').css('display', 'block');
+                        } else {
+                            printErrorMsg(response.error);
+                        }
+                    }
+                });
+                /*} else {
+                    console.log(banner_width + ":error:" + banner_height);
+                    $('#banner_error').html('The valid diminutions must be 2:1, 2000*1000 px');
+                    $('#banner_error').css('display', 'block');
+                    $('#banner_error').addClass("text-danger");
+                }*/
+            } else {
+                $('#banner_error').html("Failed to upload, try again");
+                $('#banner_error').css('display', 'block');
+                $('#banner_error').addClass("text-danger");
+            }
+
+            function printErrorMsg(msg) {
+                if (msg['banner']) {
+                    $('#banner_error').html(msg['banner']);
+                    $('#banner_error').css('display', 'block');
+                    $('#banner_error').addClass("text-danger");
+                } else {
+                    $('#banner_error').css('display', 'none');
+                }
+            }
+        });
+    }
 
     function selectEventType() {
         $('#event_type').on('change', function () {
@@ -44,7 +176,6 @@ $(function () {
             }
         });
     }
-
 
     function eventDetailsErrorSwitchTab() {
         $("#step-1-tab").addClass("active show");  // this deactivates the home tab
@@ -81,7 +212,7 @@ $(function () {
         $("#nav-profile").removeClass("active show");
     }
 
-    function createEvent(calendar) {
+    function createEvent() {
         $('#modal-add-event').modal('show');
         eventDetailsErrorSwitchTab();
         /*Data*/
@@ -153,7 +284,7 @@ $(function () {
             let sponsors_image = "";
             let photo_image = "";
             let video_image = "";
-           // console.log(event_type);
+            // console.log(event_type);
             switch (event_type) {
                 case "0":
                     event_external_link = event_external_link_input.val();
@@ -219,6 +350,8 @@ $(function () {
                         printErrorMsg(response['user_error']);
                     } else if (response['success']) {
                         eventDetailsErrorSwitchTab();
+                        $('#user-image img').attr('src', "http://127.0.0.1:8000/public/images/add-event.png");
+                        $('#banner_error').css('display', 'none');
                         title_ar_error.css('display', 'none');
                         title_en_error.css('display', 'none');
                         description_en_error.css('display', 'none');
@@ -228,7 +361,7 @@ $(function () {
                         manager_ar_name_error.css('display', 'none');
                         manager_en_name_error.css('display', 'none');
                         url_error.css('display', 'none');
-                        $('#successfully-modal').modal('show');
+                        $('#successfully-event-modal').modal('show');
                         $('#title_en').val("");
                         $('#title_ar').val("");
                         $('#description_en').val("");
@@ -239,6 +372,7 @@ $(function () {
                         //$('#category').val(0);
                         $('#event_type').val(0);
                         event_type = 0;
+                        banner = "";
                         data_internal_type.hide();
                         data_external_type.attr('style', 'display:block !important');
                         event_external_link_input.val("");
@@ -360,5 +494,214 @@ $(function () {
                 }
             }
         });
+    }
+
+    /*Check*/
+    let sponsors_list_images = $('#sponsors_list_images');
+    let sponsors_image_body = sponsors_list_images.html();
+
+    function checkImageType() {
+        let sponsors_image_status = 0;
+        let details_image_status = 0;
+        let photo_image_status = 0;
+        let video_image_status = 0;
+
+        let sponsors_image_results = "";
+        let details_image_results = "";
+        let photo_image_results = "";
+        let video_image_results = "";
+
+        let sponsors_image_input = $('#sponsors-image');
+        let details_image_input = $('#details-image');
+        let photo_image_input = $('#photo-image');
+        let video_image_input = $('#video-image');
+
+        let sponsors_image_upload = $('#sponsors_image_upload');
+        let details_image_upload = $('#details_image_upload');
+        let photo_gallery_upload = $('#photo_gallery_upload');
+        let video_gallery_upload = $('#video_gallery_upload');
+
+        let details_image_upload_error = $('#details_image_upload_error');
+
+        /*Sponsor*/
+        sponsors_image_input.click(function () {
+            sponsors_image_body = sponsors_list_images.html();
+            if (sponsors_image_input.is(':checked')) {
+                sponsors_image_upload.removeClass("d-none");
+                sponsors_image_status = 1;
+                upload_sponsor_image(sponsors_image_upload);
+            } else {
+                sponsors_image_upload.addClass("d-none");
+                sponsors_image_status = 0;
+                sponsor_list_uploaded = [];
+            }
+            console.log(sponsors_image_status);
+        })
+        /*Details image*/
+        details_image_input.click(function () {
+            if (details_image_input.is(':checked')) {
+                details_image_upload.removeClass("d-none");
+                details_image_status = 1;
+                upload_details_image(details_image_upload, details_image_upload_error);
+            } else {
+                details_image_upload.addClass("d-none");
+                details_image_status = 0;
+            }
+            console.log(details_image_status);
+        })
+        /*Photo gallery */
+        photo_image_input.click(function () {
+            if (photo_image_input.is(':checked')) {
+                photo_gallery_upload.removeClass("d-none");
+                photo_image_status = 1;
+            } else {
+                photo_gallery_upload.addClass("d-none");
+                photo_image_status = 0;
+            }
+            console.log(photo_image_status);
+        })
+        /*Video gallery*/
+        video_image_input.click(function () {
+            if (video_image_input.is(':checked')) {
+                video_gallery_upload.removeClass("d-none");
+                video_image_status = 1;
+            } else {
+                video_gallery_upload.addClass("d-none");
+                video_image_status = 0;
+            }
+            console.log(video_image_status);
+        })
+    }
+
+    function upload_sponsor_image(button_upload) {
+        let sponsors_image_upload_error = $('#sponsors_image_upload_error');
+
+        let photo_gallery_upload_error = $('#photo_gallery_upload_error');
+        let video_gallery_upload_error = $('#video_gallery_upload_error');
+        button_upload.on('change', function (ev) {
+            var filedata = ev.target.files[0];
+            if (filedata) {
+
+                //---image preview
+                var reader = new FileReader();
+                reader.onload = function (ev) {
+                    //$('#user-image').attr('src', ev.target.result);
+                };
+                reader.readAsDataURL(this.files[0]);
+                //upload
+                let bannerUpload = new FormData();
+                bannerUpload.append('file', this.files[0]);
+                $.ajax({
+                    url:"/" + language + '/events/upload/image',
+                    data: bannerUpload,
+                    headers: {
+                        'X-CSRF-Token': $('form.hidden-image-upload [name="_token"]').val()
+                    },
+                    dataType: 'json',
+                    async: false,
+                    type: 'post',
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        if (response['success']) {
+                            banner = response.banner;
+                            sponsor_list_uploaded.push(banner);
+                            sponsors_image_upload_error.html(response.success);
+                            //$('#banner_error').css('color', '#002e80');
+                            sponsors_image_upload_error.removeClass("text-danger");
+                            sponsors_image_upload_error.addClass("text-primary");
+                            sponsors_image_upload_error.css('display', 'block');
+                            sponsors_image_body = sponsors_list_images.html();
+                            sponsors_list_images.html(sponsors_image_body + ifSuccessUploadSponsorLogUpdateBody(banner));
+                        } else {
+                            printErrorMsg(response.error);
+                        }
+                    }
+                });
+            } else {
+                console.log(banner_width + ":error:" + banner_height);
+                sponsors_image_upload_error.html('Failed to upload try again');
+                sponsors_image_upload_error.css('display', 'block');
+            }
+
+            function printErrorMsg(msg) {
+                if (msg['banner']) {
+                    sponsors_image_upload_error.html(msg['banner']);
+                    sponsors_image_upload_error.css('display', 'block');
+                } else {
+                    sponsors_image_upload_error.css('display', 'none');
+                }
+            }
+        });
+    }
+
+    /*Update part*/
+    /*Multi images*/
+
+    /*Check*/
+    let sponsors_list_images_update = $('#modal-update-event #sponsors_list_images');
+    let sponsors_image_body_update = sponsors_list_images_update.html();
+
+    function upload_details_image(button_upload, error_p) {
+        button_upload.on('change', function (ev) {
+            var filedata = ev.target.files[0];
+            if (filedata) {
+                //---image preview
+                var reader = new FileReader();
+                reader.onload = function (ev) {
+                    //$('#user-image').attr('src', ev.target.result);
+                };
+                reader.readAsDataURL(this.files[0]);
+                //upload
+                let bannerUpload = new FormData();
+                bannerUpload.append('file', this.files[0]);
+                $.ajax({
+                    url:"/" + language + '/events/upload/image',
+                    data: bannerUpload,
+                    headers: {
+                        'X-CSRF-Token': $('form.hidden-image-upload [name="_token"]').val()
+                    },
+                    dataType: 'json',
+                    async: false,
+                    type: 'post',
+                    processData: false,
+                    contentType: false,
+                    success: function (response) {
+                        if (response['success']) {
+                            details_image = response.banner;
+                            error_p.html(response.success);
+                            error_p.removeClass("text-danger");
+                            error_p.addClass("text-primary");
+                            error_p.css('display', 'block');
+                            $('#view_image_uploaded').attr('src', "http://127.0.0.1:8000/uploadsevents/" + details_image);
+                        } else {
+                            printErrorMsg(response.error);
+                        }
+                    }
+                });
+            } else {
+                error_p.html("Failed to upload, try again");
+                error_p.css('display', 'block');
+            }
+
+            function printErrorMsg(msg) {
+                if (msg['banner']) {
+                    error_p.html(msg['banner']);
+                    error_p.css('display', 'block');
+                } else {
+                    error_p.css('display', 'none');
+                }
+            }
+        });
+    }
+
+    function ifSuccessUploadSponsorLogUpdateBody(image) {
+        console.log(image);
+        return "<li class=\"mr-3 mt-3 mb-3\"\n" +
+            "                                                                                style=\"float: left;\">\n" +
+            "                                                                                <img id=\"sponsors_list_images_items\"\n" +
+            "                                                                                     class=\"mr-2\" height=\"60\"\n" +
+            "                                                                                     src=\"http://127.0.0.1:8000/uploadsevents/" + image + "\">\n" +
+            "                                                                            </li>";
     }
 });

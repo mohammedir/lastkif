@@ -22,11 +22,11 @@ class EventsController extends Controller
         return view("Events.events", compact('categories'));
     }
 
-
+    /*New*/
     public function createevent(Request $request)
     {
         $categories = Categories::query()->get();
-        return view("Events.create_event",compact('categories'));
+        return view("Events.create_event", compact('categories'));
     }
 
     public function store(Request $request)
@@ -49,7 +49,7 @@ class EventsController extends Controller
                 if ($validator->passes()) {
                     $event = new Event();
                     $event->title = $request->title_en;
-                    $event->description = $request->description_en;
+                    $event->description = ['en' => $request->description_en, 'ar' => $request->description_ar];
                     $event->start = $request->event_start;
                     $event->end = $request->event_end;
                     $event->location = $request->location;
@@ -88,7 +88,7 @@ class EventsController extends Controller
                 if ($validatorUser->passes()) {
                     $event = new Event();
                     $event->title = $request->title_en;
-                    $event->description = $request->description_en;
+                    $event->description = ['en' => $request->description_en, 'ar' => $request->description_ar];
                     $event->start = $request->event_start;
                     $event->end = $request->event_end;
                     $event->location = $request->location;
@@ -96,7 +96,7 @@ class EventsController extends Controller
                     $event->type = $request->event_type;
                     $event->url = $request->event_external_link;
                     $event->banner = $request->banner;
-                    $event->sponsors_image = "on";
+                    $event->sponsors_image = "";
                     $event->details_image = $request->details_image;
                     $event->photo_gallery = $request->photo_image;
                     $event->video_gallery = $request->video_image;
@@ -140,6 +140,150 @@ class EventsController extends Controller
         }
     }
 
+    public function edit($id)
+    {
+        $categories = Categories::query()->get();
+        $event = Event::query()->find($id);
+        return view("Events.edit_event", compact('categories','event'));
+    }
+
+    public function updateevent(Request $request, $id)
+    {
+        if ($request->ajax()) {
+            $event = Event::query()->find($id);
+            $event_users = EventUser::query()->where("event_fk_id", $id)->get();
+            $event_type = $request->event_type;
+            $eventId = $id;
+            if ($event_type === "0") {
+                $validator = Validator::make($request->all(), [
+                    'title_ar' => 'required:events,title|max:255',
+                    'title_en' => 'required:events,title|max:255',
+                    'event_start' => 'required',
+                    'event_external_link' => 'required:events,url|url',
+                ], [
+                    'title_ar.required' => trans('events.Arabic-title-required'),
+                    'title_en.required' => trans('events.English-title-required'),
+                    'event_start.required' => trans('events.The-date-is-required'),
+                    'event_external_link.required' => trans('events.URL-is-required'),
+                    'event_external_link.url' => trans('events.Enter-valid-URL'),
+                ]);
+                //$event->title = ['en' => $request->title_en, 'ar' => $request->title_ar];
+                //$event->description = ['en' => $request->description_en, 'ar' => $request->description_ar];
+                if ($validator->passes()) {
+                    $event = Event::query()->find($id)->update([
+                        'title' => $request->title_en,
+                        'banner' => $request->banner,
+                        'description' => ['en' => $request->description_en, 'ar' => $request->description_ar],
+                        'start' => $request->event_start,
+                        'end' => $request->event_end,
+                        'location' => $request->location,
+                        'category_fk_id' => $request->category,
+                        'type' => $request->event_type,
+                        'url' => $request->event_external_link,
+                        'details_image' => $request->details_image,
+                        'photo_gallery' => $request->photo_image,
+                        'video_gallery' => $request->video_image,
+                        'updated_at' => Carbon::now(),
+                    ]);
+                    /*Save event user*/
+                    return response()->json(['success' => 'Successfully create new event', 'event' => $event]);
+                } else
+                    return response()->json(['error' => $validator->errors()->toArray()]);
+            } elseif ($event_type === "1") {
+                $validatorUser = Validator::make($request->all(), [
+                    'title_ar' => 'required:events,title|max:255',
+                    'title_en' => 'required:events,title|max:255',
+                    'event_start' => 'required',
+                    'organizer_ar_name' => 'required:event_user_details,name|max:255',
+                    'organizer_en_name' => 'required:event_user_details,name|max:255',
+                    'manager_ar_name' => 'required:event_user_details,name|max:255',
+                    'manager_en_name' => 'required:event_user_details,name|max:255',
+                ], [
+                    'title_ar.required' => trans('events.Arabic-title-required'),
+                    'title_en.required' => trans('events.English-title-required'),
+                    'event_start.required' => trans('events.The-date-is-required'),
+                    'organizer_ar_name.required' => trans('events.Arabic-Organizer-name-required'),
+                    'organizer_en_name.required' => trans('events.English-Organizer-name-required'),
+                    'manager_ar_name.required' => trans('events.Arabic-Manager-name-required'),
+                    'manager_en_name.required' => trans('events.English-Manager-name-required'),
+                ]);
+                if ($validatorUser->passes()) {
+                    $event = Event::query()->find($id)->update([
+                        'title' => $request->title_en,
+                        'banner' => $request->banner,
+                        'description' => ['en' => $request->description_en, 'ar' => $request->description_ar],
+                        'start' => $request->event_start,
+                        'end' => $request->event_end,
+                        'location' => $request->location,
+                        'category_fk_id' => $request->category,
+                        'type' => $request->event_type,
+                        'url' => $request->event_external_link,
+                        'details_image' => $request->details_image,
+                        'photo_gallery' => $request->photo_image,
+                        'video_gallery' => $request->video_image,
+                        'updated_at' => Carbon::now(),
+                    ]);
+                    $event_organizer = EventUser::query()->where("event_fk_id", $eventId)->where('type', '0')->first();
+                    //dd($event_organizer);
+                    if ($event_organizer) {
+                        $event_organizer->update([
+                            'name' => ['en' => "$request->organizer_en_name", 'ar' => "$request->organizer_ar_name"],
+                            'phone' => $request->organizer_phone,
+                            'email' => $request->organizer_email,
+                            'website_name' => $request->organizer_website_name,
+                            'website_url' => $request->organizer_website_url,
+                            'type' => 0,
+                        ]);
+                    } else {
+                        $event_organizer = new EventUser();
+                        $event_organizer->event_fk_id = $eventId;
+                        $event_organizer->name = ['en' => "$request->organizer_en_name", 'ar' => "$request->organizer_ar_name"];
+                        $event_organizer->phone = $request->organizer_phone;
+                        $event_organizer->email = $request->organizer_email;
+                        $event_organizer->website_name = $request->organizer_website_name;
+                        $event_organizer->website_url = $request->organizer_website_url;
+                        $event_organizer->type = 0;
+                        $event_organizer->save();
+                    }
+                    /*Manager*/
+                    $event_manager = EventUser::query()->where("event_fk_id", $eventId)->where('type', '1')->first();
+                    if ($event_manager) {
+                        $event_manager->update([
+                            'name' => ['en' => "$request->manager_en_name", 'ar' => "$request->manager_ar_name"],
+                            'phone' => $request->manager_phone,
+                            'email' => $request->manager_email,
+                            'type' => 1,
+                        ]);
+                    } else {
+                        /*Manager*/
+                        $event_manager = new EventUser();
+                        $event_manager->event_fk_id = $eventId;
+                        $event_manager->name = ['en' => "$request->manager_en_name", 'ar' => "$request->manager_ar_name"];
+                        $event_manager->phone = $request->manager_phone;
+                        $event_manager->email = $request->manager_email;
+                        $event_manager->type = 1;
+                        $event_manager->save();
+                    }
+                    /*Create Sponsor images*/
+                    $sponsors_images_list = $request->sponsors_image;
+                    // dd($request->sponsors_image);
+                    if ($sponsors_images_list != NULL) {
+                        foreach ($sponsors_images_list as $sponsors_image) {
+                            $image = new SponsoImage();
+                            $image->image = $sponsors_image;
+                            $image->event_fk_id = $eventId;
+                            $image->save();
+                        }
+                    }
+                    return response()->json(['success' => trans('events.Successfully-create-new-event')]);
+                }
+                return response()->json(['user_error' => $validatorUser->errors()->toArray()]);
+            }
+            //return response()->json(['error' => 'Failed to create event']);
+        }
+    }
+
+    /*Old*/
     public function table(Request $request)
     {
         $events = Event::query()->get();
@@ -461,16 +605,6 @@ class EventsController extends Controller
         return $eventUsers;
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
 
     public function destroy(Request $request, $id)
     {

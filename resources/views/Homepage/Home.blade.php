@@ -24,12 +24,16 @@
 @endsection
 @section('content')
     @if (session()->has('Add'))
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <script>
+            console.log("SAs");
+            $('#successfully-save').modal('show');
+        </script>
+<!--        <div class="alert alert-success alert-dismissible fade show" role="alert">
             <strong>{{ session()->get('Add') }}</strong>
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
-        </div>
+        </div>-->
     @endif
     @if ($errors->any())
         <div class="alert alert-danger">

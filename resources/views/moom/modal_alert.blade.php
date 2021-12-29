@@ -123,3 +123,27 @@
         </div>
     </div>
 </div>
+
+
+<div id="successfully-event-modal" class="modal">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content model-style">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-center">
+                <br>
+                <!--                <p style="font-size: 80px;"><i class="far fa-check-circle"></i></p>-->
+                <img height="120" src="{{asset("images/success2.gif")}}">
+                <br>
+                <h6>{{trans("alert.done")}}</h6>
+                <br>
+                <p><a target="_blank" class="btn-link" href="http://127.0.0.1:8000/en/events">View in Calendar&ensp;<i
+                                class="fas fa-external-link-square-alt"></i></a></p>
+            </div>
+            <button class="btn btn-primary" data-dismiss="modal">{{trans("alert.OK")}}</button>
+        </div>
+    </div>
+</div>

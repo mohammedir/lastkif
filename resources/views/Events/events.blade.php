@@ -7,6 +7,7 @@
 @endsection
 @section('content')
     <!-- row -->
+    <input type="hidden" id="language" value="{{config('app.locale')}}">
     <div class="row">
         <div class="col-md-12 mb-30">
             <div class="row">
@@ -21,8 +22,8 @@
                                data-onstyle="secondary"
                                data-offstyle="primary"
                                data-toggle="toggle"
-                               data-on="Events"
-                               data-off="Calender" data-size="xs"
+                               data-on="{{trans('events.Events')}}"
+                               data-off="{{trans('events.Calender')}}" data-size="xs"
                                 {{0 ? 'checked' : ''}}>
                     </div>
                 </div>
@@ -59,8 +60,8 @@
 @endsection
 @section('js')
     @include('moom.modal_alert')
-    @include('Events.modal_create_event')
     @include('Events.view_event')
-    @include('Events.modal_update_event')
+    {{--@include('Events.modal_create_event')--}}
+    {{--@include('Events.modal_update_event')--}}
     <script src="{{ asset('js/events.js') }}" defer></script>
 @endsection

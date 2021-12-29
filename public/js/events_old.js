@@ -12,7 +12,6 @@ $(function () {
     let event_type = 0;
     let event_key = "";
     const table = $('#events_table');
-    let language = $('#language').val();
     //const csrfToken = document.head.querySelector("[name=csrf-token][content]").content
     let data_external_type = $('#data-external-type');
     let data_internal_type = $('#data-internal-type');
@@ -73,12 +72,10 @@ $(function () {
             }
         });
 
-
-        /*Table edit and delete event*/
         $(document).on('click', '#edit', function () {
             var id = $(this).data('id');
-            //updateEvent(id);
-            location.href = "/events/edit/" + id;
+            updateEvent(id);
+            //location.href = "/halls/edit/" + id;
         });
 
         $(document).on('click', '#delete', function () {
@@ -86,7 +83,6 @@ $(function () {
             $('#confirm-remove-modal').modal('show');
             confirm_delete(id);
         });
-
     });
 
     function get_events() {
@@ -318,64 +314,34 @@ $(function () {
             dateClick: function (info) {
                 // $('#modal-add-event').modal('show');
                 //createEvent(calendar);
-                location.href = "/events/createevent";
             },
             eventClick: function (info) {
                 //console.log('Event: ' + info.event.title);
                 //updateEvent(info.event.id);
                 $('#view_event_model').modal('show');
-                get_event_info(info.event.id);
-                //Delete event
-                $('#delete_event').click(function () {
-                    //$('#view_event_model').modal('toggle');
-                    $('#view_event_model').modal('hide');
-                    $('#confirm-remove-modal').modal('show');
-                    confirm_delete(info.event.id);
-                });
-                //Edit event
-                $('#edit_event').click(function () {
-                    location.href = "/events/edit/" + info.event.id;
-                });
             },
+            /*select: function (date) {
+                $('#modal-alert').modal('show');
+                let eventTitle = "New Event";
+                let eventStart = date.startStr;
+                let eventEnd = date.endStr;
+                //let ff = prompt('add new title');
+                fetch('events/create', {
+                    method: 'post',
+                    body: JSON.stringify({eventTitle, eventStart,eventEnd}),
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': csrfToken,
+                    },
+                }).then(e=>{
+                    //console.log('success')
+                    calendar.refetchEvents();
+                })
+            }*/
         });
         calendar.render();
         checkImageType();
         checkImageTypeUpdate();
-    }
-
-    function get_event_info(id) {
-        $.ajax({
-            method: "get",
-            url: "/events/show/" + id,
-            dataType: "json",
-            data: {
-                _token: $("input[name=_token]").val(),
-            },
-            success: function (event) {
-                console.log(event.title);
-                $('#event_image').attr('src', "http://127.0.0.1:8000/uploadsevents/" + event.banner);
-                $('#event_title').html(event.title);
-                $('#event_link a').html(event.url);
-                $('#event_link').attr("href", event.url);
-                if (language === "ar") {
-                    $('#event_description').html(event.description['ar']);
-                    if (event.type === 0) {
-                        $('#event_type').html("نشاط خارجي");
-                    } else {
-                        $('#event_type').html("نشاط داخلي");
-                    }
-                } else if (language === "en") {
-                    $('#event_description').html(event.description['en']);
-                    if (event.type === 0) {
-                        $('#event_type').html("External Event");
-                    } else {
-                        $('#event_type').html("Internal Event");
-                    }
-                }
-                $('#event_start').val(moment(event.start).format("YYYY-MM-DD"));
-                $('#event_end').val(moment(event.start).format("YYYY-MM-DD"));
-            }
-        });
     }
 
     function createEvent(calendar) {
@@ -1058,7 +1024,11 @@ $(function () {
             }
         });
 
-
+        $('#delete_event').click(function () {
+            $('#confirm-remove-modal').modal('show');
+            //$('#modal-update-event').modal('toggle');
+            confirm_delete(id);
+        });
     }
 
     function confirm_delete(id) {
@@ -1113,6 +1083,20 @@ $(function () {
                     break;
             }
         });
+    }
+
+
+    function getDaysOfWeek(calendar) {
+        let startDayWeek = calendar.view.activeStart;
+        let endDayWeek = calendar.view.activeEnd;
+
+        var firstDay = new Date(startDayWeek);
+        var lastDay = new Date(endDayWeek);
+
+        dayStartWeek = firstDay.toISOString().substring(0, 10);
+        dayEndWeek = lastDay.toISOString().substring(0, 10);
+        console.log(dayStartWeek)
+        console.log(dayEndWeek)
     }
 
     function eventDetailsErrorSwitchTab() {

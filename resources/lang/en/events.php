@@ -58,5 +58,9 @@ return [
     'Title' => 'Title',
     'Type' => 'Type',
     'Actions' => 'Actions',
-
+    'Description' => 'Description',
+    'Url' => 'Url',
+    'Edit' => 'Edit',
+    'Edit-Event' => 'Edit Event',
+    'Calender' => 'Calender',
 ];
