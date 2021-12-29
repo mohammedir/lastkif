@@ -22,6 +22,7 @@ return [
     'Partners-sidbar' => 'الشركاء',
     'Managers-sidbar' => 'مديري المعارض',
     'Providers-sidbar' => 'مقدمي الخدمات',
+    'Annual Reports' => 'التقارير السنوية',
 
 
 

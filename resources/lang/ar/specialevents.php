@@ -1,4 +1,22 @@
 <?php
 return [
-
+    'Special Events' => 'نشاطات خاصة',
+    'Create Special Events' => 'إنشاء نشاط خاص',
+    'Edit Special Events' => 'تعديل النشاط الخاص',
+    'Delete' => 'حذف',
+    'Create' => 'إنشاء',
+    'Edit' => 'تعديل',
+    'Save' => 'حفظ',
+    'Name (EN)' => 'الإسم باللغة الإنجليزية',
+    'Name (AR)' => 'الإسم باللغة العربية',
+    'Sl-No' => '#',
+    'Name' => 'الإسم',
+    'URL' => 'الرابط',
+    'Actions' => 'العمليات',
+    'Enter valid URL' => 'رجاء أدخل رابط صالح!',
+    'The URL is required' => 'أدخل الرابط!',
+    'The English Name is required' => 'أدخل الإسم باللغة الإنجليزية!',
+    'The Arabic Name is required' => 'أدخل الإسم باللغة العربية!',
+    'Successfully Create' => 'نجح الإضافة',
+    'Successfully Update' => 'نجح التعديل',
 ];

@@ -49,6 +49,7 @@ return [
     'English-Manager-name-required' => 'أدخل اسم مدير اللغة الإنجليزية',
     'Successfully-create-new-event' => 'تم إنشاء حدث جديد بنجاح',
     'Success-Uploaded-banner' => 'تم تحميل الشعار بنجاح',
+    'Success-Uploaded-pdf' => 'تم تحميل الملف بنجاح',
     'The-valid-diminutions-must-be' => 'يجب أن تكون الأبعاد 2:1, 2000*1000 px',
     'success-delete' => 'تم حذف النشاط بنجاح',
     'failed-delete' => 'فشل حذف النشاط حاول مرة أخرى',

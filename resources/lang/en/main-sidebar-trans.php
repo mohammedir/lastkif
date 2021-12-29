@@ -35,7 +35,7 @@ return [
     'titlenews(AR)' => 'Title (AR)',
     'urlnews' => 'URL',
 
-
+    'Annual Reports' => 'Annual Reports',
 
 
 

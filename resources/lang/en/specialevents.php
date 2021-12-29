@@ -1,4 +1,22 @@
 <?php
 return [
-
+    'Special Events' => 'Special Events',
+    'Create Special Events' => 'Create Special Events',
+    'Edit Special Events' => 'Edit Special Events',
+    'Delete' => 'Delete',
+    'Create' => 'Create',
+    'Edit' => 'Edit',
+    'Save' => 'Save',
+    'Name (EN)' => 'Name (EN)',
+    'Name (AR)' => 'Name (AR)',
+    'Sl-No' => '#',
+    'Name' => 'Name',
+    'URL' => 'URL',
+    'Actions' => 'Actions',
+    'Enter valid URL' => 'Enter valid URL!',
+    'The URL is required' => 'The URL is required!',
+    'The English Name is required' => 'The English Name is required!',
+    'The Arabic Name is required' => 'The Arabic Name is required!',
+    'Successfully Create' => 'Successfully Create',
+    'Successfully Update' => 'Successfully Update',
 ];

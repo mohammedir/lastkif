@@ -7,6 +7,7 @@ use App\Http\Controllers\EventsController;
 use App\Http\Controllers\HallsController;
 use App\Http\Controllers\SpecialEventsController;
 use App\Http\Controllers\ViewImageController;
+use App\Http\Controllers\AnnualReportsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -99,6 +100,20 @@ Route::group(
 
     Route::prefix('specialevents')->group(function () {
         Route::get('/', [SpecialEventsController::class, 'index'])->name('specialevents');
+        Route::post('/store', [SpecialEventsController::class, 'store'])->name('specialevents.store');
+        Route::get('/edit/{id}', [SpecialEventsController::class, 'edit'])->name('specialevents.edit');
+        Route::post('/update/{id}', [SpecialEventsController::class, 'update'])->name('specialevents.update');
+        Route::delete('/delete/{id}', [SpecialEventsController::class, 'destroy'])->name('specialevents.destroy');
+    });
+
+    Route::prefix('annualreports')->group(function () {
+        Route::get('/', [AnnualReportsController::class, 'index'])->name('annualreports');
+        Route::post('/store', [AnnualReportsController::class, 'store'])->name('annualreports.store');
+        Route::get('/edit/{id}', [AnnualReportsController::class, 'edit'])->name('annualreports.edit');
+        Route::post('/update/{id}', [AnnualReportsController::class, 'update'])->name('annualreports.update');
+        Route::delete('/delete/{id}', [AnnualReportsController::class, 'destroy'])->name('annualreports.destroy');
+        Route::post('/upload/image', [AnnualReportsController::class, 'upload_image'])->name('annualreports.upload_image');
+        Route::post('/upload/pdf', [AnnualReportsController::class, 'upload_pdf'])->name('annualreports.upload_pdf');
     });
 
     Route::prefix('halls')->group(function () {

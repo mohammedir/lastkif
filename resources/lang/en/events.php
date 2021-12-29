@@ -49,6 +49,7 @@ return [
     'English-Manager-name-required' => 'English Manager name required',
     'Successfully-create-new-event' => 'Successfully create new event',
     'Success-Uploaded-banner' => 'Success Uploaded banner',
+    'Success-Uploaded-pdf' => 'Success Uploaded PDF',
     'The-valid-diminutions-must-be' => 'The valid diminutions must be 2:1, 2000*1000 px',
     'success-delete' => 'success delete',
     'failed-delete' => 'failed delete',

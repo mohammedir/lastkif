@@ -150,6 +150,10 @@
                         <a class="nav-link" href="{{ url('/' . $page='customusers/providers/3') }}"><i
                                     class="fas fa-user-astronaut"></i>Providers</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url('/' . $page='annualreports') }}"><i
+                                    class="far fa-copy"></i>{{trans('main-sidebar-trans.Annual Reports')}}</a>
+                    </li>
                     <!--                    <li>
                                             <a href="javascript:void(0);" data-toggle="collapse" data-target="#custom_users">
                                                 <div class="pull-left"><i class="ti-palette"></i><span
